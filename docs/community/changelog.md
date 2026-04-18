@@ -9,30 +9,33 @@ LaraKube is currently under **active development**. We are hard at work building
 
 ## [Unreleased] - 2026-04-18 (Current Session)
 
-This session focused on transforming LaraKube into an expressive, industrial-strength orchestrator with a heavy emphasis on local stability and automated lifecycles.
+This session focused on transforming LaraKube into an expressive, industrial-strength orchestrator with a heavy emphasis on local stability, automated lifecycles, and architectural resilience.
 
 ### 🚀 Major Features
+-   **Blueprint Resilience**: Your architectural DNA (`.larakube.json`) is now automatically backed up to a secure **Kubernetes Secret**. The `heal` command can now restore your master configuration directly from the cluster if the local file is lost.
+-   **Full-Stack Live Coding**: Integrated native backend watching for **FrankenPHP/Octane** using `chokidar`. Local development now features instant hot-reloading for both PHP and JavaScript with zero manual refreshes.
+-   **Hardened Database Initialization**: Switched from basic port checks to initialization-aware probes (`mysqladmin ping`, `pg_isready`). This ensures your database is 100% ready before your application pod even starts.
+-   **Self-Healing Startup**: Added a `wait-for-db` initContainer to the web pod, definitively resolving "Connection Refused" errors and initialization deadlocks during cluster boot.
 -   **Expressive CLI API ("Architecture-by-Flag")**: You can now define your entire stack directly in the `new` command using flags like `--frankenphp`, `--mysql`, `--meilisearch`, and `--reverb`.
--   **Stability-First Storage**: Migrated local databases from problematic `hostPath` mounts to **Managed Persistent Volumes (PVCs)**. This eliminates 100% of the "Permission Denied" errors common in macOS/Docker environments while keeping data durable.
--   **Hands-Off Automations**: Integrated **Serversideup Automations** (`AUTORUN_ENABLED`). The cluster now handles its own migrations and optimizations automatically the moment a pod boots up.
--   **Safe Pause/Resume**: Introduced `stop` and `start` commands. These scale your pods to zero replicas, allowing you to pause your cluster and save resources without deleting your namespace or losing data.
--   **Service Dashboard**: Created the `status` command, featuring an elegant **Laravel Prompts** table that shows the real-time health, restarts, and age of all cluster services.
+-   **Stability-First Storage**: Implemented **Managed Persistent Volumes (PVCs)** with native `subPath` mounts for Laravel's framework directories. This ensures durability and eliminates host-path permission conflicts.
+-   **Safe Pause/Resume**: Introduced `stop` and `start` commands to scale pods to zero and back, saving resources without data loss.
 
 ### 🛠 Technical Improvements
--   **Vite HMR Hardening**: The orchestration engine now surgically hardens `vite.config.ts` for Kubernetes Ingress. It automatically configures `clientPort: 80` and enables `CORS`, eliminating whitescreens and origin errors.
--   **Deduplicated Manifest Engine**: Refactored the internal registration logic to follow a strict two-phase "Single-Pass" strategy, definitively resolving "Already Registered ID" and strategic merge patch conflicts.
--   **Professional Teardown Hierarchy**: Refined `down` (Cleanup) and `reset` (Factory Reset) with "Confirm by Name" safety gates to prevent accidental data loss.
--   **Integrated Documentation**: Created a collection of **Architectural Recipes** and a **Kubernetes Glossary** to bridge the gap between Laravel development and cluster orchestration.
+-   **Vite HMR Hardening**: Surgically hardens `vite.config.ts` for Kubernetes Ingress (Port 80/CORS), eliminating whitescreens.
+-   **Deduplicated Manifest Engine**: Refactored to a strict two-phase "Single-Pass" strategy to prevent Kustomize conflicts.
+-   **Professional UX**: Implemented "Confirm by Name" safety gates for destructive commands and an elegant, frequency-capped GitHub star prompt.
+-   **Integrated Documentation**: Created a collection of **Architectural Recipes** and a **Kubernetes Glossary** to bridge the gap between Laravel and cluster orchestration.
 
 ### 🤝 Community & Personal
 -   Added a dedicated tribute to [Serversideup](https://serversideup.net/) and [Spin Pro](https://getspin.pro/).
--   Integrated the creator's professional profile and "Open to Work" invitation.
+-   Integrated the creator's professional profile and LinkedIn/Email contact details.
 
 ---
 
 ### 📅 Roadmap to 0.0.1
 - [x] Finalize expressive CLI flags.
 - [x] Harden local database persistence.
-- [x] Implement automated migration hooks.
+- [x] Implement automated migration and wait hooks.
+- [x] Integrate full-stack live watching.
 - [ ] Final validation of Statamic and Filament blueprints.
 - [ ] Initial release of the LaraKube binary.

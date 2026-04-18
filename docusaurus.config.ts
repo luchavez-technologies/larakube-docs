@@ -7,7 +7,7 @@ const config: Config = {
   tagline: 'Kubernetes for Laravel from Development to Deployment',
   favicon: 'img/favicon.ico',
 
-  url: 'https://larakube.pages.dev',
+  url: 'https://larakube.luchtech.dev',
   baseUrl: '/',
 
   organizationName: 'larakube',
@@ -66,7 +66,7 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          href: 'https://github.com/larakube/larakube',
+          href: 'https://github.com/luchavez-technologies/larakube',
           label: 'GitHub',
           position: 'right',
         },
@@ -92,8 +92,25 @@ const config: Config = {
           title: 'Community',
           items: [
             {
-              label: 'GitHub',
-              href: 'https://github.com/larakube/larakube',
+              label: 'Contribute to CLI',
+              href: 'https://github.com/luchavez-technologies/larakube',
+            },
+            {
+              label: 'Contribute to Docs',
+              href: 'https://github.com/luchavez-technologies/larakube-docs',
+            },
+          ],
+        },
+        {
+          title: 'Creator',
+          items: [
+            {
+              label: 'LinkedIn (Open for Work! 🚀)',
+              href: 'https://www.linkedin.com/in/luchaveztech/',
+            },
+            {
+              label: 'Email: james@luchtech.dev',
+              href: 'mailto:james@luchtech.dev',
             },
           ],
         },

@@ -19,7 +19,12 @@ if ! command -v kubectl &> /dev/null; then
     exit 1
 fi
 
-# 2. Detect OS and Architecture
+# 3. Check for Existing Installation
+if command -v larakube &> /dev/null; then
+    echo "📦 LaraKube is already installed at $(which larakube). Updating to the latest version..."
+fi
+
+# 4. Detect OS and Architecture
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m)
 

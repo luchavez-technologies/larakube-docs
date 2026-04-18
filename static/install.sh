@@ -54,14 +54,12 @@ LATEST_RELEASE_URL="https://github.com/luchavez-technologies/larakube-cli/releas
 
 # 3. Download LaraKube Standalone CLI
 echo "📦 Downloading standalone LaraKube CLI for $OS ($ARCH)..."
-# In a real scenario, we'd use curl -L -o /tmp/larakube $LATEST_RELEASE_URL
-# For this workspace, we are simulating the installation.
-echo "   (URL: $LATEST_RELEASE_URL)"
+curl -L -o /tmp/larakube $LATEST_RELEASE_URL
 
-# 4. Global Installation (Simulated for this script)
-# curl -L -o /tmp/larakube $LATEST_RELEASE_URL
-# sudo mv /tmp/larakube /usr/local/bin/larakube
-# sudo chmod +x /usr/local/bin/larakube
+# 4. Global Installation
+echo "🚚 Installing LaraKube to /usr/local/bin/larakube (requires sudo)..."
+sudo mv /tmp/larakube /usr/local/bin/larakube
+sudo chmod +x /usr/local/bin/larakube
 
 # 5. Global Configuration Initialization
 echo "⚙️ Initializing global configuration..."

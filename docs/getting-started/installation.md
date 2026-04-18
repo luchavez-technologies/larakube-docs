@@ -27,7 +27,7 @@ LaraKube requires two industrial-strength foundations to be installed on your ho
 ## 🏗 Manual Installation
 If you prefer to manage your binary manually, you can download the latest release directly from GitHub:
 
-1.  Visit the **[GitHub Releases](https://github.com/luchavez-technologies/larakube/releases)** page.
+1.  Visit the **[GitHub Releases](https://github.com/luchavez-technologies/larakube-cli/releases)** page.
 2.  Download the `larakube` PHAR binary.
 3.  Move it to your binary path:
     ```bash

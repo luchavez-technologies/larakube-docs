@@ -50,7 +50,7 @@ fi
 BINARY_NAME="larakube-$OS-$ARCH"
 # Note: For now, we are pointing to the 'canary' release.
 # Once v0.0.1 is tagged, this will point to /releases/latest/download/
-LATEST_RELEASE_URL="https://github.com/luchavez-technologies/larakube/releases/download/canary/$BINARY_NAME"
+LATEST_RELEASE_URL="https://github.com/luchavez-technologies/larakube-cli/releases/download/canary/$BINARY_NAME"
 
 # 3. Download LaraKube Standalone CLI
 echo "📦 Downloading standalone LaraKube CLI for $OS ($ARCH)..."

@@ -28,7 +28,7 @@ By bringing Kubernetes to the local development environment, we ensure that your
 ## ⭐ Star the Project
 LaraKube is a labor of love for the Laravel community. If this tool has helped you launch a masterpiece, **please consider giving us a star on GitHub!**
 
--   **[LaraKube CLI](https://github.com/luchavez-technologies/larakube)**: The core orchestration engine.
+-   **[LaraKube CLI](https://github.com/luchavez-technologies/larakube-cli)**: The core orchestration engine.
 -   **[LaraKube Docs](https://github.com/luchavez-technologies/larakube-docs)**: Our high-context guides and recipes.
 
 ---

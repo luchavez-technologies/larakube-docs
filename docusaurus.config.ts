@@ -71,7 +71,7 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          href: 'https://github.com/luchavez-technologies/larakube',
+          href: 'https://github.com/luchavez-technologies/larakube-cli',
           label: 'GitHub',
           position: 'right',
         },
@@ -98,7 +98,7 @@ const config: Config = {
           items: [
             {
               label: 'Contribute to CLI',
-              href: 'https://github.com/luchavez-technologies/larakube',
+              href: 'https://github.com/luchavez-technologies/larakube-cli',
             },
             {
               label: 'Contribute to Docs',

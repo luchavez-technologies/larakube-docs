@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
@@ -10,8 +11,8 @@ const config: Config = {
   url: 'https://larakube.luchtech.dev',
   baseUrl: '/',
 
-  organizationName: 'larakube',
-  projectName: 'larakube',
+  organizationName: 'Luchavez Techonologies',
+  projectName: 'LaraKube',
 
   onBrokenLinks: 'throw',
   
@@ -121,6 +122,12 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
       additionalLanguages: ['php', 'bash', 'yaml', 'json'],
+    },
+    algolia: {
+      appId: process.env.ALGOLIA_APP_ID || 'NO_APP_ID',
+      apiKey: process.env.ALGOLIA_API_KEY || 'NO_API_KEY',
+      indexName: process.env.ALGOLIA_INDEX_NAME || 'larakube',
+      contextualSearch: true,
     },
   } satisfies Preset.ThemeConfig,
 };

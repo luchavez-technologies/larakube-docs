@@ -54,12 +54,11 @@ LATEST_RELEASE_URL="https://github.com/luchavez-technologies/larakube-cli/releas
 
 # 3. Download LaraKube Standalone CLI
 echo "📦 Downloading standalone LaraKube CLI for $OS ($ARCH)..."
-curl -sSL -o /tmp/larakube "$LATEST_RELEASE_URL"
+HTTP_STATUS=$(curl -sL -w "%{http_code}" -o /tmp/larakube "$LATEST_RELEASE_URL")
 
-# Verify we didn't get a 404 page
-if grep -q "Not Found" /tmp/larakube; then
-    echo "❌ Error: Binary not found at $LATEST_RELEASE_URL"
-    echo "Please check if the 'canary' release is available on GitHub."
+if [ "$HTTP_STATUS" -ne 200 ]; then
+    echo "❌ Error: Download failed with status $HTTP_STATUS"
+    echo "URL: $LATEST_RELEASE_URL"
     exit 1
 fi
 

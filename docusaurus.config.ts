@@ -84,7 +84,7 @@ const config: Config = {
             },
             {
               label: 'Architecture',
-              to: '/architecture',
+              to: '/architecture/philosophy',
             },
           ],
         },

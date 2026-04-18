@@ -1,0 +1,29 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Kubernetes Hexagon Base -->
+  <path d="M256 20L472.436 138v236L256 492 39.564 374V138L256 20z" fill="#1E293B" stroke="#326CE5" stroke-width="12"/>
+  
+  <!-- Minimalist PHP Elephant / Kubernetes "K" Fusion -->
+  <g transform="translate(128, 128) scale(0.5)">
+    <!-- Elephant Head / Body Curve -->
+    <path d="M400 100 Q 600 100 600 350 L 600 600 L 500 600 L 500 350 Q 500 200 400 200 Z" fill="#326CE5"/>
+    
+    <!-- The "K" Leg (Elephant Trunk) -->
+    <path d="M100 100 L 250 100 L 250 800 L 100 800 Z" fill="#326CE5"/>
+    
+    <!-- Diagonal Connectors -->
+    <path d="M250 400 L 550 100 L 650 200 L 350 500 Z" fill="#326CE5"/>
+    <path d="M350 400 L 650 700 L 550 800 L 250 500 Z" fill="#326CE5"/>
+    
+    <!-- Elephant Eye -->
+    <circle cx="500" cy="300" r="25" fill="#1E293B"/>
+  </g>
+  
+  <!-- Subtle Gradient Highlight -->
+  <defs>
+    <linearGradient id="paint0_linear" x1="256" y1="20" x2="256" y2="492" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#326CE5" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#326CE5" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <path d="M256 20L472.436 138v236L256 492 39.564 374V138L256 20z" fill="url(#paint0_linear)"/>
+</svg>

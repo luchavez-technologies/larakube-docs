@@ -1,0 +1,8 @@
+{
+  "label": "🧱 Laravel Ecosystem",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Hardened Kubernetes manifests for the complete Laravel toolset."
+  }
+}

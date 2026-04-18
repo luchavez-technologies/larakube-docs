@@ -59,6 +59,10 @@ const config: Config = {
   themeConfig: {
     navbar: {
       title: 'LaraKube',
+      logo: {
+        alt: 'LaraKube Logo',
+        src: 'img/larakube-logo.svg',
+      },
       items: [
         {
           type: 'docSidebar',

@@ -11,7 +11,11 @@ LaraKube is now distributed as a **standalone binary** for Linux and macOS. This
 As long as you have **Docker** and **kubectl** installed, you are ready to orchestrate.
 
 ## 🤖 AI-Native Orchestration
-LaraKube is the first orchestrator designed for the age of AI. With our built-in **Intelligent Doctor** and **Model Context Protocol (MCP)** server, you can use AI to diagnose, heal, and even architect your cluster using simple natural language. 
+LaraKube is the first orchestrator designed for the age of AI. 
+
+-   **LaraKube Chat**: Use natural language to create projects, start environments, and more.
+-   **Intelligent Doctor**: Automatically diagnose and heal your cluster when issues arise.
+-   **Model Context Protocol (MCP)**: Seamlessly integrate with AI agents like Gemini or Claude.
 
 ## 🙌 Tribute to Serversideup
 LaraKube stands on the shoulders of giants. We would like to express our deepest gratitude to [Serversideup](https://serversideup.net/). Their world-class [PHP Docker Images](https://serversideup.net/open-source/docker-php/) are the bedrock of this project, providing the stability and performance that make professional Laravel-on-Kubernetes possible.

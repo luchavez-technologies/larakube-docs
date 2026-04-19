@@ -3,7 +3,22 @@ sidebar_position: 10
 ---
 # 🤖 AI-Native Orchestration
 
-LaraKube is the first Kubernetes orchestrator designed for the age of AI. We provide native integrations for both **AI Agents** (via MCP) and **Standalone Intelligence** (via Laravel AI SDK).
+LaraKube is the first Kubernetes orchestrator designed for the age of AI. We provide native integrations for both **AI Agents** (via MCP) and **Built-in Interaction** (via LaraKube Chat).
+
+## 💬 LaraKube Chat
+Interact with your Kubernetes cluster using natural language. No more memorizing complex `kubectl` flags—just talk to your orchestrator.
+
+```bash
+larakube chat
+```
+
+### What you can do:
+-   **"Create a new project named masterpiece"**: Scaffolds a complete project.
+-   **"Start my local cluster"**: Builds images and deploys manifests.
+-   **"Pause the project"**: Safely scales pods down without deleting data.
+-   **"What's wrong with my pods?"**: Automatically runs the Intelligent Doctor.
+
+---
 
 ## 🧠 Intelligent Doctor (`--ai`)
 LaraKube's `doctor` command now has an "AI Brain." If you encounter pod failures or cluster errors, run:
@@ -28,8 +43,16 @@ LaraKube acts as an **MCP Server**, giving AI agents (like Gemini CLI, Claude De
 -   **`get_project_config`**: Lets agents read your project's architectural blueprint.
 -   **`apply_healing_patch`**: Empowers agents to surgically write and apply manifest fixes.
 
-### Setting up the MCP:
-Add LaraKube to your AI host's configuration:
+### Auto-Scaffolded MCP
+LaraKube **automatically scaffolds** configuration files for your favorite AI tools whenever you run `larakube new`. This allows agents to manage your infrastructure immediately without manual setup.
+
+Scaffolded files include:
+-   **Gemini CLI**: `.gemini/settings.json`
+-   **Claude Code**: `mcp.json`
+-   **Cursor / VSCode**: `.vscode/settings.json`
+
+### Manual MCP Setup
+If you are using a global AI host, add LaraKube to its configuration:
 
 ```json
 {

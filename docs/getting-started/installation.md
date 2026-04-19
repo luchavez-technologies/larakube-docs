@@ -6,7 +6,7 @@ sidebar_position: 1
 LaraKube is designed for speed and stability. You can get up and running with a single command, or choose a manual installation if you prefer more control.
 
 ## ⚡️ One-Step Installation (Recommended)
-The fastest way to install LaraKube is using our automated installer. This will download the latest CLI binary, install it globally, and initialize your configuration.
+The fastest way to install LaraKube is using our automated installer. This will download the latest **standalone binary** for your architecture, install it globally, and initialize your configuration.
 
 ```bash
 curl -s https://larakube.luchtech.dev/install.sh | bash
@@ -16,36 +16,23 @@ curl -s https://larakube.luchtech.dev/install.sh | bash
 
 ---
 
-## 🛠 Prerequisites
-LaraKube requires two industrial-strength foundations to be installed on your host machine:
+## 🔌 AI & MCP Configuration
+To unlock the full power of LaraKube's **AI-Native Orchestration**, you should register the LaraKube tools with your favorite AI host.
 
-1.  **[Docker](https://docs.docker.com/get-docker/)**: For building your high-performance container images.
-2.  **[Kubectl](https://kubernetes.io/docs/tasks/tools/)**: The standard command-line tool for cluster orchestration.
-
----
-
-## 🏗 Manual Installation
-If you prefer to manage your binary manually, you can download the latest release directly from GitHub:
-
-1.  Visit the **[GitHub Releases](https://github.com/luchavez-technologies/larakube-cli/releases)** page.
-2.  Download the `larakube` PHAR binary.
-3.  Move it to your binary path:
-    ```bash
-    mv larakube /usr/local/bin/larakube
-    chmod +x /usr/local/bin/larakube
-    ```
+```bash
+# Register for Gemini and Claude Desktop
+larakube config:mcp --all
+```
 
 ---
 
-## 🤖 AI Configuration (Optional)
-To unlock LaraKube's **AI-Native Orchestration** features, you should provide an AI API Key. 
+## 🧠 AI API Key (Optional)
+If you want to use the built-in **LaraKube Chat** or the **Intelligent Doctor**, provide your API key:
 
-1.  Obtain a **[Gemini API Key](https://aistudio.google.com/)** (Recommended) or OpenAI key.
-2.  Configure LaraKube to use it:
-    ```bash
-    larakube config --ai-key=YOUR_KEY
-    ```
-
+```bash
+# Set your Gemini key and use it as default
+larakube config:ai --gemini=YOUR_KEY
+```
 ---
 
 ## 🏁 Verification

@@ -76,7 +76,7 @@ sudo chmod +x /usr/local/bin/larakube
 echo "⚙️ Initializing global configuration..."
 mkdir -p ~/.larakube
 if [ ! -f ~/.larakube/config.json ]; then
-    echo '{"email": "admin@larakube.local"}' > ~/.larakube/config.json
+    echo '{"email": "email@example.com"}' > ~/.larakube/config.json
 fi
 
 echo ""

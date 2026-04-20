@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'LaraKube',
   tagline: 'Kubernetes for Laravel from Development to Deployment',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/larakube-logo.svg',
 
   url: 'https://larakube.luchtech.dev',
   baseUrl: '/',
@@ -130,12 +130,7 @@ const config: Config = {
     algolia: {
       appId: process.env.ALGOLIA_APP_ID || 'NO_APP_ID',
       apiKey: process.env.ALGOLIA_API_KEY || 'NO_API_KEY',
-      indexName: process.env.ALGOLIA_INDEX_NAME || 'larakube',
-      contextualSearch: true,
-      askAi: {
-          assistantId: process.env.ALGOLIA_ASSISTANT_ID || 'NO_ASSISTANT_ID',
-          suggestedQuestions: true,
-      },
+      indexName: process.env.ALGOLIA_INDEX_NAME || 'LaraKube Documentation',
     },
   } satisfies Preset.ThemeConfig,
 };

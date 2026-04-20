@@ -132,6 +132,10 @@ const config: Config = {
       apiKey: process.env.ALGOLIA_API_KEY || 'NO_API_KEY',
       indexName: process.env.ALGOLIA_INDEX_NAME || 'larakube',
       contextualSearch: true,
+      askAi: {
+          assistantId: process.env.ALGOLIA_ASSISTANT_ID || 'NO_ASSISTANT_ID',
+          suggestedQuestions: true,
+      },
     },
   } satisfies Preset.ThemeConfig,
 };

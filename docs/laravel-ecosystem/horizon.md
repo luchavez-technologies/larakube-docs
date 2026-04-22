@@ -1,5 +1,7 @@
 ---
 sidebar_position: 2
+title: Laravel Horizon
+description: Industrial-strength queue management for Laravel Horizon on Kubernetes. Automated Redis integration, dedicated containers, and health monitoring.
 ---
 # Laravel Horizon
 

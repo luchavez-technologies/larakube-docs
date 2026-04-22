@@ -1,5 +1,7 @@
 ---
 sidebar_position: 1
+title: Object Storage Overview
+description: Add private S3-compatible storage to your Laravel Kubernetes cluster. Support for MinIO, SeaweedFS, and Garage with zero-config integration.
 ---
 # Object Storage Overview
 

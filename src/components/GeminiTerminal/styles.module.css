@@ -1,0 +1,211 @@
+.terminal {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  margin-top: 2rem;
+  color: #333;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  border: 1px solid #e5e5e5;
+}
+
+.terminalHeader {
+  background: #f6f6f6;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.terminalButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.terminalTitle {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: #666;
+  font-size: 0.85rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  left: 0;
+  pointer-events: none;
+}
+
+.terminalBody {
+  padding: 20px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.topInfo {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 25px;
+}
+
+.geminiLogo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 5px;
+}
+
+.logoRow {
+  display: flex;
+  gap: 2px;
+}
+
+.logoBlock {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.headerText {
+  color: #444;
+}
+
+.titleLine {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.infoLine {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.mcpSection {
+  margin-bottom: 30px;
+}
+
+.mcpCommand {
+  color: #7c3aed;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.mcpTitle {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.mcpServer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.greenDot {
+  color: #22c55e;
+  font-size: 1.2rem;
+}
+
+.mcpTools {
+  padding-left: 20px;
+  opacity: 0.9;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.updateBox {
+  border: 1px solid #d97706;
+  padding: 12px 15px;
+  border-radius: 6px;
+  background: #fffbeb;
+  font-size: 0.9rem;
+  margin-bottom: 30px;
+}
+
+.typingSection {
+  margin-bottom: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.typingLabel {
+  font-size: 0.8rem;
+  color: #888;
+  text-align: right;
+  margin-bottom: 8px;
+}
+
+.promptLine {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 4px;
+}
+
+.promptArrow {
+  color: #7c3aed;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.cursorBlock {
+  display: inline-block;
+  width: 10px;
+  height: 1.2em;
+  background-color: #333;
+  animation: blink 1s step-end infinite;
+  vertical-align: middle;
+}
+
+.typingContent {
+  margin-left: 10px;
+  color: #333;
+}
+
+.placeholder {
+  margin-left: 10px;
+  color: #aaa;
+}
+
+.statusBar {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.statusHeader {
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.statusValue {
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .statusBar {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+}

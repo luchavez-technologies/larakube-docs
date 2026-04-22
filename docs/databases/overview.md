@@ -1,16 +1,18 @@
 ---
 sidebar_position: 1
+title: Database Overview
+description: High-performance, production-ready database orchestration for Laravel. Supported engines include PostgreSQL, MySQL, MariaDB, MongoDB, and Redis.
 ---
 # Database Overview
 
-Choosing the right foundation is critical for your application's success. LaraKube supports a variety of database engines, each with automated persistence and secure credential management.
+Choosing the right foundation is critical for your application's success. LaraKube CLI supports a variety of server-based database engines, each with automated persistence and secure credential management.
 
 ## 🏛 Supported Foundations
 LaraKube provides hardened, production-ready manifests for:
 - **MySQL:** The classic, reliable choice.
 - **MariaDB:** A popular MySQL alternative.
 - **PostgreSQL:** Advanced open-source database.
-- **SQLite:** Lightweight, zero-config persistence.
+- **MongoDB:** Highly-scalable NoSQL for flexible data structures.
 - **Redis:** Fast, in-memory caching and queues.
 
 ## 💾 Persistence Strategy (Stability-First)
@@ -24,10 +26,11 @@ LaraKube uses a **"Managed Volume"** approach to eliminate the most common pain 
 We prioritize **stability and security**. All our stubs are pinned to the most recent stable Long-Term Support (LTS) versions:
 
 ### Databases
-- **PostgreSQL:** `17.9-alpine`
+- **PostgreSQL:** `17.9` (Standard)
 - **MySQL:** `8.4` (LTS)
 - **MariaDB:** `11.8` (LTS)
-- **Redis:** `8.6-alpine`
+- **MongoDB:** `8.0`
+- **Redis:** `7.4` (Standard)
 
 ## 🔄 Infrastructure Evolution
 LaraKube projects are designed to grow. You can add a new database engine to your cluster at any time using the `add` command:

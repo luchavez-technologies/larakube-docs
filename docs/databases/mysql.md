@@ -1,12 +1,14 @@
 ---
 sidebar_position: 2
+title: MySQL for Laravel
+description: High-performance MySQL implementation for Laravel on Kubernetes. Learn about security hardening, automated secrets, and readiness probes for your cluster.
 ---
 # MySQL
 
 MySQL is the world's most popular open-source database, known for its performance and ease of use.
 
 ## Implementation Details
-- **Image:** `mysql:8.0`
+- **Image:** `mysql:8.4` (LTS)
 - **Port:** `3306`
 - **Default User:** `laravel`
 

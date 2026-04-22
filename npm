@@ -1,16 +1,10 @@
 #!/bin/bash
 
-# LaraKube NPM Smart-Wrapper
-# Only maps port 3000 when starting or serving
+# LaraKube NPM Wrapper (Daemon-Aware)
+# Forwards all arguments to the persistent Node daemon
 
 # Ensure we are in the docs directory
 cd "$(dirname "$0")"
 
-# Detect if we need port mapping
-OPTS=""
-if [[ "$*" == *"serve"* ]] || [[ "$*" == *"start"* ]]; then
-    OPTS="-p 3000:3000"
-fi
-
-# Forward all arguments to npm running inside an ephemeral Node container
-docker run --rm -it $OPTS -v "$PWD":/app -w /app node:22-alpine npm "$@"
+# Execute npm via the node daemon
+./node npm "$@"

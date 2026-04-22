@@ -1,25 +1,14 @@
-yangshun:
-  name: Yangshun Tay
-  title: Ex-Meta Staff Engineer, Co-founder GreatFrontEnd
-  url: https://linkedin.com/in/yangshun
-  image_url: https://github.com/yangshun.png
-  page: true
+luchavez:
+  name: James Carlo Luchavez
+  title: Creator of LaraKube CLI
+  url: https://www.linkedin.com/in/luchaveztech/
+  image_url: https://github.com/luchavez-technologies.png
   socials:
-    x: yangshunz
-    linkedin: yangshun
-    github: yangshun
-    newsletter: https://www.greatfrontend.com
+    linkedin: luchaveztech
+    email: james@luchtech.dev
 
-slorber:
-  name: Sébastien Lorber
-  title: Docusaurus maintainer
-  url: https://sebastienlorber.com
-  image_url: https://github.com/slorber.png
-  page:
-    # customize the url of the author page at /blog/authors/<permalink>
-    permalink: '/all-sebastien-lorber-articles'
-  socials:
-    x: sebastienlorber
-    linkedin: sebastienlorber
-    github: slorber
-    newsletter: https://thisweekinreact.com
+larakube:
+  name: LaraKube Team
+  title: Official LaraKube CLI Core
+  url: https://larakube.luchtech.dev
+  image_url: https://larakube.luchtech.dev/img/larakube-logo.svg

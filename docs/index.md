@@ -1,9 +1,11 @@
 ---
 sidebar_position: 0
+title: Introduction to LaraKube CLI
+description: Get started with LaraKube CLI, the professional Kubernetes orchestrator for Laravel. Learn about zero-host dependencies, AI-native tools, and production parity.
 ---
 # 🌟 Introduction
 
-LaraKube is the professional Kubernetes orchestrator for Laravel. It transforms the complexity of container orchestration into a seamless, high-performance experience, allowing you to focus on building masterpieces while we handle the cluster plumbing.
+LaraKube CLI is the professional Kubernetes orchestrator for Laravel. It transforms the complexity of container orchestration into a seamless, high-performance experience, allowing you to focus on building masterpieces while we handle the cluster plumbing.
 
 ## 📦 Zero-Host Dependency (Now Standalone!)
 LaraKube is now distributed as a **standalone binary** for Linux and macOS. This means you no longer need to install PHP, Node.js, or any other language runtime on your host machine. 

@@ -1,0 +1,82 @@
+.carouselContainer {
+  width: 100%;
+  overflow: hidden;
+  padding: 40px 0;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.carouselTrack {
+  display: flex;
+  width: calc(320px * 12 + 2rem * 12); /* 320px card width + 2rem gap */
+  animation: scroll 40s linear infinite;
+  gap: 2rem;
+}
+
+.carouselTrack:hover {
+  animation-play-state: paused;
+}
+
+.carouselCard {
+  flex: 0 0 320px;
+  background: var(--larakube-card-bg);
+  padding: 2.5rem;
+  border-radius: 24px;
+  border: 1px solid var(--ifm-contents-border-color);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--larakube-text-main);
+}
+
+.carouselCard:hover {
+  background: var(--ifm-color-primary);
+  color: white !important;
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+  border-color: #3b82f6;
+}
+
+.carouselCard:hover * {
+  color: white !important;
+}
+
+.carouselIcon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-320px * 4 - 2rem * 4)); }
+}
+
+@media screen and (max-width: 996px) {
+  .carouselContainer {
+    mask-image: none;
+    overflow: visible;
+    padding: 0;
+  }
+  .carouselTrack {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    animation: none;
+    gap: 1.5rem;
+  }
+  .carouselCard {
+    flex: auto;
+    width: 100%;
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+  }
+  .carouselCard:nth-child(n+5) {
+    display: none;
+  }
+  .carouselIcon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+}

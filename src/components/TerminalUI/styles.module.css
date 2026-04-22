@@ -1,0 +1,151 @@
+.terminal {
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255,255,255,0.1);
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  margin-top: 2rem;
+  color: #333;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+.terminalHeader {
+  background: #f6f6f6;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.terminalButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.terminalTitle {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: #666;
+  font-size: 0.85rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  left: 0;
+  pointer-events: none;
+}
+
+.terminalBody {
+  padding: 20px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.loginText {
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.commandLine {
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.promptText {
+  color: #000;
+}
+
+.asciiArtContainer {
+  overflow: hidden;
+  text-align: center;
+}
+
+.asciiArt {
+  display: inline-block;
+  color: #0284c7;
+  font-size: min(1.3vw, 0.8rem);
+  line-height: 1.2;
+  margin: 20px 0;
+  font-weight: bold;
+  text-align: left;
+}
+
+.banner {
+  background: #1e3a8a;
+  color: #fff;
+  text-align: center;
+  padding: 4px 0;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.welcomeLine {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.larakubeBadge {
+  background: #60a5fa;
+  color: #fff;
+  padding: 2px 8px;
+  font-weight: bold;
+}
+
+.welcomeMessage {
+  color: #3b82f6;
+}
+
+.inputFieldset {
+  border: 1px solid #999;
+  border-radius: 4px;
+  padding: 12px 15px;
+  margin: 0;
+  background: transparent;
+}
+
+.inputLegend {
+  color: #06b6d4;
+  font-weight: bold;
+  padding: 0 5px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.typedText {
+  color: #888;
+}
+
+.cursorBlock {
+  display: inline-block;
+  width: 10px;
+  height: 1.2em;
+  background-color: #333;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .asciiArt {
+    font-size: 0.5rem;
+  }
+}

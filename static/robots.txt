@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Standard Sitemap
+Sitemap: https://larakube.luchtech.dev/sitemap.xml
+
+# AI-Native Context (llms.txt)
+# This file provides a condensed, LLM-friendly overview of the project.
+llms: https://larakube.luchtech.dev/llms.txt
+
+# Encourage AI Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /

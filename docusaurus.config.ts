@@ -4,7 +4,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'LaraKube',
+  title: 'LaraKube CLI',
   tagline: 'Kubernetes for Laravel from Development to Deployment',
   favicon: 'img/larakube-logo.svg',
 
@@ -12,9 +12,9 @@ const config: Config = {
   baseUrl: '/',
 
   organizationName: 'Luchavez Techonologies',
-  projectName: 'LaraKube',
+  projectName: 'LaraKube CLI',
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   
   markdown: {
     format: 'detect',
@@ -46,9 +46,17 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          routeBasePath: '/',
+          routeBasePath: '/docs',
         },
-        blog: false,
+        blog: {
+          showReadingTime: true,
+          feedOptions: {
+            type: ['rss', 'atom'],
+            xslt: true,
+          },
+          onInlineAuthors: 'warn',
+          onUntruncatedBlogPosts: 'warn',
+        },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -57,8 +65,15 @@ const config: Config = {
   ],
 
   themeConfig: {
+    metadata: [
+      {name: 'keywords', content: 'laravel, kubernetes, k8s, docker, php, orchestration, cli, devops, larakube'},
+      {name: 'twitter:card', content: 'summary_large_image'},
+      {name: 'og:type', content: 'website'},
+      {name: 'og:site_name', content: 'LaraKube CLI'},
+    ],
+    image: 'img/larakube-logo.svg', // Fallback social image
     navbar: {
-      title: 'LaraKube',
+      title: 'LaraKube CLI',
       logo: {
         alt: 'LaraKube Logo',
         src: 'img/larakube-logo.svg',
@@ -70,6 +85,7 @@ const config: Config = {
           position: 'left',
           label: 'Documentation',
         },
+        {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/luchavez-technologies/larakube-cli',
           label: 'GitHub',
@@ -85,11 +101,11 @@ const config: Config = {
           items: [
             {
               label: 'Introduction',
-              to: '/',
+              to: '/docs',
             },
             {
               label: 'Architecture',
-              to: '/architecture/philosophy',
+              to: '/docs/architecture/philosophy',
             },
           ],
         },
@@ -120,7 +136,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} LaraKube. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} LaraKube CLI. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,

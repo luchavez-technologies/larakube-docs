@@ -1,19 +1,30 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
-
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
-
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
-
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+architecture:
+  label: "🏗 Architecture"
+  description: Deep dives into the structural design of LaraKube.
+kubernetes:
+  label: "☸️ Kubernetes"
+  description: Mastering the world's most powerful orchestrator.
+workflow:
+  label: "♻️ Workflow"
+  description: Tips and tricks for a high-performance development lifecycle.
+laravel:
+  label: "🐘 Laravel"
+  description: Building masterpieces with the world's best PHP framework.
+scaling:
+  label: "📈 Scaling"
+  description: Taking your application from one user to millions.
+devops:
+  label: "🚢 DevOps"
+  description: Industrial-strength deployment and automation.
+self-healing:
+  label: "🛡 Self-Healing"
+  description: Architectural resilience and infrastructure stability.
+stability:
+  label: "💎 Stability"
+  description: Ensuring your masterpieces stay ready for the world.
+octane:
+  label: "⚡️ Octane"
+  description: High-performance, in-memory Laravel application serving.
+performance:
+  label: "🚀 Performance"
+  description: Optimizing your cluster for speed and efficiency.

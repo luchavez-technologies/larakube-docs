@@ -1,5 +1,7 @@
 ---
 sidebar_position: 1
+title: FilamentPHP on Kubernetes
+description: Build modern Laravel admin panels with FilamentPHP and LaraKube CLI. Automated installation, optimized PHP extensions, and cluster-ready scaling.
 ---
 # 🪄 FilamentPHP
 

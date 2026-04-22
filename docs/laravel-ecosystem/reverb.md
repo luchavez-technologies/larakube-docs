@@ -1,5 +1,7 @@
 ---
 sidebar_position: 1
+title: Laravel Reverb WebSockets
+description: Real-time Laravel Reverb on Kubernetes. Automated server scaffolding, Echo wiring, and dedicated microservice scaling for thousands of connections.
 ---
 # Laravel Reverb
 
@@ -12,7 +14,7 @@ When you enable Reverb, LaraKube handles the complex networking for you:
     - Automatically detects your framework (React or Vue).
     - Installs the required `@laravel/echo-*` packages.
     - Configures `app.js` or `app.tsx` with the correct broadcaster settings.
-3.  **Local Ingress:** Sets up a secure local URL at `https://reverb.your-project.local`.
+3.  **Local Ingress:** Sets up a secure local URL at `https://reverb.your-project.dev.test`.
 
 ## Environment Variables
 LaraKube automatically injects and configures these essential keys in your `.env`:

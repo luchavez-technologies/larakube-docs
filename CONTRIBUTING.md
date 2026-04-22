@@ -2,32 +2,50 @@
 
 Thank you for your interest in improving LaraKube! We want to make it as easy as possible for you to contribute.
 
-## Local Development (Docker Only)
+## 🛠 Local Development (Docker Only)
 
-You do **not** need Node.js or NPM installed on your computer to work on the docs. We have provided a containerized environment.
+LaraKube follows a **Zero-Host Dependency** philosophy. You do **not** need Node.js or NPM installed on your machine. We provide containerized development wrappers.
 
-1.  **Clone the repository.**
-2.  **Navigate to the docs directory:**
+1.  **Navigate to the docs directory:**
     ```bash
     cd docs
     ```
-3.  **Run the helper script:**
+2.  **Start the development server:**
     ```bash
-    ./run-docs.sh
+    ./npm start
     ```
-4.  **Access the site:** Open your browser to `http://localhost:3000`.
+3.  **Access the site:** Open your browser to [http://localhost:3000](http://localhost:3000).
 
-Any changes you make to the Markdown files in the `docs/` folder will be reflected instantly in your browser!
+Any changes you make to the Markdown files in the `docs/` or `blog/` folders will be reflected instantly in your browser!
 
-## Project Structure
+## 📂 Project Structure
 
-- `docs/`: Contains all the documentation pages (Markdown).
-- `src/`: Contains custom React components and styles.
-- `static/`: Contains images and other static assets.
-- `docusaurus.config.ts`: The main configuration file for the site.
+-   `docs/`: The core documentation pages (Markdown).
+-   `blog/`: News, updates, and architectural deep-dives.
+-   `src/`: Custom React components and Vanilla CSS styles.
+-   `static/`: Images, logos, and AI context files (`llms.txt`).
+-   `docusaurus.config.ts`: The main configuration file.
 
-## Writing Guidelines
+## 🤖 AI SEO Standards
 
-- Use clear, professional, and helpful language.
-- Follow existing formatting and style patterns.
-- Ensure all code blocks have the correct language tag (e.g., `bash`, `php`, `yaml`).
+Every contribution should consider AI discovery:
+-   **Metadata**: Ensure `frontmatter` includes descriptive titles and descriptions.
+-   **Clean Markdown**: Keep structures simple for RAG ingestion.
+-   **AI Sync**: If you add new pages, run `./npm run build` locally to ensure they are indexed in the `llms.txt` context files.
+
+## ✍️ Writing Guidelines
+
+-   **Tone**: Professional, technical, yet encouraging for Laravel developers.
+-   **Consistency**: Follow the existing architectural naming conventions.
+-   **Code Blocks**: Always include the correct language tag (e.g., `bash`, `php`, `yaml`).
+
+## 🧹 Cleanup
+
+When you're done developing, you can stop the background daemon:
+
+```bash
+./node stop
+```
+
+---
+**Happy Orchestrating!** 🚀

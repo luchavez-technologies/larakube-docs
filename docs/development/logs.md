@@ -1,5 +1,7 @@
 ---
 sidebar_position: 3
+title: Monitoring Service Logs
+description: Tail logs for web, node, horizon, and reverb services with the LaraKube logs command. Professional observability for your Laravel Kubernetes cluster.
 ---
 # Monitoring Logs
 

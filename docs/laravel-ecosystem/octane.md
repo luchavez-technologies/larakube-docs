@@ -1,5 +1,7 @@
 ---
 sidebar_position: 4
+title: Laravel Octane with FrankenPHP
+description: Supercharge your Laravel app with Octane and FrankenPHP on Kubernetes. Learn about memory-resident performance, workers, and health probes.
 ---
 # Laravel Octane (with FrankenPHP)
 

@@ -1,5 +1,7 @@
 ---
 sidebar_position: 1
+title: Mission & Vision
+description: Explore the mission and vision behind LaraKube CLI. We are democratizing Kubernetes orchestration to elevate the professional Laravel experience.
 ---
 # 🎯 Mission & Vision
 

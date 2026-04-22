@@ -1,23 +1,595 @@
 /**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
+ * 2026 Theme-Aware "Midnight Masterpiece" Styles
+ * Robust Mobile-First Responsiveness
  */
 
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+:root {
+  --larakube-hero-bg: #f8f9fa;
+  --larakube-hero-text: #1c1e21;
+  --larakube-hero-subtitle: #666;
+  --larakube-hero-title-grad1: #000;
+  --larakube-hero-title-grad2: #666;
+  --larakube-button-border: rgba(0, 0, 0, 0.2);
+  --larakube-button-hover: rgba(0, 0, 0, 0.05);
+  --larakube-glow: rgba(59, 130, 246, 0.4);
+  --larakube-card-bg: #ffffff;
+  --larakube-text-main: #1c1e21;
+  --larakube-text-muted: #666;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+[data-theme='dark'] {
+  --larakube-hero-bg: #050505;
+  --larakube-hero-text: #ffffff;
+  --larakube-hero-subtitle: #999;
+  --larakube-hero-title-grad1: #fff;
+  --larakube-hero-title-grad2: #888;
+  --larakube-button-border: rgba(255, 255, 255, 0.5);
+  --larakube-button-hover: rgba(255, 255, 255, 0.2);
+  --larakube-glow: rgba(59, 130, 246, 0.2);
+  --larakube-card-bg: #1b1b1d;
+  --larakube-text-main: #f5f6f7;
+  --larakube-text-muted: #aaa;
+}
+
+/* HERO */
+.heroBanner {
+  padding: 8rem 2rem 12rem 2rem;
+  text-align: center;
+  position: relative;
+  background: var(--larakube-hero-bg);
+  color: var(--larakube-hero-text);
+  z-index: 2;
+}
+
+/* Remove linear-gradient smudge */
+.heroBanner::after {
+  display: none;
+}
+
+.heroBanner::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 40%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.5) 0%, transparent 70%);
+  z-index: 0;
+  filter: blur(80px);
+}
+
+.heroLogo {
+  width: 160px;
+  height: 160px;
+  margin-bottom: 2.5rem;
+  z-index: 1;
+  position: relative;
+  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.4));
+}
+
+.heroTitle {
+  font-size: 5.5rem;
+  font-weight: 900;
+  letter-spacing: -3px;
+  margin-bottom: 1.5rem;
+  z-index: 1;
+  position: relative;
+  background: linear-gradient(to bottom, var(--larakube-hero-title-grad1) 40%, var(--larakube-hero-title-grad2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.heroTitle:hover {
+  text-shadow: 
+    -2px -2px 0 rgba(59, 130, 246, 0.5),
+    2px 2px 0 rgba(236, 72, 153, 0.5);
+  transform: skew(-1deg);
+}
+
+.heroSubtitle {
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: var(--larakube-hero-subtitle);
+  margin-bottom: 4rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 2rem;
+  z-index: 1;
+  position: relative;
+}
+
+.heroButton {
+  padding: 1.2rem 3rem !important;
+  font-size: 1.2rem !important;
+  border-radius: 100px !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 800 !important;
+}
+
+.primaryButton {
+  background: var(--ifm-color-primary) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4) !important;
+}
+
+.primaryButton:hover {
+  background: #2563eb !important;
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.8) !important;
+  transform: translateY(-4px) scale(1.05);
+  color: #fff !important;
+}
+
+.secondaryButton {
+  background: transparent !important;
+  color: var(--larakube-hero-text) !important;
+  border: 2px solid var(--larakube-button-border) !important;
+  backdrop-filter: blur(10px);
+}
+
+.secondaryButton:hover {
+  background: var(--larakube-button-hover) !important;
+  border-color: var(--larakube-hero-text) !important;
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.2) !important;
+  transform: translateY(-4px) scale(1.05);
+  color: var(--larakube-hero-text) !important;
+}
+
+/* SECTIONS */
+.section {
+  padding: 3rem 1.5rem;
+  background: var(--ifm-background-color);
+  color: var(--larakube-text-main);
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.pillarSection {
+  padding: 12rem 1.5rem 10rem 1.5rem !important;
+  margin-top: -10rem;
+  position: relative;
+  z-index: 2;
+  background: var(--larakube-hero-bg) !important;
+  /* Mask fades the background to reveal theme background underneath */
+  mask-image: linear-gradient(to bottom, var(--larakube-hero-mask-color) 0%, var(--larakube-hero-mask-color) 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, var(--larakube-hero-mask-color) 0%, var(--larakube-hero-mask-color) 50%, transparent 100%);
+}
+
+.sectionDark {
+  background: var(--ifm-background-color) !important;
+  color: var(--ifm-font-color-base) !important;
+}
+
+.sectionDark h1, 
+.sectionDark h2, 
+.sectionDark h3, 
+.sectionDark h4, 
+.sectionDark p {
+  color: var(--ifm-font-color-base) !important;
+}
+
+/* CARDS */
+.schematicGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: center;
+  margin-top: 2rem;
+  position: relative;
+}
+
+.schematicNode {
+  flex: 1 1 300px;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.schematicHex {
+  width: 160px;
+  height: 184px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 115.47'%3E%3Cpath d='M50 5 L93.3 30 L93.3 85.47 L50 110.47 L6.7 85.47 L6.7 30 Z' fill='rgba(59, 130, 246, 0.05)' stroke='%233b82f6' stroke-width='6' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(12px);
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+  position: relative;
+  background-color: transparent; /* Ensure no white square */
+}
+
+/* Connectors removed as requested */
+@media (min-width: 997px) {
+  .schematicNode:not(:last-child)::after {
+    display: none;
+  }
+}
+
+.schematicNode h3 {
+  color: var(--larakube-hero-text) !important;
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px var(--larakube-glow);
+}
+
+.schematicNode p {
+  color: var(--larakube-hero-subtitle) !important;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.schematicNode:hover .schematicHex {
+  transform: scale(1.1) rotate(2deg);
+  filter: drop-shadow(0 20px 40px rgba(59, 130, 246, 0.4));
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 115.47'%3E%3Cpath d='M50 5 L93.3 30 L93.3 85.47 L50 110.47 L6.7 85.47 L6.7 30 Z' fill='rgba(59, 130, 246, 0.15)' stroke='%233b82f6' stroke-width='8' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.hexEmoji {
+  font-size: 4rem;
+  display: block;
+  animation: float 6s ease-in-out infinite;
+  transition: transform 0.4s ease;
+}
+
+.hexCard:hover .hexEmoji {
+  transform: rotate(-15px); /* Counter-rotate the emoji so it stays upright */
+}
+
+/* COMPONENTS */
+.inlineCode {
+  padding: 0.3rem 0.8rem;
+  background: rgba(50, 108, 229, 0.15);
+  color: var(--ifm-color-primary);
+  border-radius: 8px;
+  font-family: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.showcaseImage {
+  width: 100%;
+  display: block;
+}
+
+.doctorCard {
+  background: var(--ifm-color-emphasis-100);
+  padding: 2.5rem;
+  border-radius: 32px;
+  border: 1px solid var(--ifm-contents-border-color);
+  margin-bottom: 0.5rem;
+}
+
+.architectSection {
+  background: var(--larakube-card-bg);
+  border-radius: 48px;
+  padding: 6rem;
+  border: 1px solid var(--ifm-contents-border-color);
+}
+
+.makerContent {
+  text-align: center;
+}
+
+.makerTitle {
+  color: var(--ifm-color-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* NEW SECTIONS */
+.contributeSection {
+  padding: 4rem 0;
+}
+
+.contributeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+  margin-top: 4rem;
+}
+
+.contributeCard {
+  background: var(--larakube-card-bg);
+  padding: 3.5rem;
+  border-radius: 40px;
+  border: 1px solid var(--ifm-contents-border-color);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.contributeActions {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.contributeCard:hover {
+  transform: translateY(-12px);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+}
+
+.discordButton {
+  background: #5865F2 !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 14px 0 rgba(88, 101, 242, 0.39) !important;
+}
+
+.discordButton:hover {
+  background: #4752c4 !important;
+  box-shadow: 0 6px 20px rgba(88, 101, 242, 0.5) !important;
+  transform: scale(1.05);
+}
+
+.avatar {
+  border-radius: 40px;
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.techLabel {
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--ifm-color-primary);
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  letter-spacing: 1.5px;
+}
+
+.desktopOnlyPadding {
+  padding-left: 4rem;
+}
+
+/* WHITE NATURAL TERMINAL WINDOW */
+.naturalTerminal {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.naturalTerminal:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+}
+
+.terminalHeader {
+  background: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.terminalButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminalTitle {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-family: monospace;
+  left: 0;
+  pointer-events: none;
+}
+
+.copiedIndicator {
+  position: absolute;
+  right: 20px;
+  color: #10b981;
+  font-size: 0.8rem;
+  font-weight: bold;
+  animation: fade-in 0.3s ease;
+}
+
+.terminalBody {
+  padding: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+}
+
+.terminalContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  width: 100%;
+}
+
+.terminalTypewriter {
+  color: #1f2937;
+  font-size: 1.2rem;
+  font-weight: 500;
+  white-space: nowrap;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  display: inline-block;
+  text-align: center;
+}
+
+.terminalCursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.4em;
+  background-color: #333;
+  animation: terminal-blink 1s step-end infinite;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+.desktopOnly { display: block; }
+.mobileOnly { display: none; }
+
+@media screen and (max-width: 996px) {
+  .desktopOnly { display: none !important; }
+  .mobileOnly { display: block !important; }
+}
+
+@keyframes terminal-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE OVERRIDES */
+@media screen and (max-width: 996px) {
+  .heroBanner { padding: 3rem 1rem 4rem 1rem; }
+  .heroTitle { font-size: 2.2rem; letter-spacing: -1px; line-height: 1.1; }
+  .heroSubtitle { font-size: 0.9rem; margin-bottom: 1.5rem; text-align: left; }
+  .heroLogo { width: 100px; height: 100px; }
+  
+  .buttons { flex-direction: column; gap: 0.5rem; width: 100%; }
+  .buttons a { width: 100% !important; text-align: center; font-size: 0.75rem !important; padding: 0.5rem 1rem !important; }
+
+  .section { padding: 1.2rem 1rem; }
+  .section h2 { font-size: 1.4rem !important; line-height: 1.2; margin-bottom: 0.8rem !important; text-align: left; }
+  .section h3 { font-size: 1.25rem !important; text-align: left; }
+  .section p { font-size: 0.85rem !important; line-height: 1.4; text-align: left; }
+  
+  .doctorCard { padding: 1rem; border-radius: 16px; margin-bottom: 0.5rem !important; }
+  .doctorCard h4 { font-size: 1.1rem !important; margin-bottom: 0.4rem !important; }
+  .inlineCode { padding: 0.1rem 0.4rem; font-size: 85%; }
+
+  .techLabel { display: block; text-align: center; margin-left: auto; margin-right: auto; width: fit-content; }
+
+  .pillarSection { padding: 1.5rem 1rem !important; margin-top: -1.5rem; }
+  .schematicGrid { gap: 1.2rem; }
+  .schematicNode { flex: 1 1 100%; max-width: 100%; margin-bottom: 1.5rem; }
+  .schematicHex { width: 160px; height: 184px; margin-bottom: 1rem; }
+  .hexEmoji { font-size: 3.5rem; }
+
+  .architectSection { padding: 1.2rem 1rem; border-radius: 12px; text-align: center; }
+  .architectSection .buttons { justify-content: center !important; }
+  .architectSection h2 { font-size: 1.3rem !important; text-align: center; }
+  .architectSection p { text-align: left; font-size: 0.85rem !important; }
+  
+  .makerTitle { font-size: 0.85rem !important; }
+  
+  .desktopOnlyPadding { padding-left: 0; margin-top: 1rem; }
+  .reverseMobile { display: flex; flex-direction: column-reverse !important; }
+
+  .contributeSection { padding: 1.2rem 1rem; }
+  .contributeCard { padding: 1.2rem; text-align: left; border-radius: 12px; }
+  .contributeCard h3 { font-size: 1.25rem !important; text-align: center; margin-bottom: 1rem !important; }
+  .contributeCard p { text-align: left; font-size: 0.8rem !important; margin-bottom: 1rem !important; }
+  .contributeActions { justify-content: center; width: 100%; }
+  .contributeActions a { width: 100% !important; text-align: center; font-size: 0.8rem !important; padding: 0.6rem !important; }
+  
+  /* Ensure grid columns stack nicely */
+  .row { flex-direction: column; }
+  .col { width: 100% !important; max-width: 100% !important; margin-bottom: 0.8rem; }
+
+  /* TERMINAL WINDOW MOBILE FIX */
+  .naturalTerminal {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  .terminalBody {
+    padding: 1rem 1.2rem;
+    gap: 0.8rem;
+  }
+
+  .terminalPrompt {
+    margin-right: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .terminalTypewriter {
+    font-size: 0.75rem !important;
+    white-space: pre-wrap !important;
+    word-break: normal;
+    flex: 1;
+  }
+
+  .terminalCursor {
+    width: 6px;
+    height: 1em;
+  }
+  
+  .terminalHeader {
+    padding: 8px 12px;
+  }
+  
+  .terminalTitle {
+    font-size: 0.65rem;
+  }
+
+  .copiedIndicator {
+    font-size: 0.6rem;
+    right: 10px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.reverseMobile { }
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
 }

@@ -1,5 +1,7 @@
 ---
 sidebar_position: 2
+title: Statamic CMS on Kubernetes
+description: Launch professional flat-file CMS projects with Statamic and LaraKube CLI. Specialized storage handling, image optimization, and local email setup.
 ---
 # 📁 Statamic
 

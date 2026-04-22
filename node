@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# LaraKube Docs Development Runner (Persistent Daemon Version)
+# Supports Node, NPM, and Docusaurus development
+
+DOCS_DIR=$(cd "$(dirname "$0")" && pwd)
+PROJECT_DIR=$(pwd)
+CONTAINER_NAME="larakube-docs"
+
+# Handle "stop" command to cleanup the daemon
+if [ "$1" = "stop" ]; then
+    echo "🛑 Stopping LaraKube Docs Daemon..."
+    docker stop "$CONTAINER_NAME" > /dev/null 2>&1 || true
+    docker rm "$CONTAINER_NAME" > /dev/null 2>&1 || true
+    exit 0
+fi
+
+# Ensure the daemon is running
+if ! docker ps --format '{{.Names}}' | grep -q "^$CONTAINER_NAME$"; then
+    echo "🚀 Starting LaraKube Docs Daemon..."
+    
+    # Remove any stale container
+    docker rm -f "$CONTAINER_NAME" > /dev/null 2>&1 || true
+
+    # Start the container in background
+    # We use node:22-alpine to keep it lightweight
+    docker run -d \
+        --name "$CONTAINER_NAME" \
+        -v "$DOCS_DIR":/app \
+        -w /app \
+        -p 3000:3000 \
+        --entrypoint /bin/sh \
+        node:22-alpine \
+        -c "tail -f /dev/null" > /dev/null
+fi
+
+# Determine if we should run interactively
+INTERACTIVE="-i"
+[ -t 0 ] && INTERACTIVE="-it"
+
+# Execute the command
+docker exec $INTERACTIVE "$CONTAINER_NAME" /bin/sh -c "
+    # Execution logic
+    # If the first arg is npm, run npm
+    if [ \"\$1\" = \"npm\" ]; then
+        shift
+        # Automatically add --host 0.0.0.0 to start/serve if using docusaurus
+        if [ \"\$1\" = \"start\" ] || [ \"\$1\" = \"serve\" ]; then
+            npm \"\$@\" -- --host 0.0.0.0
+        else
+            npm \"\$@\"
+        fi
+    # If it's node, run node
+    elif [ \"\$1\" = \"node\" ]; then
+        shift
+        node \"\$@\"
+    # Otherwise, assume node
+    else
+        node \"\$@\"
+    fi
+" -- "$@"

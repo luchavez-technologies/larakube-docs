@@ -1,12 +1,14 @@
 ---
 sidebar_position: 4
+title: PostgreSQL for Laravel
+description: Reliable PostgreSQL setup for Laravel on Kubernetes. Features zero-config migrations, automated secrets management, and cluster-native initialization.
 ---
 # PostgreSQL
 
 PostgreSQL is a powerful, open-source object-relational database system with a strong reputation for reliability, feature robustness, and performance.
 
 ## Implementation Details
-- **Image:** `postgres:17-alpine`
+- **Image:** `postgres:17.9`
 - **Port:** `5432`
 - **Default User:** `postgres`
 

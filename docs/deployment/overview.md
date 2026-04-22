@@ -1,5 +1,7 @@
 ---
 sidebar_position: 1
+title: Deployment Guide
+description: Explore Kubernetes providers for Laravel. From Civo and DigitalOcean to AWS and Google Cloud, find the best home for your LaraKube CLI projects.
 ---
 # Deployment Overview
 
@@ -22,6 +24,11 @@ For applications reaching millions of users, these providers offer the full brea
 - **AWS (EKS):** The industry heavyweight. Robust but comes with more complex networking requirements.
 - **Google Cloud (GKE):** Generally considered the most automated and advanced Kubernetes platform available.
 - **Azure (AKS):** The go-to for enterprise environments already using the Microsoft ecosystem.
+
+### 3. The "Managed" Future
+If you want to skip Kubernetes management entirely, we highly recommend looking at the official Laravel offering:
+
+- **Laravel Cloud:** The official fully-managed platform for Laravel. While LaraKube is the best choice for those who need the power and flexibility of **Kubernetes**, Laravel Cloud provides a lightning-fast serverless-style experience for teams that want zero infrastructure overhead.
 
 ## 🏗 The Staging Strategy
 LaraKube makes it easy to test your code in a production-like environment before going live. Use the `env` command to create a `staging` environment in seconds:

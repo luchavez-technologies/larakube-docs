@@ -1,5 +1,7 @@
 ---
 sidebar_position: 5
+title: Laravel Task Scheduling
+description: Professional task scheduling for Laravel on Kubernetes. Learn how LaraKube uses isolated CronJob pods for deterministic and resource-efficient execution.
 ---
 # Task Scheduling
 

@@ -1,5 +1,7 @@
 ---
 sidebar_position: 3
+title: SeaweedFS Distributed Storage
+description: Scalable distributed storage with SeaweedFS for Laravel. Ideal for high-performance asset handling, featuring dedicated S3 API and admin dashboards.
 ---
 # SeaweedFS
 
@@ -11,8 +13,8 @@ SeaweedFS is an independent, highly scalable distributed storage system. It is d
 
 ## 🌐 Local Access
 LaraKube configures dedicated local URLs for SeaweedFS:
-- **S3 API URL:** `https://s3.your-project.local`
-- **Admin Dashboard:** `https://s3-admin.your-project.local`
+- **S3 API URL:** `https://s3.your-project.dev.test`
+- **Admin Dashboard:** `https://s3-admin.your-project.dev.test`
 - **Credentials:** Use `any` for both Access Key and Secret Key for local development.
 
 ## 🚀 Why choose SeaweedFS?

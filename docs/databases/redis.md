@@ -1,12 +1,14 @@
 ---
 sidebar_position: 6
+title: Redis Caching & Queues
+description: Power your Laravel app with Redis on Kubernetes. Learn how to configure caching, Horizon queues, and Reverb broadcasting within your cluster.
 ---
 # Redis
 
 Redis is an open-source, in-memory data structure store, used as a database, cache, and message broker.
 
 ## Implementation Details
-- **Image:** `redis:7-alpine`
+- **Image:** `redis:7.4`
 - **Port:** `6379`
 
 ## 🧱 Role in LaraKube

@@ -1,5 +1,7 @@
 ---
 sidebar_position: 2
+title: Changelog & Roadmap
+description: Stay updated with the latest LaraKube CLI features, technical improvements, and the roadmap to version 0.0.1. Track our progress in real-time.
 ---
 # 📜 Changelog
 

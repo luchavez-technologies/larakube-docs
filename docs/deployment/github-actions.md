@@ -1,5 +1,7 @@
 ---
 sidebar_position: 2
+title: CI/CD with GitHub Actions
+description: Automate your Laravel deployment with LaraKube's GitHub Actions workflow. Learn about multi-stage PHP builds, GHCR publishing, and zero-downtime rolls.
 ---
 # GitHub Actions (CI/CD)
 

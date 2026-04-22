@@ -1,5 +1,7 @@
 ---
 sidebar_position: 4
+title: Garage Object Storage
+description: Lightweight, Rust-based distributed object storage for Laravel. Learn how to configure Garage S3 API and local URLs within your LaraKube cluster.
 ---
 # Garage
 
@@ -11,7 +13,7 @@ Garage is a modern, distributed object storage service tailored for self-hosting
 
 ## 🌐 Local Access
 LaraKube sets up a secure local URL for the S3 API:
-- **S3 URL:** `https://s3.your-project.local`
+- **S3 URL:** `https://s3.your-project.dev.test`
 - **Default User:** `garage`
 - **Default Secret:** `secretpassword`
 

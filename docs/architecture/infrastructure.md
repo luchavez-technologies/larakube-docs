@@ -1,5 +1,7 @@
 ---
 sidebar_position: 2
+title: Kubernetes Strategy
+description: Explore LaraKube's "Pure YAML" strategy using Kustomize layers, namespace isolation, and a Zero-Secrets-in-Git policy for Laravel orchestration.
 ---
 # Kubernetes Strategy
 

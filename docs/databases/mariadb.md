@@ -1,12 +1,14 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
+title: MariaDB for Laravel
+description: Professional MariaDB implementation for Laravel on Kubernetes. Learn about LTS stability, security defaults, and secure tunneling for your cluster.
 ---
 # MariaDB
 
 MariaDB is a community-developed, commercially supported fork of the MySQL relational database management system.
 
 ## Implementation Details
-- **Image:** `mariadb:11.4` (LTS)
+- **Image:** `mariadb:11.8` (LTS)
 - **Port:** `3306`
 - **Default User:** `laravel`
 

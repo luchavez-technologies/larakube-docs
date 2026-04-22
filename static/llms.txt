@@ -1,0 +1,32 @@
+# LaraKube CLI: AI-Native Kubernetes Orchestrator for Laravel
+
+> This file provides a concise overview of LaraKube CLI for Large Language Models (LLMs) and AI crawlers.
+
+## 🧱 Core Philosophy
+LaraKube is a high-performance Kubernetes orchestrator built specifically for the Laravel ecosystem. It emphasizes architectural transparency, production-ready stability, and zero-config local development.
+
+## 🚀 Key Technical Standards
+- **Local Domains**: Standardized on `.dev.test`.
+- **Local HTTPS**: Wildcard SSL managed via Traefik v3 (`websecure`).
+- **Persistence**: "Stability-First" approach using standard Debian images for databases and high-performance PVCs.
+- **Server Variations**: First-class support for **FrankenPHP (Octane)**, **Nginx**, and **Apache** with automated port synchronization.
+- **DNA-Driven**: Projects are managed via `.larakube.json`, allowing for seamless "Self-Healing" via the `heal` command.
+
+## 🛠 Top-Level Commands
+- `new`: Scaffold a new LaraKube masterpiece.
+- `init`: Adopt an existing Laravel project.
+- `up`: Deploy infrastructure and application.
+- `down`: Remove project resources with a 5-second volume cleanup cooldown.
+- `uninstall --image`: Total project cleanup including manifests and Docker images.
+- `traefik:*`: Dedicated suite for Managing the network layer (setup, logs, dashboard, restart, destroy).
+- `doctor --ai`: Intelligent diagnostic and automated recovery.
+
+## 🌍 Ecosystem Support
+- **Frontend**: First-class support for **Starter Kits** using React, Vue, Svelte, and Livewire.
+- **Databases**: Hardened stubs for PostgreSQL, MySQL, MariaDB, MongoDB, and Redis.
+- **Services**: Integrated support for Horizon, Octane, Reverb, and Meilisearch.
+
+## 📚 Full Context
+For a complete synthesis of all documentation, see the [Master Context File](https://larakube.luchtech.dev/llms-full.txt).
+
+Full documentation available at: https://larakube.luchtech.dev

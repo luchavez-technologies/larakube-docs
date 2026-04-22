@@ -1,5 +1,7 @@
 ---
 sidebar_position: 1
+title: Database Tunneling Guide
+description: Securely connect to your cluster's databases with LaraKube tunnel. Learn about auto-resolving port conflicts and generating credentials for your GUI client.
 ---
 # Tunneling (larakube tunnel)
 

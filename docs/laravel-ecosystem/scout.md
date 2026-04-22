@@ -1,5 +1,7 @@
 ---
 sidebar_position: 3
+title: Laravel Scout Search Integration
+description: Automate full-text search with Laravel Scout. Support for Meilisearch, Typesense, and Database drivers with automated cluster hardening and config.
 ---
 # Laravel Scout (Search)
 
@@ -11,15 +13,15 @@ LaraKube offers three distinct "flavors" for your search foundation:
 ### 1. Meilisearch (Self-hosted)
 The fastest typt-tolerant search engine, specifically tuned for the Laravel community.
 - **Image:** `getmeili/meilisearch:v1.12`
-- **Dashboard:** `https://meilisearch.your-project.local`
+- **Dashboard:** `https://meilisearch.your-project.dev.test`
 
 ### 2. Typesense (Self-hosted)
 A high-performance, open-source search engine that focuses on performance and developer experience.
 - **Image:** `typesense/typesense:27.1`
-- **URL:** `https://typesense.your-project.local`
+- **URL:** `https://typesense.your-project.dev.test`
 
 ### 3. Database (Built-in)
-A zero-infrastructure search option that uses your existing database (MySQL, PostgreSQL, or SQLite) for full-text indexing. Perfect for small projects or internal tools.
+A zero-infrastructure search option that uses your existing database (MySQL or PostgreSQL) for full-text indexing. Perfect for small projects or internal tools.
 
 ---
 

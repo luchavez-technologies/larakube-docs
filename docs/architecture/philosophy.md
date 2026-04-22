@@ -1,7 +1,9 @@
 ---
 sidebar_position: 1
+title: Philosophy
+description: Explore the LaraKube philosophy of architectural transparency, production-ready stability, and seamless local-to-cloud workflows for Laravel developers.
 ---
-# Our Philosophy
+# Core Philosophy
 
 LaraKube is built on a **Container-First** philosophy. We believe that a developer's host machine should be kept as clean and "factory-original" as possible.
 

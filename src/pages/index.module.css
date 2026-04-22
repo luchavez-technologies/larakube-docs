@@ -513,9 +513,16 @@
   .techLabel { display: block; text-align: center; margin-left: auto; margin-right: auto; width: fit-content; }
 
   .pillarSection { padding: 1.5rem 1rem !important; margin-top: -1.5rem; }
-  .schematicGrid { gap: 1.2rem; }
-  .schematicNode { flex: 1 1 100%; max-width: 100%; margin-bottom: 1.5rem; }
-  .schematicHex { width: 160px; height: 184px; margin-bottom: 1rem; }
+  .schematicGrid { gap: 0.5rem; }
+  .schematicNode { flex: 1 1 100%; max-width: 100%; margin-bottom: 0.5rem; }
+  .schematicHex { 
+    width: 160px; 
+    height: 184px; 
+    margin-bottom: 0.5rem; 
+    backdrop-filter: none !important; 
+    filter: none !important;
+    background-color: transparent !important;
+  }
   .hexEmoji { font-size: 3.5rem; }
 
   .architectSection { padding: 1.2rem 1rem; border-radius: 12px; text-align: center; }

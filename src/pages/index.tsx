@@ -118,8 +118,8 @@ export default function Home(): React.JSX.Element {
 
   return (
     <Layout
-      title={`Welcome to ${siteConfig.title}`}
-      description="Professional Kubernetes Orchestration for Laravel Developers">
+      title="Industrial-Strength Kubernetes Orchestrator for Laravel"
+      description="Deploy Laravel to Kubernetes with zero host dependencies. AI-native orchestration, professional-grade stability, and industrial-strength automation.">
       <HomepageHeader />
       
       <main>

@@ -216,9 +216,12 @@
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  /* Clip the entire element to a hexagon to prevent square backdrop-filter boxes */
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
   position: relative;
-  background-color: transparent; /* Ensure no white square */
+  background-color: transparent;
 }
 
 /* Connectors removed as requested */

@@ -1,30 +1,30 @@
 architecture:
-  label: "🏗 Architecture"
+  label: "Architecture"
   description: Deep dives into the structural design of LaraKube.
 kubernetes:
-  label: "☸️ Kubernetes"
+  label: "Kubernetes"
   description: Mastering the world's most powerful orchestrator.
 workflow:
-  label: "♻️ Workflow"
+  label: "Workflow"
   description: Tips and tricks for a high-performance development lifecycle.
 laravel:
-  label: "🐘 Laravel"
+  label: "Laravel"
   description: Building masterpieces with the world's best PHP framework.
 scaling:
-  label: "📈 Scaling"
+  label: "Scaling"
   description: Taking your application from one user to millions.
 devops:
-  label: "🚢 DevOps"
+  label: "DevOps"
   description: Industrial-strength deployment and automation.
 self-healing:
-  label: "🛡 Self-Healing"
+  label: "Self-Healing"
   description: Architectural resilience and infrastructure stability.
 stability:
-  label: "💎 Stability"
+  label: "Stability"
   description: Ensuring your masterpieces stay ready for the world.
 octane:
-  label: "⚡️ Octane"
+  label: "Octane"
   description: High-performance, in-memory Laravel application serving.
 performance:
-  label: "🚀 Performance"
+  label: "Performance"
   description: Optimizing your cluster for speed and efficiency.

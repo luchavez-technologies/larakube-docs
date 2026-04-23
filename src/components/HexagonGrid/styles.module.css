@@ -8,4 +8,5 @@
   pointer-events: none;
   opacity: 0.6;
   mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 90%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 90%);
 }

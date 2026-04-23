@@ -9,6 +9,7 @@
   --larakube-hero-subtitle: #666;
   --larakube-hero-title-grad1: #000;
   --larakube-hero-title-grad2: #666;
+  --larakube-hero-mask-color: #000;
   --larakube-button-border: rgba(0, 0, 0, 0.2);
   --larakube-button-hover: rgba(0, 0, 0, 0.05);
   --larakube-glow: rgba(59, 130, 246, 0.4);
@@ -23,6 +24,7 @@
   --larakube-hero-subtitle: #999;
   --larakube-hero-title-grad1: #fff;
   --larakube-hero-title-grad2: #888;
+  --larakube-hero-mask-color: #fff;
   --larakube-button-border: rgba(255, 255, 255, 0.5);
   --larakube-button-hover: rgba(255, 255, 255, 0.2);
   --larakube-glow: rgba(59, 130, 246, 0.2);
@@ -213,6 +215,7 @@
   margin-bottom: 2rem;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
   position: relative;
   background-color: transparent; /* Ensure no white square */

@@ -31,3 +31,14 @@ The "Soft Reset." Forces a graceful rollout restart of the Traefik pods without 
 The "Total Cleanup." Completely removes the Traefik Ingress Controller and its cluster-scoped permissions.
 - **Safety**: Requires confirmation unless the `--force` flag is used.
 - **Usage**: `larakube traefik:destroy`
+
+## `trust`
+The "Authority Installer." Installs the LaraKube Local CA into your system's trust store.
+- **Support**: Works natively on **macOS**, **Linux**, and **Windows WSL2**.
+- **Confidence**: Enabling this gives you the "Green Lock" (valid HTTPS) for all your `.dev.test` sites.
+- **Fallback**: Automatically detects if the CA has expired and offers to download the latest version from Server Side Up.
+
+## `untrust`
+The "Authority Remover." Removes the LaraKube Local CA from your system's trust store.
+- **Precision**: Uses unique SHA-1 fingerprints (macOS) or file paths (Linux/Windows) to ensure a clean removal.
+- **Usage**: `larakube untrust`

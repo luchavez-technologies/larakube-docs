@@ -606,3 +606,10 @@
   50% { transform: translateY(-20px); }
   100% { transform: translateY(0px); }
 }
+
+.ctaSection {
+  text-align: center;
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+}
+

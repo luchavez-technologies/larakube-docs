@@ -11,6 +11,8 @@ import HexagonGrid from '../components/HexagonGrid';
 import TerminalUI from '../components/TerminalUI';
 import EcosystemCarousel from '../components/EcosystemCarousel';
 import GeminiTerminal from '../components/GeminiTerminal';
+import ArchitectureBuilder from '../components/ArchitectureBuilder';
+import TechMarquee from '../components/TechMarquee';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -102,7 +104,6 @@ function TypingTerminal() {
       </div>
       <div className={styles.terminalBody}>
         <div className={styles.terminalContent}>
-          <span className={styles.terminalPrompt}>{'>'}</span>
           <span className={styles.terminalTypewriter}>
             {displayText}
             <span className={styles.terminalCursor}></span>
@@ -113,8 +114,26 @@ function TypingTerminal() {
   );
 }
 
+function TechItem({ name, icon }: { name: string, icon: string }) {
+  const isEmoji = !icon.startsWith('http') && !icon.includes('.');
+  return (
+    <li className={styles.techItem}>
+      <span className={styles.techIcon}>
+        {isEmoji ? (
+          <span style={{fontSize: '1.2rem'}}>{icon}</span>
+        ) : (
+          <img src={icon} alt={`${name} logo`} />
+        )}
+      </span>
+      {name}
+    </li>
+  );
+}
+
 export default function Home(): React.JSX.Element {
   const {siteConfig} = useDocusaurusContext();
+
+  const si = (name: string) => `https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/${name}.svg`;
 
   return (
     <Layout
@@ -224,9 +243,34 @@ export default function Home(): React.JSX.Element {
             </div>
 
             <EcosystemCarousel />
-            </div>
-            </section>
+          </div>
+        </section>
 
+        {/* Supported Tech Marquee */}
+        <section className={clsx(styles.section, styles.sectionDark)}>
+          <div className="container">
+            <div className={styles.textCenter}>
+              <Heading as="h2" style={{fontSize: '3.5rem'}}>🏗 Supported Architecture</Heading>
+              <p style={{fontSize: '1.4rem', opacity: 0.8}}>The professional foundation for your next masterpiece.</p>
+            </div>
+
+            <TechMarquee />
+          </div>
+        </section>
+
+
+        {/* Architecture Designer */}
+        <section className={styles.section}>
+          <div className="container">
+            <div className={styles.textCenter}>
+              <span className={styles.techLabel}>Interactive Blueprinting</span>
+              <Heading as="h2" style={{fontSize: '3.5rem'}}>Design Your Masterpiece</Heading>
+              <p style={{fontSize: '1.4rem', opacity: 0.8}}>Select your components and generate your unique LaraKube command.</p>
+            </div>
+
+            <ArchitectureBuilder />
+          </div>
+        </section>
 
         {/* Contributions Section */}
         <section className={styles.contributeSection}>
@@ -300,7 +344,7 @@ export default function Home(): React.JSX.Element {
         </section>
 
         {/* Final CTA */}
-        <section className={styles.section} style={{textAlign: 'center', background: '#000', color: 'white'}}>
+        <section className={clsx(styles.section, styles.ctaSection)}>
           <div className="container">
             <img 
               src={useBaseUrl('/img/larakube-logo.svg')} 

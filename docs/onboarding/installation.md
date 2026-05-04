@@ -44,4 +44,14 @@ Confirm your installation by checking the version and cluster status:
 larakube status
 ```
 
+---
+
+## 🔒 Post-Installation: Trusting SSL
+To enjoy seamless HTTPS without browser warnings, you should trust the LaraKube Local CA on your host machine.
+
+```bash
+# Works on macOS, Linux, and Windows WSL2
+larakube trust
+```
+
 You are now ready to build your first masterpiece! 🚀🍭🕺🐘

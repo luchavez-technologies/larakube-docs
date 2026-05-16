@@ -21,6 +21,10 @@ The "Remote Artisan." Run any Laravel Artisan command directly in your cluster. 
 - **Tinker Support**: Supports interactive commands like `larakube art tinker`.
 - **Automatic Context**: Automatically targets your `local` environment by default.
 
+:::tip High-Fidelity Forwarding
+Proxy commands like `art`, `php`, and `npm` feature **Transparent Flag Capture**. This means you can pass flags (e.g., `larakube art migrate --force` or `larakube php -i`) and they will be forwarded exactly as-is to the container.
+:::
+
 ## `exec {service} {command*}`
 The "Remote Command." Run a one-off command inside a specific pod.
 

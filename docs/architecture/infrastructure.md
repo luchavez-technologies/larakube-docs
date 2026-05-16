@@ -9,9 +9,9 @@ LaraKube uses a "Pure YAML" strategy. We avoid complex templating engines like H
 
 ## 🏗 Kustomize Layers
 Your infrastructure is split into two layers:
-- **Base:** The "blueprint" of your app. This contains standard resources (Deployments, Services, PVCs) that stay the same across all environments.
+- **Base:** The "blueprint" of your app. This contains standard resources (Deployments, Services, PVCs) that stay the same across all environments. LaraKube uses a **Shared Storage** model where all application pods share a single PVC for true workload parity. [Read more about Shared Storage here](./shared-storage.md).
 - **Overlays:** Environment-specific overrides.
-    - **Local Overlay:** Configures `hostPath` volumes for live-mounting your code and disables strict security for development.
+    - **Local Overlay:** Configures `hostPath` volumes for live-mounting your code, patches PVCs to `ReadWriteOnce` for local disk compatibility, and disables strict security for development.
     - **Production Overlay:** Enables cloud-native features and uses standard PersistentVolumeClaims for real disks.
 
 ## 📁 Namespace Management

@@ -1,25 +1,40 @@
 ---
 sidebar_position: 0
 title: Introduction to LaraKube CLI
-description: Get started with LaraKube CLI, the professional Kubernetes orchestrator for Laravel. Learn about zero-host dependencies, AI-native tools, and production parity.
----
+description: Get started with LaraKube CLI, the industrial-strength Kubernetes orchestrator for Laravel. Learn about the Standalone Engine, Shared Storage, and Proxy-First workflow.
 # 🌟 Introduction
 
-LaraKube CLI is the professional Kubernetes orchestrator for Laravel. It transforms the complexity of container orchestration into a seamless, high-performance experience, allowing you to focus on building masterpieces while we handle the cluster plumbing.
+LaraKube is a high-performance **Kubernetes Control Plane** for Laravel. It bridges the gap between local development and cloud-scale infrastructure, treating architecture as a first-class citizen.
 
-## 📦 Zero-Host Dependency (Now Standalone!)
-LaraKube is now distributed as a **standalone binary** for Linux and macOS. This means you no longer need to install PHP, Node.js, or any other language runtime on your host machine. 
+## 🚀 The Standalone Engine
+LaraKube is distributed as a **self-contained binary** for Linux and macOS, featuring its own embedded PHP runtime. You no longer need to install PHP, Composer, or Node.js on your machine. As long as you have **Docker** and **kubectl**, you are ready to orchestrate masterpieces.
 
-As long as you have **Docker** and **kubectl** installed, you are ready to orchestrate.
+## 💾 Shared Storage (Workload Parity)
+LaraKube implements a sophisticated **Shared Storage Architecture**. By using a synchronized volume across your Web, Worker, and Scheduler pods, we achieve true **Workload Parity**. 
+- **Atomic Updates:** File changes (like `storage/` or `bootstrap/cache`) are instantly visible across all pods.
+- **Sidecar Optimizations:** Support services run with minimal overhead, sharing the same application state as your main web process.
 
-## 🤖 AI-Native Orchestration
-LaraKube is the first orchestrator designed for the age of AI. We provide deep, context-aware integration with your favorite AI agents:
+## 🔌 Proxy-First Workflow
+Stop jumping in and out of containers. LaraKube provides transparent proxy commands that execute directly inside your Kubernetes pods:
+- `larakube art migrate`
+- `larakube composer require`
+- `larakube npm run dev`
 
--   **LaraKube Chat**: Interact with your cluster using natural language via `larakube chat`.
--   **Intelligent Doctor**: Run `larakube doctor --ai` for automated root-cause analysis and self-healing.
--   **Auto-Scaffolded MCP**: Every new project is automatically configured for **Gemini CLI**, **Claude Code**, and **Cursor**, allowing AI to manage your infrastructure immediately.
+## 🧠 LaraKube Console (The Brain)
+The **LaraKube Console** is your visual command center. Accessible at `https://console.dev.test`, it provides:
+- **One-Click Orchestration:** Scaffolding, deployment, and ecosystem management via an intuitive web UI.
+- **Master Memory:** A centralized database of project history, audit logs, and architectural state.
+- **Visual Diagnostics:** Live pod logs and real-time cluster event monitoring.
 
-## 🙌 Tribute to Serversideup
+## 🤖 Dual-Brain AI (MCP)
+LaraKube is built for the age of AI agents. We provide a specialized **Dual-MCP (Model Context Protocol)** architecture:
+
+1.  **The Local Mechanic (CLI MCP):** Used by tools like Cursor or Windsurf to modify your local code, fix `.env` files, and run orchestration "verbs" (`up`, `down`, `add`).
+2.  **The Master Architect (Console MCP):** A centralized AI brain that understands your entire fleet's history and health.
+
+## 🚀 The Vision: Container-First Laravel
+...
+
 LaraKube stands on the shoulders of giants. We would like to express our deepest gratitude to [Serversideup](https://serversideup.net/). Their world-class [PHP Docker Images](https://serversideup.net/open-source/docker-php/) are the bedrock of this project, providing the stability and performance that make professional Laravel-on-Kubernetes possible.
 ## 🚀 The Vision: Container-First Laravel
 By bringing Kubernetes to the local development environment, we ensure that your code is "Production-Ready" from the very first line you write.

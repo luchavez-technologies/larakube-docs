@@ -40,6 +40,7 @@ Every PHP-based pod contains a `wait-for-services` initContainer. It uses `nc` (
 ### 2. `wait-for-web`
 Worker pods (`horizon`, `reverb`, etc.) contain a second initContainer called `wait-for-web`. It probes the `laravel-web` service on port 80.
 - **The Secret:** The `php-web` pod only becomes "Ready" in Kubernetes *after* its entrypoint script (which runs migrations) has successfully finished. By waiting for the web service, workers are guaranteed that the database schema is fully up-to-date.
+- **Optimization:** To speed up boot times, all sidecars (workers, scheduler, reverb) have `AUTORUN_ENABLED=false`. This prevents them from running redundant, time-consuming `artisan optimize` commands, as they share the pre-optimized `bootstrap/cache` from the Web pod.
 
 ### 3. `Recreate` Strategy
 LaraKube uses the `strategy: type: Recreate` for all deployments. 

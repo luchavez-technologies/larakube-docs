@@ -33,7 +33,9 @@ To get you started instantly, LaraKube standardizes on **`secretpassword`** for 
 ---
 
 ## 🛠 Advanced Monitoring
-You can verify your current cluster-side configuration at any time using the dashboard:
+You can verify your current cluster-side configuration at any time using the console:
+
 ```bash
-larakube dashboard
+larakube console
 ```
+

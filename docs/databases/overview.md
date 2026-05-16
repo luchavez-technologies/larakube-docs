@@ -7,13 +7,17 @@ description: High-performance, production-ready database orchestration for Larav
 
 Choosing the right foundation is critical for your application's success. LaraKube CLI supports a variety of server-based database engines, each with automated persistence and secure credential management.
 
-## 🏛 Supported Foundations
-LaraKube provides hardened, production-ready manifests for:
-- **MySQL:** The classic, reliable choice.
-- **MariaDB:** A popular MySQL alternative.
-- **PostgreSQL:** Advanced open-source database.
-- **MongoDB:** Highly-scalable NoSQL for flexible data structures.
-- **Redis:** Fast, in-memory caching and queues.
+## 🏛 Architectural Structure
+LaraKube distinguishes between your **Primary** and **Additional** databases:
+
+1.  **Primary Database:** The engine linked to your Laravel application's main `DB_CONNECTION`. When you run `larakube new`, your first selection becomes the primary.
+2.  **Additional Databases:** You can have multiple database engines running in the same project. This is useful for data migration, testing different engines, or specialized micro-services.
+
+### Intelligent Swapping
+If you decide to change your primary database (e.g., from MySQL to Postgres), the `add` command will intelligently guide you:
+- It keeps both engines running in your cluster.
+- It offers to update your `.env` connection strings.
+- It provides a **"Migration Mode"** that comments out the new connection so you can manually migrate data before flipping the switch.
 
 ## 💾 Persistence Strategy (Stability-First)
 LaraKube uses a **"Managed Volume"** approach to eliminate the most common pain points of local Kubernetes development:

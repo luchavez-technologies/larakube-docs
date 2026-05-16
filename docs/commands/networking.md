@@ -14,10 +14,10 @@ The "Receptionist Installer." Installs or upgrades the Traefik Ingress Controlle
 - **Usage**: `larakube traefik:setup`
 
 ## `traefik:dashboard`
-The "Network UI." Opens a secure tunnel to the Traefik web dashboard.
-- **Visualization**: See all HTTP/HTTPS routes, middlewares, and backend health statuses.
-- **Usage**: `larakube traefik:dashboard`
-- **Access**: Visits `http://localhost:8080/dashboard/`
+The "Network UI." LaraKube provides a dedicated dashboard for Traefik to monitor all ingress traffic and routing rules.
+
+- **Preferred Access**: Visits **`https://traefik.dev.test`**
+- **Why it's better**: Unlike temporary port-forwarding or tunneling, the `traefik.dev.test` domain provides a persistent, cluster-wide address that is automatically secured with valid SSL. It gives you a complete view of how Traefik is routing traffic across all your projects, not just the current one.
 
 ## `traefik:logs`
 The "Traffic Monitor." Tails the logs specifically for the Traefik Ingress Controller.

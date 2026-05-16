@@ -25,6 +25,6 @@ larakube logs {service}
 For a more visual experience, you can use the built-in Command Center:
 
 ```bash
-larakube dashboard
+larakube console
 ```
 This will launch **K9s**, pre-focused on your project's namespace. From there, you can select any pod and press `l` to see its logs in real-time.

@@ -15,16 +15,13 @@ Every project managed by LaraKube is assigned a permanent **UUID** (Universally 
 - **Audit Trails**: Your activity history and chat memory are linked to this ID, ensuring consistency even if your local file path changes.
 - **Cluster Sync**: This ID allows the CLI to verify that the manifests in your repository match the ones currently running in the Kubernetes namespace.
 
-## 📜 Professional Audit Trail
-LaraKube CLI maintains a global SQLite database on your machine to provide a professional audit trail of every major event.
+## 📜 Centralized Memory (SQLite)
+Instead of scattering logs across different projects, the **LaraKube Console** maintains a global SQLite database. This provides a unified history for all your masterpieces.
 
 ### What is tracked:
-- **Architectural Changes**: Adding features, removing services, or swapping databases.
-- **Operational Events**: Cluster launches (`up`), pauses (`stop`), and resumes (`start`).
-- **Safety Overrides**: When a developer intentionally ignores a "Project Nesting" warning.
-- **Self-Healing**: Every time `larakube heal` regenerates your manifests.
+- **Operational Verbs:** Every `up`, `down`, `heal`, or `purge` command.
+- **Architectural Evolution:** When you add features or swap databases via the CLI or UI.
+- **AI Diagnostics:** Full reports from the `doctor` command and AI-powered fix history.
 
-You can view this history at any time using:
-```bash
-larakube project:activity
-```
+### Real-time Sync
+Whenever you run a command via the CLI, it "calls home" to the Console API to register the event. This ensures your visual dashboard is always accurate, even if you prefer working in the terminal.

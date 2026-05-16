@@ -148,34 +148,34 @@ export default function Home(): React.JSX.Element {
             <div className={styles.schematicGrid}>
               <div className={styles.schematicNode}>
                 <div className={styles.schematicHex}>
-                  <span className={styles.hexEmoji}>📦</span>
+                  <span className={styles.hexEmoji}>🚀</span>
                 </div>
-                <Heading as="h3">Zero-Host Dependency</Heading>
+                <Heading as="h3">Standalone Engine</Heading>
                 <p>
-                  Orchestrate everything inside isolated, professional containers. 
-                  Keep your host machine factory-original.
+                  A self-contained binary with its own embedded PHP runtime. 
+                  Zero dependencies on your host machine—just pure orchestration.
                 </p>
               </div>
 
               <div className={styles.schematicNode}>
                 <div className={styles.schematicHex}>
-                  <span className={styles.hexEmoji}>🤖</span>
+                  <span className={styles.hexEmoji}>💾</span>
                 </div>
-                <Heading as="h3">AI-Native DNA</Heading>
+                <Heading as="h3">Shared Storage</Heading>
                 <p>
-                  Built-in MCP tools and natural language commands allow AI agents 
-                  to manage your cluster.
+                  Achieve true Workload Parity with shared volumes across Web, Worker, and Scheduler pods. 
+                  Synchronized state, zero friction.
                 </p>
               </div>
 
               <div className={styles.schematicNode}>
                 <div className={styles.schematicHex}>
-                  <span className={styles.hexEmoji}>💎</span>
+                  <span className={styles.hexEmoji}>🔌</span>
                 </div>
-                <Heading as="h3">Absolute Parity</Heading>
+                <Heading as="h3">Proxy-First Workflow</Heading>
                 <p>
-                  Run the exact same k3s-based infrastructure locally that you 
-                  deploy to production cloud clusters.
+                  Run <code className={styles.inlineCode}>artisan</code>, <code className={styles.inlineCode}>composer</code>, and <code className={styles.inlineCode}>npm</code> directly through the CLI. 
+                  Execute commands inside the cluster as if they were local.
                 </p>
               </div>
             </div>
@@ -194,8 +194,8 @@ export default function Home(): React.JSX.Element {
                   allowing AI agents to see, diagnose, and manage your cluster using plain English.
                 </p>
                 <div className={styles.doctorCard}>
-                  <h4 style={{fontSize: '1.5rem', color: 'var(--ifm-color-primary)', marginBottom: '1rem'}}>The Intelligent Doctor</h4>
-                  <p style={{opacity: 0.8, fontSize: '1.1rem'}}>Run <code className={styles.inlineCode}>larakube doctor --ai</code> to have an expert agent analyze pod logs and events to provide instant, actionable fixes.</p>
+                  <h4 style={{fontSize: '1.5rem', color: 'var(--ifm-color-primary)', marginBottom: '1rem'}}>The Project Doctor</h4>
+                  <p style={{opacity: 0.8, fontSize: '1.1rem'}}>Run <code className={styles.inlineCode}>larakube doctor</code> to scan your project and cluster for common issues and architectural inconsistencies.</p>
                 </div>
               </div>
               <div className="col col--6">

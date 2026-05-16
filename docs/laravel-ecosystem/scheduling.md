@@ -18,4 +18,4 @@ In a Kubernetes environment, running a traditional `cron` daemon can be complex.
 There is no extra configuration needed in Kubernetes! Simply define your schedule in `routes/console.php` (Laravel 11+) or `app/Console/Kernel.php` (Legacy), and LaraKube handles the rest.
 
 ## Logs
-To see the output of your scheduled tasks, you can use the K9s dashboard (`larakube dashboard`) or check the logs of the most recent scheduler pod.
+To see the output of your scheduled tasks, you can use the K9s console (`larakube console`) or check the logs of the most recent scheduler pod.

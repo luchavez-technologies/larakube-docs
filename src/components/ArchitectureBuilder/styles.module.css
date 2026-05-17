@@ -548,11 +548,91 @@
 }
 
 @media screen and (max-width: 996px) {
+  .builderContainer {
+    padding: 1.5rem 0;
+  }
   .builderGrid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
   .selectionPanel {
     position: static;
     max-height: none;
+  }
+  .blueprintCanvas {
+    padding: 1.5rem 0.75rem;
+    min-height: auto;
+    border-radius: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  .topologyFlow {
+    padding-bottom: 2rem;
+  }
+  .gatewayNode {
+    padding: 0.6rem 1rem;
+    gap: 0.6rem;
+  }
+  .gatewayName {
+    font-size: 0.8rem;
+  }
+  .podNode {
+    padding: 1rem;
+    gap: 1rem;
+    max-width: 100%;
+  }
+  .podHeader {
+    gap: 0.8rem;
+  }
+  .podHeaderIcon {
+    width: 32px;
+    height: 32px;
+  }
+  .podName {
+    font-size: 1rem;
+  }
+  .layerBadge {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    gap: 0.4rem;
+  }
+  .layerRow {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .featureGrid {
+    gap: 0.4rem;
+    justify-content: flex-start;
+  }
+  .featureIcon {
+    width: 28px;
+    height: 28px;
+  }
+  .featureIcon img {
+    width: 16px;
+    height: 16px;
+  }
+  .infraCluster {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 0.75rem;
+  }
+  .infraNode {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+  .infraIcon {
+    width: 24px;
+    height: 24px;
+  }
+  .infraName {
+    font-size: 0.65rem;
+  }
+  .integratedCommand {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  .commandText {
+    font-size: 0.85rem;
   }
 }

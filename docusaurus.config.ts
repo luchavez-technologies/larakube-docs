@@ -66,7 +66,7 @@ const config: Config = {
 
   themeConfig: {
     metadata: [
-      {name: 'keywords', content: 'laravel, kubernetes, k8s, docker, php, orchestration, cli, devops, larakube'},
+      {name: 'keywords', content: 'laravel, kubernetes, k8s, docker, php, orchestration, cli, devops, larakube, mcp, model context protocol, k3d, self-healing infrastructure, laravel cloud'},
       {name: 'twitter:card', content: 'summary_large_image'},
       {name: 'og:type', content: 'website'},
       {name: 'og:site_name', content: 'LaraKube CLI'},

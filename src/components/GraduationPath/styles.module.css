@@ -126,9 +126,13 @@
 }
 
 @media (max-width: 996px) {
+  .pathContainer {
+    margin: 2rem auto;
+  }
+
   .tierGrid {
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
   }
   
   .tierHighlight {
@@ -137,5 +141,30 @@
   
   .tierHighlight:hover {
     transform: translateY(-10px);
+  }
+
+  .tierCard {
+    padding: 2rem 1.5rem;
+  }
+
+  .header {
+    margin-bottom: 1rem;
+  }
+
+  .priceBox {
+    margin-bottom: 1.5rem;
+  }
+
+  .price {
+    font-size: 2.2rem;
+  }
+
+  .featureList {
+    margin-bottom: 1rem;
+  }
+
+  .featureItem {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
   }
 }

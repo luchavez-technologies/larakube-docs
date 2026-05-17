@@ -574,7 +574,12 @@
 
   .techLabel { display: block; text-align: center; margin-left: auto; margin-right: auto; width: fit-content; }
 
-  .pillarSection { padding: 1.5rem 1rem !important; margin-top: -1.5rem; }
+  .pillarSection { 
+    padding: 2rem 1rem 4rem 1rem !important; 
+    margin-top: 0; 
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
   .schematicGrid { gap: 0.5rem; }
   .schematicNode { flex: 1 1 100%; max-width: 100%; margin-bottom: 0.5rem; }
   .schematicHex { 

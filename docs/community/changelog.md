@@ -29,7 +29,7 @@ This session focused on transforming LaraKube into an expressive, industrial-str
 -   **Integrated Documentation**: Created a collection of **Architectural Recipes** and a **Kubernetes Glossary** to bridge the gap between Laravel and cluster orchestration.
 
 ### 🤝 Community & Personal
--   Added a dedicated tribute to [Serversideup](https://serversideup.net/) and [Spin Pro](https://getspin.pro/).
+-   Added a dedicated tribute to [Server Side Up](https://serversideup.net/) and [Spin Pro](https://getspin.pro/).
 -   Integrated the creator's professional profile and LinkedIn/Email contact details.
 
 ---

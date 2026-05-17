@@ -181,31 +181,7 @@
   color: #aaa;
 }
 
-.statusBar {
-  border-top: 1px solid #eee;
-  padding-top: 15px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-}
-
-.statusHeader {
-  color: #888;
-  margin-bottom: 4px;
-}
-
-.statusValue {
-  font-weight: bold;
-}
-
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
-}
-
-@media (max-width: 768px) {
-  .statusBar {
-    flex-wrap: wrap;
-    gap: 15px;
-  }
 }

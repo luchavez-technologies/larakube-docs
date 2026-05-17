@@ -13,10 +13,26 @@ The "Launch" button. Deploys your infrastructure and application to the cluster.
 - **Validation:** Use `--dry-run` to perform a full architectural validation of your manifests before deploying.
 - **Deduplicated Manifests:** LaraKube uses a unique single-pass engine to ensure your Kubernetes resources are never registered twice.
 
-## `status {environment}`
-The "Health Check" button. Displays a professional, color-coded table of all services in your cluster.
+## `deploy {environment}`
+The "Release" button. Build and deploy the application to a remote environment.
+- **CI/CD Integration**: Designed to work seamlessly with GitHub Actions or other CI providers.
+- **Environment Targeting**: Specify the target environment as an argument (e.g., `larakube deploy production`).
+
+## `env {name}`
+The "Workspace" tool. Create a new Kubernetes environment overlay (e.g., `staging`, `production`).
+- **Isolation**: Each environment gets its own namespace and dedicated resources.
+- **Blueprint Inheritance**: Inherits your base architectural DNA while allowing environment-specific overrides.
+
+## `test {environment}`
+The "Smoke Test" tool. Performs a connectivity smoke test to ensure the application is reachable and responding correctly.
+- **Automatic Execution**: Usually run automatically after `up`, but can be called manually for verification.
+- **Default**: Targets the `local` environment if no argument is provided.
+
+## `about {environment}`
+The "Health Check" button. Display a unified architectural and health overview of the project.
 - **Visual Feedback:** Shows 🟢 **Ready** for healthy services and 🔴 **Not Ready** for issues.
 - **Metrics:** Quickly see container restarts and pod age to identify unstable services.
+- **Default**: Targets the `local` environment if no argument is provided.
 
 ## `stop {environment}`
 The "Safe Pause" button. Scales all application and database pods to 0.
@@ -28,10 +44,16 @@ The "Safe Pause" button. Scales all application and database pods to 0.
 The "Resume" button. Scales your pods back to their original replica counts.
 
 ## `down {environment}`
-The "Cleanup" button. Removes your application's namespace and all internal volumes.
+The "Cleanup" button. Removes your application's resources and internal volumes from the cluster.
 - **Safety Preview**: Use `--dry-run` to see which resources will be deleted before they are removed.
 - **Confirmation**: Requires you to type the project name to confirm the deletion.
 - **Force Mode**: Use `--force` to skip the manual confirmation.
+
+## `reset`
+The "Hard Reset." Remove all LaraKube DNA and manifests from the project.
+- **Action**: Deletes `.larakube.json`, `.infrastructure`, and other LaraKube-generated files.
+- **Destructive**: This is a destructive action that wipes the project's Kubernetes configuration.
+- **Force Mode**: Use `--force` to skip confirmation.
 
 ## `purge`
 The "Total Project Cleanup." Completely remove LaraKube manifests and cluster resources from this project.
@@ -41,5 +63,18 @@ The "Total Project Cleanup." Completely remove LaraKube manifests and cluster re
 
 ## `uninstall`
 The "System Cleanup." Remove the LaraKube CLI application from your system.
-- **Action**: Deletes the `larakube` binary from your system path (e.g., `/usr/local/bin/larakube`).
+- **Action**: Deletes the `larakube` binary from your system path.
 - **Recommendation**: Run `untrust` first to clean up the SSL root CA from your system trust store.
+
+# GitHub Actions
+
+LaraKube provides built-in tools to manage your CI/CD workflows directly from the CLI.
+
+## `gha:configure {environment}`
+The "CI Architect." Configure GitHub Actions secrets and workflows for a specific environment using the native GitHub CLI container.
+
+## `gha:login`
+The "CI Authenticator." Authenticate with GitHub using the official CLI.
+
+## `gha:switch`
+The "Context Switcher." Switch between different GitHub accounts.

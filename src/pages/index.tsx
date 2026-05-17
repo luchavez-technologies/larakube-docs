@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -8,11 +8,35 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 import styles from './index.module.css';
 import HexagonGrid from '../components/HexagonGrid';
-import TerminalUI from '../components/TerminalUI';
 import EcosystemCarousel from '../components/EcosystemCarousel';
 import GeminiTerminal from '../components/GeminiTerminal';
 import ArchitectureBuilder from '../components/ArchitectureBuilder';
 import TechMarquee from '../components/TechMarquee';
+import GraduationPath from '../components/GraduationPath';
+
+const AnchorLink = ({ id, title }: { id: string, title: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    const url = `${window.location.origin}${window.location.pathname}#${id}`;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    window.history.pushState(null, '', `#${id}`);
+    setTimeout(() => setCopied(false), 2000);
+  }, [id]);
+
+  return (
+    <a 
+      className={clsx(styles.anchorLink, copied && styles.anchorLinkActive)} 
+      href={`#${id}`} 
+      onClick={handleCopy}
+      title={copied ? 'Copied URL!' : title}
+    >
+      {copied ? '✓' : '#'}
+    </a>
+  );
+};
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -143,7 +167,7 @@ export default function Home(): React.JSX.Element {
       
       <main>
         {/* Core Pillars */}
-        <section className={clsx(styles.section, styles.pillarSection)}>
+        <section id="pillars" className={clsx(styles.section, styles.pillarSection)}>
           <div className="container">
             <div className={styles.schematicGrid}>
               <div className={styles.schematicNode}>
@@ -183,19 +207,36 @@ export default function Home(): React.JSX.Element {
         </section>
 
         {/* AI-Native Showcase */}
-        <section className={styles.section}>
+        <section id="ai-native" className={styles.section}>
           <div className="container">
             <div className="row align-items-center">
               <div className="col col--6">
                 <span className={styles.techLabel}>Model Context Protocol</span>
-                <Heading as="h2" style={{fontSize: '3.5rem', marginBottom: '2rem'}}>AI-Native Orchestration</Heading>
+                <div className={styles.headingWrapper}>
+                  <Heading as="h2" style={{fontSize: '3.5rem'}}>Dual-MCP Intelligence</Heading>
+                  <AnchorLink id="ai-native" title="Direct link to this section" />
+                </div>
                 <p style={{fontSize: '1.3rem', opacity: 0.8, lineHeight: '1.8', marginBottom: '3rem'}}>
-                  <b>LaraKube CLI</b> isn't just a tool; it's a teammate. We've built <b>MCP</b> directly into the core, 
-                  allowing AI agents to see, diagnose, and manage your cluster using plain English.
+                  LaraKube is the first AI-native orchestrator. We've built <b>MCP</b> directly into the ecosystem, providing your AI agents with professional-grade tools to manage your entire Kubernetes fleet.
                 </p>
-                <div className={styles.doctorCard}>
-                  <h4 style={{fontSize: '1.5rem', color: 'var(--ifm-color-primary)', marginBottom: '1rem'}}>The Project Doctor</h4>
-                  <p style={{opacity: 0.8, fontSize: '1.1rem'}}>Run <code className={styles.inlineCode}>larakube doctor</code> to scan your project and cluster for common issues and architectural inconsistencies.</p>
+                
+                <div className={styles.mcpComparison} style={{marginTop: '2rem'}}>
+                  <div style={{marginBottom: '2rem'}}>
+                    <Heading as="h4" style={{color: 'var(--ifm-color-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+                      🛠️ The Local Mechanic (CLI)
+                    </Heading>
+                    <p style={{fontSize: '1.1rem', opacity: 0.8, marginLeft: '1.8rem'}}>
+                      Your <b>Hands</b>. Project-scoped tools for surgical code edits, blueprint patching, and orchestration execution directly on your local machine.
+                    </p>
+                  </div>
+                  <div>
+                    <Heading as="h4" style={{color: 'var(--ifm-color-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+                      🧠 The Master Architect (Console)
+                    </Heading>
+                    <p style={{fontSize: '1.1rem', opacity: 0.8, marginLeft: '1.8rem'}}>
+                      Your <b>Eyes</b>. Cluster-wide observability providing real-time fleet health, diagnostic logs, and historical context for intelligent root-cause analysis.
+                    </p>
+                  </div>
                 </div>
               </div>
               <div className="col col--6">
@@ -210,35 +251,30 @@ export default function Home(): React.JSX.Element {
           </div>
         </section>
 
-        {/* Interactive Chat Showcase */}
-        <section className={styles.section}>
+        {/* Scaling Roadmap */}
+        <section id="scaling-roadmap" className={styles.section}>
           <div className="container">
-            <div className={clsx('row align-items-center', styles.reverseMobile)}>
-              <div className="col col--6">
-                <div className={styles.desktopOnly}>
-                  <TerminalUI />
-                </div>
-                <div className={styles.mobileOnly}>
-                  <img src={useBaseUrl('/larakube-chat.png')} className={styles.showcaseImage} alt="LaraKube CLI Chat" />
-                </div>
+            <div className={styles.textCenter}>
+              <span className={styles.techLabel}>Scale Journey</span>
+              <div className={clsx(styles.headingWrapper, styles.headingWrapperCentered)}>
+                <Heading as="h2" style={{fontSize: '3.5rem'}}>The Scaling Roadmap</Heading>
+                <AnchorLink id="scaling-roadmap" title="Direct link to this section" />
               </div>
-              <div className={clsx('col col--6', styles.desktopOnlyPadding)}>
-                <span className={styles.techLabel}>Interactive Intelligence</span>
-                <Heading as="h2" style={{fontSize: '3.5rem', marginBottom: '2rem'}}>Chat with your Cluster</Heading>
-                <p style={{fontSize: '1.3rem', opacity: 0.8, lineHeight: '1.8', marginBottom: '3rem'}}>
-                  No more memorizing complex kubectl flags. Use <code className={styles.inlineCode}>larakube chat</code> to plan architectural changes 
-                  or troubleshoot issues using the most intuitive interface ever built: <b>Conversation.</b>
-                </p>
-              </div>
+              <p style={{fontSize: '1.4rem', opacity: 0.8}}>Same Blueprint, Different Scale. From your laptop to global infrastructure.</p>
             </div>
+
+            <GraduationPath />
           </div>
         </section>
 
         {/* Laravel Ecosystem Grid */}
-        <section className={clsx(styles.section, styles.sectionDark)}>
+        <section id="ecosystem" className={clsx(styles.section, styles.sectionDark)}>
           <div className="container">
             <div className={styles.textCenter}>
-              <Heading as="h2" style={{fontSize: '3.5rem'}}>🐘 Hardened for the Ecosystem</Heading>
+              <div className={clsx(styles.headingWrapper, styles.headingWrapperCentered)}>
+                <Heading as="h2" style={{fontSize: '3.5rem'}}>🐘 Hardened for the Ecosystem</Heading>
+                <AnchorLink id="ecosystem" title="Direct link to this section" />
+              </div>
               <p style={{fontSize: '1.4rem', opacity: 0.8, marginBottom: '2rem'}}>Professional-grade manifests for the tools you love.</p>
             </div>
 
@@ -247,10 +283,13 @@ export default function Home(): React.JSX.Element {
         </section>
 
         {/* Supported Tech Marquee */}
-        <section className={clsx(styles.section, styles.sectionDark)}>
+        <section id="tech" className={clsx(styles.section, styles.sectionDark)}>
           <div className="container">
             <div className={styles.textCenter}>
-              <Heading as="h2" style={{fontSize: '3.5rem'}}>🏗 Supported Architecture</Heading>
+              <div className={clsx(styles.headingWrapper, styles.headingWrapperCentered)}>
+                <Heading as="h2" style={{fontSize: '3.5rem'}}>🏗 Supported Architecture</Heading>
+                <AnchorLink id="tech" title="Direct link to this section" />
+              </div>
               <p style={{fontSize: '1.4rem', opacity: 0.8}}>The professional foundation for your next masterpiece.</p>
             </div>
 
@@ -260,11 +299,14 @@ export default function Home(): React.JSX.Element {
 
 
         {/* Architecture Designer */}
-        <section className={styles.section}>
+        <section id="design-your-masterpiece" className={styles.section}>
           <div className="container">
             <div className={styles.textCenter}>
               <span className={styles.techLabel}>Interactive Blueprinting</span>
-              <Heading as="h2" style={{fontSize: '3.5rem'}}>Design Your Masterpiece</Heading>
+              <div className={clsx(styles.headingWrapper, styles.headingWrapperCentered)}>
+                <Heading as="h2" style={{fontSize: '3.5rem'}}>Design Your Masterpiece</Heading>
+                <AnchorLink id="design-your-masterpiece" title="Direct link to this section" />
+              </div>
               <p style={{fontSize: '1.4rem', opacity: 0.8}}>Select your components and generate your unique LaraKube command.</p>
             </div>
 
@@ -273,11 +315,14 @@ export default function Home(): React.JSX.Element {
         </section>
 
         {/* Contributions Section */}
-        <section className={styles.contributeSection}>
+        <section id="contribute" className={styles.contributeSection}>
           <div className="container">
             <div className={styles.textCenter}>
               <span className={styles.techLabel}>Open Source</span>
-              <Heading as="h2" style={{fontSize: '3.5rem'}}>Shape the Future</Heading>
+              <div className={clsx(styles.headingWrapper, styles.headingWrapperCentered)}>
+                <Heading as="h2" style={{fontSize: '3.5rem'}}>Shape the Future</Heading>
+                <AnchorLink id="contribute" title="Direct link to this section" />
+              </div>
               <p style={{fontSize: '1.4rem', opacity: 0.8}}><b>LaraKube CLI</b> is built by the community. We'd love for you to be part of it.</p>
             </div>
 
@@ -308,35 +353,36 @@ export default function Home(): React.JSX.Element {
         </section>
 
         {/* The Human behind LaraKube CLI Section */}
-        <section className={styles.section}>
+        <section id="maker" className={styles.section}>
           <div className="container">
             <div className={styles.architectSection}>
-              <div className="row align-items-center">
-                <div className={clsx("col col--12", styles.makerContent)}>
-                  <span className={styles.techLabel}>The Maker</span>
-                  <Heading as="h2" style={{fontSize: '3rem', marginBottom: '1.5rem'}}>Built by a developer, for developers</Heading>
-                  
-                  <p style={{fontSize: '1.25rem', lineHeight: '1.7'}}>
-                    I built <b>LaraKube CLI</b> because, for a long time, Kubernetes felt like a wall I couldn't climb. 
-                    I'm not a Kubernetes expert—I'm a student of it, building the tool I wish I had 
-                    when I first encountered the complexity of cloud-native infrastructure.
-                  </p>
-                  <p style={{fontSize: '1.25rem', lineHeight: '1.7'}}>
-                    <b>LaraKube CLI</b> is my journey of translating "Expert-Speak" into something we can all use 
-                    to build robust applications. If you're also learning, I hope this tool makes your 
-                    path a little smoother. Let's build something great together.
-                  </p>
+              <div className={styles.makerContent}>
+                <span className={styles.techLabel}>The Maker</span>
+                <div className={clsx(styles.headingWrapper, styles.headingWrapperCentered)}>
+                  <Heading as="h2" style={{fontSize: '3rem'}}>Built by a developer, for developers</Heading>
+                  <AnchorLink id="maker" title="Direct link to this section" />
+                </div>
+                
+                <p style={{fontSize: '1.25rem', lineHeight: '1.7'}}>
+                  I built <b>LaraKube CLI</b> because, for a long time, Kubernetes felt like a wall I couldn't climb. 
+                  I'm not a Kubernetes expert—I'm a student of it, building the tool I wish I had 
+                  when I first encountered the complexity of cloud-native infrastructure.
+                </p>
+                <p style={{fontSize: '1.25rem', lineHeight: '1.7'}}>
+                  <b>LaraKube CLI</b> is my journey of translating "Expert-Speak" into something we can all use 
+                  to build robust applications. If you're also learning, I hope this tool makes your 
+                  path a little smoother. Let's build something great together.
+                </p>
 
-                  <div style={{marginTop: '2rem', marginBottom: '2rem'}}>
-                    <Heading as="h3" style={{margin: 0}}>James Carlo Luchavez</Heading>
-                    <p className={styles.makerTitle}>Systems Learner & Builder</p>
-                  </div>
+                <div style={{marginTop: '2rem', marginBottom: '2rem'}}>
+                  <Heading as="h3" style={{margin: 0}}>James Carlo Luchavez</Heading>
+                  <p className={styles.makerTitle}>Systems Learner & Builder</p>
+                </div>
 
-                  <div className={styles.buttons} style={{justifyContent: 'center', gap: '1rem', flexWrap: 'wrap'}}>
-                    <Link className="button button--primary button--lg" style={{borderRadius: '100px'}} href="https://www.linkedin.com/in/luchaveztech/">Say Hello 👋 on LinkedIn</Link>
-                    <Link className="button button--outline button--primary button--lg" style={{borderRadius: '100px'}} href="https://github.com/sponsors/luchavez-technologies">Sponsor 💖 on GitHub</Link>
-                    <Link className="button button--outline button--primary button--lg" style={{borderRadius: '100px'}} href="https://github.com/luchavez-technologies/larakube-cli">View 🐙 on GitHub</Link>
-                  </div>
+                <div className={styles.buttons} style={{justifyContent: 'center', gap: '1rem', flexWrap: 'wrap'}}>
+                  <Link className="button button--primary button--lg" style={{borderRadius: '100px'}} href="https://www.linkedin.com/in/luchaveztech/">Say Hello 👋 on LinkedIn</Link>
+                  <Link className="button button--outline button--primary button--lg" style={{borderRadius: '100px'}} href="https://github.com/sponsors/luchavez-technologies">Sponsor 💖 on GitHub</Link>
+                  <Link className="button button--outline button--primary button--lg" style={{borderRadius: '100px'}} href="https://github.com/luchavez-technologies/larakube-cli">View 🐙 on GitHub</Link>
                 </div>
               </div>
             </div>

@@ -21,6 +21,6 @@ When you use LaraKube CLI with the `--frankenphp` flag, you aren't just getting 
 3. **Automated Live-Watching**: In LaraKube, we've integrated `chokidar` so that when you save a file, the Octane workers restart instantly inside your cluster.
 
 ### Production-Ready Performance, Locally
-The best part? Because LaraKube uses the same **Serversideup** images in your local cluster that you use in production, your performance benchmarks are actually meaningful. You aren't testing on a "fake" local setup; you are testing on your actual infrastructure.
+The best part? Because LaraKube uses the same **Server Side Up** images in your local cluster that you use in production, your performance benchmarks are actually meaningful. You aren't testing on a "fake" local setup; you are testing on your actual infrastructure.
 
 If you haven't tried running your Laravel app in memory yet, now is the time. 🚀🐘⚡️

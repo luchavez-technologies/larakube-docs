@@ -2,6 +2,7 @@
 sidebar_position: 0
 title: Introduction to LaraKube CLI
 description: Get started with LaraKube CLI, the industrial-strength Kubernetes orchestrator for Laravel. Learn about the Standalone Engine, Shared Storage, and Proxy-First workflow.
+---
 # 🌟 Introduction
 
 LaraKube is a high-performance **Kubernetes Control Plane** for Laravel. It bridges the gap between local development and cloud-scale infrastructure, treating architecture as a first-class citizen.
@@ -27,17 +28,15 @@ The **LaraKube Console** is your visual command center. Accessible at `https://c
 - **Visual Diagnostics:** Live pod logs and real-time cluster event monitoring.
 
 ## 🤖 Dual-Brain AI (MCP)
-LaraKube is built for the age of AI agents. We provide a specialized **Dual-MCP (Model Context Protocol)** architecture:
+LaraKube is built for the age of AI agents. We provide a specialized **Dual-MCP (Model Context Protocol)** architecture that empowers AI agents with professional-grade orchestration capabilities:
 
-1.  **The Local Mechanic (CLI MCP):** Used by tools like Cursor or Windsurf to modify your local code, fix `.env` files, and run orchestration "verbs" (`up`, `down`, `add`).
-2.  **The Master Architect (Console MCP):** A centralized AI brain that understands your entire fleet's history and health.
+1.  **The Local Mechanic (`larakube-cli`):** A project-scoped MCP server with **6 expert tools** for modifying local code, patching blueprints, and running orchestration "verbs" (`up`, `down`, `add`).
+2.  **The Master Architect (`larakube-console`):** A cluster-wide MCP server with **9 fleet tools** for monitoring project health, streaming diagnostic logs, and managing your entire Kubernetes fleet.
 
-## 🚀 The Vision: Container-First Laravel
-...
-
-LaraKube stands on the shoulders of giants. We would like to express our deepest gratitude to [Serversideup](https://serversideup.net/). Their world-class [PHP Docker Images](https://serversideup.net/open-source/docker-php/) are the bedrock of this project, providing the stability and performance that make professional Laravel-on-Kubernetes possible.
 ## 🚀 The Vision: Container-First Laravel
 By bringing Kubernetes to the local development environment, we ensure that your code is "Production-Ready" from the very first line you write.
+
+LaraKube stands on the shoulders of giants. We would like to express our deepest gratitude to [Server Side Up](https://serversideup.net/). Their world-class [PHP Docker Images](https://serversideup.net/open-source/docker-php/) are the bedrock of this project, providing the stability and performance that make professional Laravel-on-Kubernetes possible.
 
 LaraKube empowers you to create as many masterpieces as your imagination allows. But at the end of the day, the real magic happens when you **share your work with the world**. 
 

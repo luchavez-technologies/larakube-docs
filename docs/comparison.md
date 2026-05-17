@@ -19,10 +19,10 @@ How does LaraKube stack up against other Laravel development and deployment tool
 -   **Stability**: LaraKube's cluster-native volume strategy and automated manifest engine solve the common permission and configuration errors found in simpler tools.
 
 ## 🌀 LaraKube vs. Spin Pro
-We are huge fans of [Serversideup's Spin](https://getspin.pro/). It is a fantastic tool for managing Docker Compose environments.
+We are huge fans of [Server Side Up's Spin](https://getspin.pro/). It is a fantastic tool for managing Docker Compose environments.
 -   **Philosophy**: Spin focuses on making Docker Compose easy and standardized.
 -   **Orchestrator**: LaraKube focuses on bringing that same level of "Pro" developer experience to **Kubernetes**.
--   **The Synergy**: If you love the stability and performance of [Serversideup's Docker Images](https://serversideup.net/open-source/docker-php/), you will feel right at home with LaraKube. We use their images as our absolute foundation for cluster reliability.
+-   **The Synergy**: If you love the stability and performance of [Server Side Up's Docker Images](https://serversideup.net/open-source/docker-php/), you will feel right at home with LaraKube. We use their images as our absolute foundation for cluster reliability.
 
 ## 🚢 LaraKube vs. Laravel Forge
 [Laravel Forge](https://forge.laravel.com) is the gold standard for traditional server management. LaraKube serves a different architectural philosophy:

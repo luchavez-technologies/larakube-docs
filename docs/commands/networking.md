@@ -8,7 +8,7 @@ description: Manage your cluster's networking stack with Traefik commands. Learn
 Traefik acts as the "Front Desk" for your entire LaraKube ecosystem. Because it is a cluster-wide service, it has its own dedicated suite of commands to manage SSL, routing, and troubleshooting.
 
 ## `traefik:setup`
-The "Receptionist Installer." Installs or upgrades the Traefik Ingress Controller.
+The "Receptionist Installer." Install or upgrade the Traefik Ingress Controller and its cluster-scoped permissions.
 - **Idempotent**: Safe to run multiple times.
 - **SSL Configuration**: Automatically provisions wildcard certificates for your `.dev.test` domains.
 - **Usage**: `larakube traefik:setup`

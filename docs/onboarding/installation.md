@@ -41,7 +41,7 @@ larakube config:ai --gemini=YOUR_KEY
 Confirm your installation by checking the version and cluster status:
 
 ```bash
-larakube status
+larakube about
 ```
 
 ---

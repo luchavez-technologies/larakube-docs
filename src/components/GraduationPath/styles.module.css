@@ -1,0 +1,141 @@
+.pathContainer {
+  margin: 4rem auto;
+  max-width: 1200px;
+  padding: 0 1.5rem;
+}
+
+.tierGrid {
+  display: flex;
+  align-items: stretch;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.tierCard {
+  flex: 1;
+  background: var(--larakube-card-bg);
+  padding: 3rem 2rem;
+  border-radius: 32px;
+  border: 1px solid var(--ifm-contents-border-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.tierCard:hover {
+  transform: translateY(-10px);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 30px 60px rgba(50, 108, 229, 0.15);
+}
+
+/* Highlight Tier 2 (Popular) */
+.tierHighlight {
+  border: 2px solid var(--ifm-color-primary);
+  background: var(--larakube-card-bg);
+  transform: scale(1.03);
+  z-index: 2;
+}
+
+.tierHighlight:hover {
+  transform: translateY(-10px) scale(1.05);
+}
+
+.popularBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--ifm-color-primary);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.tierIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.tierTitle {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 800;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.priceBox {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.price {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--ifm-font-color-base);
+  line-height: 1;
+}
+
+.period {
+  font-size: 0.9rem;
+  opacity: 0.5;
+  margin-left: 4px;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--larakube-text-main);
+}
+
+.checkIcon {
+  color: #10b981;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.featureMain {
+  font-weight: 700;
+  color: #10b981;
+}
+
+@media (max-width: 996px) {
+  .tierGrid {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .tierHighlight {
+    transform: none;
+  }
+  
+  .tierHighlight:hover {
+    transform: translateY(-10px);
+  }
+}

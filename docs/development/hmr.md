@@ -30,5 +30,5 @@ If you are using the **FrankenPHP** server variation, LaraKube automatically ena
 
 ### 💡 Troubleshooting
 If changes are not reflecting:
-1.  Run `larakube status` to ensure the `laravel-web` and `laravel-node` pods are **Ready 🟢**.
+1.  Run `larakube about` to ensure the `laravel-web` and `laravel-node` pods are **Ready 🟢**.
 2.  Check your console for any "Connection Refused" errors. If found, run `larakube doctor` to verify your `/etc/hosts` and port mappings.

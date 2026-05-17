@@ -22,7 +22,7 @@ Even the best-orchestrated fleets hit a snag. This guide provides human-friendly
 
 **The Fix:**
 1. **Trust the CA:** Ensure you have run `larakube trust`. This installs the local SSL authority required for valid HTTPS.
-2. **Check Traefik Status:** Run `larakube status --all` and verify the `traefik` pod is in a `Running` state.
+2. **Check Traefik Status:** Check the console health or use `larakube about` and verify the `traefik` pod is in a `Running` state.
 3. **Restart Traefik:** If networking feels "stuck," run `larakube traefik:restart` to perform a graceful rollout.
 
 ## 💾 Volume & Persistence Issues

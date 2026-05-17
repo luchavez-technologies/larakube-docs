@@ -19,16 +19,16 @@ The "Evolution" tool. Use `add` to plug in new features (like Reverb), database 
 - **Data Migration Mode:** Offers to comment out new `.env` variables so you can migrate your data before finalizing the switch.
 - **Dependency Resolution:** Automatically adds required services (e.g., adding Horizon will automatically suggest adding Redis).
 
-## `console`
-The "Command Center" tool. Launches the **LaraKube Console**, your visual command center.
-- **Shortcut:** `larakube web`
-- **Management:** Provides a GUI for creating projects, monitoring fleet health, and streaming live logs.
-- **CLI Fallback:** If you prefer the terminal, you can choose to launch **K9s** for real-time pod management instead.
+## `web`
+The "Command Center" tool. Opens the **LaraKube Console**, your visual command center.
+- **Alias:** `larakube console`
+- **Management:** Provides a GUI for monitoring fleet health, and streaming live logs.
+- **Cleanup**: Use `larakube web --down` to remove the LaraKube Console from the cluster.
 
-## `status {environment}`
-The "Health Check" tool. Displays a professional, color-coded table of all services in your cluster.
-- **Watch Mode:** Use `larakube status --watch` for a real-time, auto-refreshing view of your pods.
+## `about {environment}`
+The "Health Check" tool. Display a unified architectural and health overview of the project.
 - **Visual Feedback**: Shows 🟢 **Ready** for healthy services and 🔴 **Not Ready** for issues.
+- **Default**: Targets the `local` environment if no argument is provided.
 
 ## `heal`
 The "Self-Healing" tool. Regenerates your entire Kubernetes manifest and patch structure from your project's architectural DNA (`.larakube.json`).
@@ -36,7 +36,7 @@ The "Self-Healing" tool. Regenerates your entire Kubernetes manifest and patch s
 - **Cluster Resilience**: LaraKube automatically backs up your blueprint to your cluster. If your local `.larakube.json` is missing or corrupted, `heal` will restore it directly from the cluster.
 
 ## `init`
-The "Adoption" tool. Initializes LaraKube in an existing Laravel project.
+The "Adoption" tool. Initializes LaraKube for an existing Laravel project.
 - **Existing Projects**: Scans your current `.env` and `composer.json` to suggest a matching LaraKube architecture.
 - **Console Registration:** Automatically registers the project with your LaraKube Console for visual management.
 
@@ -54,11 +54,14 @@ The "Observer" tool. Tail the logs of any service to see exactly what's happenin
 The "Live Preview" tool. Instantly expose your local project to the internet via a secure Cloudflare Tunnel.
 - **Note:** Only available in the `local` environment.
 
-## `php:ext {extension}`
+## `ext:add {extension}`
 The "Chemist" tool. Easily add PHP extensions (like `gd` or `bcmath`) to your project without touching a Dockerfile.
 
+## `ext:remove {extension}`
+The "Extension Remover." Remove a PHP extension from your project.
+
 ## `exec {command}`
-The "Remote Artisan" tool. Run any command directly inside your running Kubernetes pod. No quotes required!
+The "Remote Command" tool. Run any command directly inside your running Kubernetes pod. No quotes required!
 - **Example**: `larakube exec ls -la`
 
 ## `tunnel {service}`

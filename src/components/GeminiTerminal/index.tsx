@@ -73,18 +73,32 @@ const GeminiTerminal: React.FC = () => {
         <div className={styles.mcpSection}>
           <div className={styles.mcpCommand}>{">"} /mcp</div>
           <div className={styles.mcpTitle}>Configured MCP servers:</div>
+          
           <div className={styles.mcpServer}>
-            <span className={styles.greenDot}>●</span> <strong>larakube</strong> - Ready (8 tools)
+            <span className={styles.greenDot}>●</span> <strong>larakube-cli</strong> - Ready (6 tools)
           </div>
           <div className={styles.mcpTools}>
-            - mcp_larakube_apply_healing_patch<br />
-            - mcp_larakube_diagnose_pod<br />
-            - mcp_larakube_execute_command<br />
-            - mcp_larakube_get_command_help<br />
-            - mcp_larakube_get_project_config<br />
-            - mcp_larakube_list_commands<br />
-            - mcp_larakube_list_pods<br />
-            - mcp_larakube_search_documentation
+            - mcp_larakube-cli_inspect-local-code<br />
+            - mcp_larakube-cli_local-health-check<br />
+            - mcp_larakube-cli_orchestrate-verb<br />
+            - mcp_larakube-cli_patch-blueprint<br />
+            - mcp_larakube-cli_patch-local-env<br />
+            - mcp_larakube-cli_run-proxy
+          </div>
+
+          <div className={styles.mcpServer} style={{marginTop: '1.5rem'}}>
+            <span className={styles.greenDot}>●</span> <strong>larakube-console</strong> - Ready (9 tools)
+          </div>
+          <div className={styles.mcpTools}>
+            - mcp_larakube-console_diagnose-pod<br />
+            - mcp_larakube-console_explain-architecture<br />
+            - mcp_larakube-console_fetch-audit-trail<br />
+            - mcp_larakube-console_get-cluster-events<br />
+            - mcp_larakube-console_get-fleet-status<br />
+            - mcp_larakube-console_get-project-config<br />
+            - mcp_larakube-console_get-project-logs<br />
+            - mcp_larakube-console_list-pods<br />
+            - mcp_larakube-console_search-documentation
           </div>
         </div>
 
@@ -99,24 +113,6 @@ const GeminiTerminal: React.FC = () => {
           </div>
         </div>
 
-        <div className={styles.statusBar}>
-          <div className={styles.statusCol}>
-            <div className={styles.statusHeader}>workspace (/directory)</div>
-            <div className={styles.statusValue}>~</div>
-          </div>
-          <div className={styles.statusCol}>
-            <div className={styles.statusHeader}>sandbox</div>
-            <div className={styles.statusValue} style={{ color: '#ef4444' }}>no sandbox</div>
-          </div>
-          <div className={styles.statusCol}>
-            <div className={styles.statusHeader}>/model</div>
-            <div className={styles.statusValue}>Auto (Gemini 3)</div>
-          </div>
-          <div className={styles.statusCol}>
-            <div className={styles.statusHeader}>memory</div>
-            <div className={styles.statusValue}>132.0 MB</div>
-          </div>
-        </div>
       </div>
     </div>
   );

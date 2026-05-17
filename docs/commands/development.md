@@ -18,33 +18,46 @@ The "Remote Terminal." Opens a secure, interactive shell directly inside a runni
 The "Remote Artisan." Run any Laravel Artisan command directly in your cluster. No setup or tunnel required.
 
 - **Usage**: `larakube art migrate`
-- **Tinker Support**: Supports interactive commands like `larakube art tinker`.
 - **Automatic Context**: Automatically targets your `local` environment by default.
+
+## `tinker`
+The "Interactive Lab." Interact with your application via an interactive shell. This is a convenient shortcut to `larakube art tinker`.
 
 :::tip High-Fidelity Forwarding
 Proxy commands like `art`, `php`, and `npm` feature **Transparent Flag Capture**. This means you can pass flags (e.g., `larakube art migrate --force` or `larakube php -i`) and they will be forwarded exactly as-is to the container.
 :::
 
-## `exec {service} {command*}`
-The "Remote Command." Run a one-off command inside a specific pod.
+## `exec {command*}`
+The "Remote Command." Run a one-off command inside a running pod.
 
 - **Direct Action**: Perfect for running DB dumps, checking files, or verifying configurations.
-- **Example**: `larakube exec --service=mysql "mysql -u root -p"`
+- **Usage**: `larakube exec ls -la`
 
 ## `node {command*}`, `npm`, `yarn`, `pnpm`, `bun`
 The "Frontend Bridge." Manage your frontend assets without having Node.js installed on your host.
 
 - **Zero-Host**: All commands run inside the `laravel-node` container.
 - **Usage**: `larakube npm install`, `larakube bun run build`.
-- **Persistence**: Installs are persisted to your project's node_modules via volume mounts.
+- **Persistence**: Installs are persisted to your project's `node_modules` via volume mounts.
 
 ## `php {command*}`
 The "Remote PHP." Execute PHP scripts or check your environment directly in the web container.
 
 - **Example**: `larakube php -v`, `larakube php script.php`.
 
-## `env:sync`
-The "Configuration Mirror." Synchronizes your local `.env` file with the Kubernetes `laravel-secrets` and `laravel-config`.
+## MCP (Model Context Protocol)
 
-- **Live Updates**: Use this to push small configuration changes without running a full `up`.
-- **Safety**: Always prompts before overwriting secrets.
+LaraKube supports the Model Context Protocol to provide AI tools with deep knowledge of your project.
+
+### `mcp:register`
+The "AI Connector." Register the LaraKube CLI MCP server with AI tools like Gemini or Claude.
+- **Options**:
+    - `--gemini`: Register with Gemini CLI.
+    - `--claude`: Register with Claude Desktop.
+    - `--all`: Register with all supported AI tools.
+
+### `mcp:inspector`
+The "MCP Debugger." Open the MCP Inspector tool to debug and test MCP Servers.
+
+### `mcp:start`
+The "MCP Engine." Start the MCP Server for a given handle.

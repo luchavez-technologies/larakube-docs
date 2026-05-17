@@ -153,10 +153,59 @@
   padding: 3rem 1.5rem;
   background: var(--ifm-background-color);
   color: var(--larakube-text-main);
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 2rem);
 }
 
 .textCenter {
   text-align: center;
+}
+
+/* ANCHOR LINKS */
+.headingWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.headingWrapperCentered {
+  justify-content: center;
+}
+
+.anchorLink {
+  opacity: 0;
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 0.7em;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid transparent;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headingWrapper:hover .anchorLink {
+  opacity: 1;
+}
+
+.anchorLink:hover {
+  text-decoration: none;
+  color: var(--ifm-color-primary-dark);
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.anchorLinkActive {
+  background: var(--ifm-color-primary) !important;
+  color: white !important;
+  opacity: 1 !important;
 }
 
 .pillarSection {
@@ -289,12 +338,18 @@
 .architectSection {
   background: var(--larakube-card-bg);
   border-radius: 48px;
-  padding: 6rem;
+  padding: 4rem 3rem;
   border: 1px solid var(--ifm-contents-border-color);
 }
 
 .makerContent {
   text-align: center;
+}
+
+.makerContent p {
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .makerTitle {
@@ -308,6 +363,7 @@
 /* NEW SECTIONS */
 .contributeSection {
   padding: 4rem 0;
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 2rem);
 }
 
 .contributeGrid {

@@ -23,18 +23,9 @@ To unlock the full power of LaraKube's **AI-Native Orchestration**, you should r
 
 ```bash
 # Register for Gemini and Claude Desktop
-larakube config:mcp --all
+larakube mcp:register --all
 ```
 
----
-
-## 🧠 AI API Key (Optional)
-If you want to use the built-in **LaraKube Chat** or the **Intelligent Doctor**, provide your API key:
-
-```bash
-# Set your Gemini key and use it as default
-larakube config:ai --gemini=YOUR_KEY
-```
 ---
 
 ## 🏁 Verification

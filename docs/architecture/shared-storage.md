@@ -38,7 +38,9 @@ This architecture ensures "Workload Parity"—the guarantee that all parts of yo
 Sharing a volume across multiple pods simultaneously requires the volume to support `ReadWriteMany` (RWX) access mode.
 
 ### 🌐 Production
-LaraKube defaults all PVCs to `ReadWriteMany`. This works out-of-the-box with cloud-native storage providers like AWS EFS, Google Filestore, or managed Ceph/NFS solutions.
+LaraKube intelligently selects the best access mode for your strategy:
+- **Single-Node Hero**: Defaults to `ReadWriteOnce` (RWO). This works out-of-the-box with standard VPS storage provisioners (like K3s local-path).
+- **Multi-Node HA**: Defaults to `ReadWriteMany` (RWX). This works with cloud-native shared storage like AWS EFS, Google Filestore, or managed Ceph/NFS solutions.
 
 ### 💻 Local Development
 Most local Kubernetes provisioners (Orbstack, Docker Desktop, K3s default) only support `ReadWriteOnce` (RWO) because they are backed by a single local disk.

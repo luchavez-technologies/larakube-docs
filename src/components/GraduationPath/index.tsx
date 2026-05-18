@@ -60,7 +60,7 @@ const GraduationPath: React.FC = () => {
         <TierCard 
           icon="🚀"
           sub="Single-Node Hero"
-          price="~$4-12"
+          price="~$6"
           period="/mo"
           isHighlighted={true}
           features={[

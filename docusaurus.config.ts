@@ -18,10 +18,13 @@ const config: Config = {
   
   markdown: {
     format: 'detect',
+    mermaid: true,
     hooks: {
       onBrokenMarkdownLinks: 'warn',
     }
   },
+
+  themes: ['@docusaurus/theme-mermaid'],
 
   i18n: {
     defaultLocale: 'en',
@@ -142,6 +145,9 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
       additionalLanguages: ['php', 'bash', 'yaml', 'json'],
+    },
+    mermaid: {
+      theme: {light: 'neutral', dark: 'forest'},
     },
     algolia: {
       appId: process.env.ALGOLIA_APP_ID || 'NO_APP_ID',

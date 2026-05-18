@@ -3,28 +3,27 @@ sidebar_position: 5
 title: GitOps with GitHub Actions
 description: Learn how LaraKube automates your production deployments using GitHub Actions and the GitHub Container Registry (GHCR).
 ---
-# 🔐 Professional GitOps with GHA
+# 🚀 Cloud Pilot: The GitOps Workflow
 
-LaraKube provides a professional, "GitOps-First" deployment workflow that offloads the heavy lifting to GitHub, ensuring your production servers remain stable and performant.
+LaraKube's "Cloud Pilot" is an industrial-strength GitOps workflow designed to run seamlessly on our $6/mo baseline VPS (1GB RAM) without OOM crashes.
 
-## 🚀 The Build Engine (Zero-OOM)
-Running Docker builds on a small VPS can easily lead to **Out-Of-Memory (OOM)** crashes. LaraKube solves this by offloading all image builds to **GitHub Runners**.
--   **Server Stability**: Your VPS never has to perform a CPU-intensive Docker build.
--   **Speed**: GitHub Runners utilize high-performance hardware and a global caching layer for blazing-fast builds.
--   **Security**: Images are securely pushed to your private **GitHub Container Registry (GHCR)**.
+## ⚙️ The "Secret Sauce": Build Offloading
+Running CPU-intensive tasks like `composer install` or `npm run build` directly on a 1GB droplet will cause it to crash under load. LaraKube solves this by offloading the heavy lifting:
 
-## 🛠 The Configuration Lifecycle
-Setting up a CI/CD pipeline usually takes hours. With LaraKube, it takes one command:
+1.  **GHA Build Engine**: All heavy lifting (Composer dependencies, NPM builds, Docker image creation) happens on **GitHub Runners**.
+2.  **Zero-OOM Guarantee**: Your VPS remains cool and responsive, acting only as the *runtime* environment for your application.
+3.  **Registry-First**: Images are securely pushed to the **GitHub Container Registry (GHCR)** and simply "pulled" by your VPS, which is an extremely light, low-memory operation.
+
+## 🛠 Configuration Lifecycle
+Setting up the Cloud Pilot is a one-time operation:
 
 ```bash
 larakube cloud:configure gha
 ```
 
 ### What happens under the hood?
-1.  **Secret Injection**: The CLI automatically encodes and uploads your `.env.{environment}` file to GitHub as a Base64 secret.
-2.  **Kubeconfig Extraction**: LaraKube surgically extracts the specific cluster context for your environment (using `--minify`) and uploads it as a GitHub Secret.
-3.  **Registry Setup**: Automatically configures the `ghcr-login` secret on your remote VPS so Kubernetes can pull your private images.
-4.  **Workflow Generation**: Scaffolds a hardened `.github/workflows/larakube-deploy-{env}.yml` file tailored specifically to your project's architecture.
+- **Automated Security**: It generates a hardened workflow, securely extracts minified cluster credentials, and configures the `ghcr-login` secret on your remote VPS.
+- **Push-to-Deploy**: Once configured, you simply run `git push`. GitHub builds your "Lambo" and your VPS performs a zero-downtime rolling update.
 
 ## 🛡 Security Standards
 

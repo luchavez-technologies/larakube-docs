@@ -33,21 +33,17 @@ This architecture ensures "Workload Parity"—the guarantee that all parts of yo
 | **Config Cache** | Can get out of sync. | Unified in `bootstrap/cache`. |
 | **File Uploads** | Requires external S3. | Works seamlessly with local storage. |
 
-## 🛠 Local vs. Production (Environment-Aware PVCs)
+## 🛠 Automatic Access Mode Switching (RWO vs. RWX)
 
-Sharing a volume across multiple pods simultaneously requires the volume to support `ReadWriteMany` (RWX) access mode.
+Sharing a volume across multiple pods simultaneously requires the volume to support specific access modes. LaraKube handles this complexity for you automatically:
 
-### 🌐 Production
-LaraKube intelligently selects the best access mode for your strategy:
-- **Single-Node Hero**: Defaults to `ReadWriteOnce` (RWO). This works out-of-the-box with standard VPS storage provisioners (like K3s local-path).
-- **Multi-Node HA**: Defaults to `ReadWriteMany` (RWX). This works with cloud-native shared storage like AWS EFS, Google Filestore, or managed Ceph/NFS solutions.
+### 1. ReadWriteOnce (RWO) - The Single-Node Default
+When running on a **Single-Node Hero ($6/mo VPS)**, volumes are mounted using `ReadWriteOnce`. This mode is optimized for high-performance I/O on a single node. Because your application and database run on the same server, this mode provides the fastest possible access to your disk.
+
+### 2. ReadWriteMany (RWX) - The Multi-Node Scale
+When you "graduate" to a **Multi-Node Managed Cluster (HA)**, LaraKube detects the strategy change (`multi-node-ha`) and automatically reconciles your volumes to `ReadWriteMany`. This is crucial for high availability, as it allows multiple nodes to simultaneously read and write to the same shared volume.
+
+*You never have to touch a manifest to migrate from RWO to RWX—LaraKube handles the volume reconciliation during your infrastructure upgrade.*
 
 ### 💻 Local Development
-Most local Kubernetes provisioners (Orbstack, Docker Desktop, K3s default) only support `ReadWriteOnce` (RWO) because they are backed by a single local disk.
-
-To maintain architecture parity without requiring complex local NFS setups, LaraKube uses a **Surgical Kustomize Patch** in `overlays/local/pvc-patch.yaml`:
-
-1.  **Override to RWO:** The local overlay automatically patches all PVCs to `ReadWriteOnce`.
-2.  **Single-Node Efficiency:** Since your local cluster is a single node, multiple pods can still successfully mount the same RWO volume simultaneously.
-
-This allows you to develop with the exact same shared-volume logic locally that you use in production.
+Local provisioners usually only support `ReadWriteOnce` (RWO). To maintain architecture parity, LaraKube uses a **Surgical Kustomize Patch** (`overlays/local/pvc-patch.yaml`) that patches PVCs to RWO. Since your local cluster is a single node, multiple pods can still successfully mount the same RWO volume simultaneously.

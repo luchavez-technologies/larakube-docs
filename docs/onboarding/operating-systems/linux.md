@@ -19,20 +19,18 @@ curl -sSL https://larakube.luchtech.dev/install.sh | bash
 ```
 
 ### 2. Prepare your Cluster
-You have two "Masterpiece" options on Linux:
+For the best balance of isolation and performance on Linux, we recommend using **k3d**. It runs a full Kubernetes cluster inside your existing Docker engine, making it easy to create and destroy per-project environments.
 
-**Option A: k3d (Recommended for Dev)**
-Runs Kubernetes inside Docker. It’s isolated and easy to destroy.
 ```bash
+# Automated k3d cluster creation
 larakube cluster:setup
-# Select k3d
 ```
 
-**Option B: k3s (Recommended for Edge/Staging)**
-Installs Kubernetes as a native Linux service.
+#### 💡 The k3s Alternative
+If you are setting up a dedicated machine (like an edge server or a permanent staging box), you can install **k3s** as a native system service for persistent orchestration:
 ```bash
 larakube cluster:setup
-# Select k3s
+# Select k3s when prompted
 ```
 
 ### 3. Trust the Root CA

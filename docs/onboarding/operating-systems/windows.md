@@ -29,14 +29,27 @@ curl -sSL https://larakube.luchtech.dev/install.sh | bash
 ```
 
 ### 3. Prepare your Cluster
-Inside your WSL2 terminal, run:
+Windows users have two elite options for local Kubernetes:
+
+**Option A: Docker Desktop (Integrated)**
+For the most integrated experience, use the engine provided by Docker Desktop:
+1.  Open **Docker Desktop Settings** ➔ **Kubernetes**.
+2.  Check **Enable Kubernetes**.
+
+LaraKube CLI inside WSL2 will automatically detect and orchestrate this cluster.
+
+**Option B: k3d (Automated & Isolated)**
+If you prefer a more isolated cluster approach inside your WSL2 environment:
 ```bash
+# Automated k3d cluster creation
 larakube cluster:setup
 ```
-*Choose **k3d** when prompted.*
 
-### 4. Port Forwarding
-Since you are on Windows, ensure that your firewall allows Docker Desktop to listen on ports 80 and 443. Your browser on Windows will talk to the cluster inside WSL2 seamlessly.
+### 4. Port Forwarding & Trust
+1.  **Trust SSL**: Run `larakube trust` inside your WSL2 terminal to install the Local CA.
+2.  **Firewall**: Ensure your Windows firewall allows Docker Desktop to listen on ports 80 and 443.
+
+Your Windows browser will talk to the cluster inside WSL2 seamlessly.
 
 ## 📐 Why WSL2?
 By running LaraKube inside WSL2, you get true Linux-native performance and file compatibility. Your Laravel code remains on the Linux filesystem, avoiding the slow "9p" mount performance of the standard Windows drive mounts.

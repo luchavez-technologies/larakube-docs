@@ -7,6 +7,18 @@ description: Explore the LaraKube philosophy of architectural transparency, prod
 
 LaraKube is built on a **Container-First** philosophy. We believe that a developer's host machine should be kept as clean and "factory-original" as possible.
 
+## ⚙️ The Orchestration Engine
+LaraKube's "No-Host-Dependency" model works by abstracting Kubernetes into a standalone binary:
+
+```mermaid
+graph LR
+    A[LaraKube CLI] --> B[Embedded PHP Engine]
+    B --> C{Kubernetes API}
+    C --> D[K3d Cluster]
+    C --> E[Production VPS]
+    C --> F[Managed HA Cluster]
+```
+
 ## 🚀 Zero-Host Dependency
 LaraKube assumes you don't have PHP, Composer, or Node installed on your Mac or Linux machine.
 - **Isolated Creation:** When you run `larakube new`, the CLI pulls a specialized installer image to build your app.

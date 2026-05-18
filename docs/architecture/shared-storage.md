@@ -10,7 +10,17 @@ In a traditional Kubernetes setup, different workloads (Web, Workers, Scheduler)
 
 LaraKube solves this by implementing a **Unified Shared Storage** architecture.
 
+```mermaid
+graph TD
+    subgraph "Kubernetes Namespace"
+        A[Web Pod] -->|Read/Write| PVC[(Shared Storage PVC)]
+        B[Worker Pod] -->|Read/Write| PVC
+        C[Scheduler Pod] -->|Read/Write| PVC
+    end
+```
+
 ## 🏗 The Unified Volume Model
+...
 
 Instead of separate Persistent Volume Claims (PVCs) for each service, LaraKube uses a single, high-performance PVC that is shared across all Laravel-related pods in your project namespace.
 

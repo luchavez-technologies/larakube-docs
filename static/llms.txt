@@ -5,12 +5,16 @@
 ## 🧱 Core Philosophy
 LaraKube is a high-performance Kubernetes orchestrator built specifically for the Laravel ecosystem. It emphasizes architectural transparency, production-ready stability, and zero-config local development.
 
-## 🚀 Key Technical Standards
-- **Local Domains**: Standardized on `.dev.test`.
-- **Local HTTPS**: Wildcard SSL managed via Traefik v3 (`websecure`).
-- **Persistence**: "Stability-First" approach using standard Debian images for databases and high-performance PVCs.
-- **Server Variations**: First-class support for **FrankenPHP (Octane)**, **Nginx**, and **Apache** with automated port synchronization.
-- **DNA-Driven**: Projects are managed via `.larakube.json`, allowing for seamless "Self-Healing" via the `heal` command.
+## 🤖 AI-Native DNA (Dual-MCP)
+LaraKube implements a **Dual-MCP (Model Context Protocol)** architecture:
+- **Local Mechanic (`larakube-cli`)**: Project-scoped server with 6 expert tools for local execution (scaffolding, patching, proxying).
+- **Master Architect (`larakube-console`)**: Cluster-wide server with 9 fleet tools for global observability (logs, events, health monitoring).
+
+## 🚀 The Scaling Roadmap ($6 Baseline)
+LaraKube provides a professional graduation path for startups:
+- **Local Dev ($0)**: 100% production parity via K3d.
+- **Single-Node Hero ($6)**: High-performance 1GB VPS baseline using HostPort ingress and build offloading.
+- **Enterprise Cluster**: Multi-node high availability on managed services (DOKS/GKE).
 
 ## 🛠 Top-Level Commands
 - `new`: Scaffold a new LaraKube masterpiece.

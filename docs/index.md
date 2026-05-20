@@ -22,10 +22,10 @@ Stop jumping in and out of containers. LaraKube provides transparent proxy comma
 - `larakube npm run dev`
 
 ## 🧠 LaraKube Console (The Brain)
-The **LaraKube Console** is your visual command center. Accessible at `https://console.dev.test`, it provides:
-- **One-Click Orchestration:** Scaffolding, deployment, and ecosystem management via an intuitive web UI.
+The **LaraKube Console** is your professional Kubernetes Control Plane and visual command center. Accessible at `https://console.dev.test`, it provides:
+- **Global Fleet Visibility:** Real-time health monitoring of all projects in your cluster.
 - **Master Memory:** A centralized database of project history, audit logs, and architectural state.
-- **Visual Diagnostics:** Live pod logs and real-time cluster event monitoring.
+- **High-Fidelity Diagnostics:** Live pod logs and real-time cluster event monitoring via a data-dense UI.
 
 ## 🤖 Dual-Brain AI (MCP)
 LaraKube is built for the age of AI agents. We provide a specialized **Dual-MCP (Model Context Protocol)** architecture that empowers AI agents with professional-grade orchestration capabilities:
@@ -45,10 +45,10 @@ Whether you are deploying to a small cluster for friends or a global scale-out i
 ---
 
 ## ⭐ Star the Project
-...
 LaraKube is a labor of love for the Laravel community. If this tool has helped you launch a masterpiece, **please consider giving us a star on GitHub!**
 
 -   **[LaraKube CLI](https://github.com/luchavez-technologies/larakube-cli)**: The core orchestration engine.
+-   **[LaraKube Console](https://github.com/luchavez-technologies/larakube-console)**: The visual control plane.
 -   **[LaraKube Docs](https://github.com/luchavez-technologies/larakube-docs)**: Our high-context guides and recipes.
 
 ---

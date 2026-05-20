@@ -1,43 +1,28 @@
 ---
 sidebar_position: 2
-title: Changelog & Roadmap
-description: Stay updated with the latest LaraKube CLI features, technical improvements, and the roadmap to version 0.0.1. Track our progress in real-time.
+title: Changelog
+description: Track the latest updates across the LaraKube ecosystem (CLI, Console, and Documentation).
 ---
 # 📜 Changelog
 
-LaraKube is currently under **active development**. We are hard at work building the ultimate Kubernetes experience for Laravel, with the goal of releasing version **`0.0.1`** within this week.
+LaraKube is evolving rapidly. We maintain a high-level changelog here for major architectural shifts, while specific technical commits can be tracked on GitHub.
+
+## 🚀 Unified Ecosystem Updates
+
+### May 2026: The "Cloud Pilot" Release
+This milestone transformed LaraKube into a professional deployment suite, establishing the **$6/mo Baseline** and the **Scaling Roadmap**.
+
+- **Ecosystem**: Established the **$6/mo (1GB RAM) VPS** as the official baseline for stable production Kubernetes.
+- **GitOps**: Launched **Cloud Pilot**, an automated GHA-to-GHCR pipeline that offloads heavy builds to GitHub to prevent OOM on small servers.
+- **AI-Native**: Refactored the core into a **Dual-MCP** architecture (Local Mechanic + Master Architect).
+- **Console**: Migrated to **Filament v5** for a professional "Control Plane" aesthetic and Saloon-powered API integration.
+- **UX**: Added interactive **Anchor Links** and **Share Buttons** to the documentation for better developer collaboration.
 
 ---
 
-## [Unreleased] - 2026-04-18 (Current Session)
+## 🔗 Technical Release Notes
+For a line-by-line breakdown of every fix and feature, please follow our individual repository releases:
 
-This session focused on transforming LaraKube into an expressive, industrial-strength orchestrator with a heavy emphasis on local stability, automated lifecycles, and architectural resilience.
-
-### 🚀 Major Features
--   **Blueprint Resilience**: Your architectural DNA (`.larakube.json`) is now automatically backed up to a secure **Kubernetes Secret**. The `heal` command can now restore your master configuration directly from the cluster if the local file is lost.
--   **Full-Stack Live Coding**: Integrated native backend watching for **FrankenPHP/Octane** using `chokidar`. Local development now features instant hot-reloading for both PHP and JavaScript with zero manual refreshes.
--   **Hardened Database Initialization**: Switched from basic port checks to initialization-aware probes (`mysqladmin ping`, `pg_isready`). This ensures your database is 100% ready before your application pod even starts.
--   **Self-Healing Startup**: Added a `wait-for-db` initContainer to the web pod, definitively resolving "Connection Refused" errors and initialization deadlocks during cluster boot.
--   **Expressive CLI API ("Architecture-by-Flag")**: You can now define your entire stack directly in the `new` command using flags like `--frankenphp`, `--mysql`, `--meilisearch`, and `--reverb`.
--   **Stability-First Storage**: Implemented **Managed Persistent Volumes (PVCs)** with native `subPath` mounts for Laravel's framework directories. This ensures durability and eliminates host-path permission conflicts.
--   **Safe Pause/Resume**: Introduced `stop` and `start` commands to scale pods to zero and back, saving resources without data loss.
-
-### 🛠 Technical Improvements
--   **Vite HMR Hardening**: Surgically hardens `vite.config.ts` for Kubernetes Ingress (Port 80/CORS), eliminating whitescreens.
--   **Deduplicated Manifest Engine**: Refactored to a strict two-phase "Single-Pass" strategy to prevent Kustomize conflicts.
--   **Professional UX**: Implemented "Confirm by Name" safety gates for destructive commands and an elegant, frequency-capped GitHub star prompt.
--   **Integrated Documentation**: Created a collection of **Architectural Recipes** and a **Kubernetes Glossary** to bridge the gap between Laravel and cluster orchestration.
-
-### 🤝 Community & Personal
--   Added a dedicated tribute to [Server Side Up](https://serversideup.net/) and [Spin Pro](https://getspin.pro/).
--   Integrated the creator's professional profile and LinkedIn/Email contact details.
-
----
-
-### 📅 Roadmap to 0.0.1
-- [x] Finalize expressive CLI flags.
-- [x] Harden local database persistence.
-- [x] Implement automated migration and wait hooks.
-- [x] Integrate full-stack live watching.
-- [ ] Final validation of Statamic and Filament blueprints.
-- [ ] Initial release of the LaraKube binary.
+- **[LaraKube CLI Releases](https://github.com/luchavez-technologies/larakube-cli/releases)**: Tracking the core PHP orchestration engine.
+- **[LaraKube Console Releases](https://github.com/luchavez-technologies/larakube-console/releases)**: Updates to the visual Kubernetes Control Plane.
+- **[LaraKube Documentation](https://github.com/luchavez-technologies/larakube-docs/commits/main)**: Ongoing improvements to guides and visual schematics.

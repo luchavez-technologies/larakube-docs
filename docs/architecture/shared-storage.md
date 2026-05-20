@@ -20,8 +20,6 @@ graph TD
 ```
 
 ## 🏗 The Unified Volume Model
-...
-
 Instead of separate Persistent Volume Claims (PVCs) for each service, LaraKube uses a single, high-performance PVC that is shared across all Laravel-related pods in your project namespace.
 
 ### 📁 What is shared?

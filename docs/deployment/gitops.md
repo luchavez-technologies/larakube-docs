@@ -17,7 +17,6 @@ graph LR
 
 ## ⚙️ The "Secret Sauce": Build Offloading
 Running CPU-intensive tasks like `composer install` or `npm run build` directly on a 1GB droplet will cause it to crash under load. LaraKube solves this by offloading the heavy lifting:
-...
 
 1.  **GHA Build Engine**: All heavy lifting (Composer dependencies, NPM builds, Docker image creation) happens on **GitHub Runners**.
 2.  **Zero-OOM Guarantee**: Your VPS remains cool and responsive, acting only as the *runtime* environment for your application.

@@ -9,6 +9,21 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### May 2026: The "Per-Environment Schema" Release (CLI v0.4.0)
+This release reshapes `.larakube.json` so every environment owns its own configuration — ingress, managed services, hosts. It's the foundation for multi-environment deployments where local, staging, QA, and production may legitimately need different settings (e.g., projects deployed across isolated VPCs/networks where each env runs an entirely different ingress controller).
+
+- **Per-environment overrides**: `environments` is now a map keyed by env name. Each env carries its own `ingress`, `managed`, `hosts`, plus optional `addFeatures` / `excludeFeatures` for the rare cases where a feature's natural environment scope needs to be overridden.
+- **Enum-driven feature scoping**: `LaravelFeature::defaultEnvironments()` declares where each feature naturally applies — `BOOST`, `AI`, `MCP`, `MAILPIT` default to local-only; `SSR` to production-only; everything else runs everywhere. The blueprint's top-level `features` list stays lean and you don't repeat yourself per env.
+- **Cleaner production manifests**: dev-only feature env vars (`BOOST_*`, etc.) no longer leak into production deployments — feature filtering is now env-aware end-to-end.
+- **Folder-name guard**: `larakube up` and `larakube heal` now fail fast with explicit rename instructions when the project folder name doesn't match the `name` field in `.larakube.json` (the common case: cloning a GitHub repo whose default folder name differs in capitalization).
+- **MCP command hygiene**: `make:mcp-app-resource` is now hidden from `larakube list` (it's a LaraKube-internal scaffolding command, not a project-facing one).
+- **Breaking blueprint changes** (clean break, no compat layer — migrate manually):
+  - `ingressController` (top-level) → `environments.<env>.ingress`
+  - `managedServices` (top-level, production-only) → `environments.<env>.managed`
+  - `productionHost` → `environments.production.hosts.web`
+  - `environments: ["local", "production"]` → `environments: {"local": {…}, "production": {…}}`
+- **Migration**: edit `.larakube.json` to the new shape (see the [environments-config-schema plan](https://github.com/luchavez-technologies/larakube-cli/blob/main/plans/active/environments-config-schema.md) for the full target shape), then run `larakube heal` to regenerate manifests against the new schema. Existing K8s deployments stay running — no cluster-level migration needed.
+
 ### May 2026: The "First-Class Testing" Release (CLI v0.3.0)
 This milestone made local Laravel testing inside Kubernetes feel **native and safe**, while shipping the foundation for production-grade SSR.
 

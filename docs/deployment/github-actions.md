@@ -28,9 +28,21 @@ larakube gha:configure production
 - Uploads your current `KUBECONFIG` as a GitHub Secret.
 - Sets up the registry authentication for your cluster.
 
+### Related `gha:*` commands
+
+- `larakube gha:login` — Authenticate with GitHub via the official CLI (run once per machine).
+- `larakube gha:user` — Print the currently authenticated GitHub user (useful for verifying which account `gha:configure` will target).
+- `larakube gha:switch` — Switch between authenticated GitHub accounts when juggling personal/work logins.
+
+All `gha:*` commands run inside the same isolated GitHub CLI container — no local `gh` install required.
+
 ## Manual Deployments
 If you need to push a quick update without a Git push, you can deploy manually from your terminal:
 
 ```bash
-larakube deploy production
+larakube cloud:deploy production
 ```
+
+:::note Renamed in v0.3.0
+This command was previously `larakube deploy production`. It was renamed to `larakube cloud:deploy` to consolidate all cloud/production commands under one namespace (see [Cloud Deployment](../commands/cloud)).
+:::

@@ -73,6 +73,8 @@ const sidebars: SidebarsConfig = {
         'commands/management',
         'commands/networking',
         'commands/development',
+        'commands/cluster',
+        'commands/cloud',
       ],
     },
     {

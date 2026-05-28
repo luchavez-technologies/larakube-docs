@@ -11,6 +11,21 @@ Evolve your infrastructure and manage your services with these specialized opera
 Just like the [Deployment Operations](./operations), the `add` command will always show you an **Architectural Preview** of the manifests and packages about to be added to your project before asking for confirmation.
 :::
 
+## `new {name}`
+The "Scaffolding" tool. Creates a brand-new Laravel application with a custom Kubernetes architecture baked in from day one.
+- **Wizard or Flags**: Run interactively or skip prompts with flags like `--react`, `--mysql`, `--horizon`, `--frankenphp`, `--reverb`, `--phpunit`.
+- **Lifecycle Battle Test**: `larakube new lifecycle-test --fast --react --phpunit` is the canonical sequence used in CI for validating LaraKube itself end-to-end.
+
+## `kustomize {environment?}`
+The "Manifest Preview." Renders and prints the final, merged Kubernetes manifests for a given environment — exactly what would be `kubectl apply`'d by `up` / `heal` / `cloud:deploy`.
+- **Use Cases**: Debugging overlay merges, reviewing what production will receive before `cloud:deploy`, copy-pasting into a third-party Kustomize/Argo CD pipeline.
+- **Default**: Targets the `local` environment if no argument is provided.
+
+## `k9s`
+The "Terminal Dashboard." Launches the [K9s](https://k9scli.io/) terminal UI pre-scoped to your project's namespace — instant pod-level visibility.
+- **Requires**: K9s installed locally (`brew install k9s` on macOS).
+- **Companion to `larakube console`**: K9s for terminal power-users; `console` (a.k.a. `web`) for the GUI.
+
 ## `add {items}`
 The "Evolution" tool. Use `add` to plug in new features (like Reverb), database engines (like MariaDB), architectural blueprints (like Statamic), or object storage (like MinIO) to your project anytime.
 

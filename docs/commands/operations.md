@@ -13,20 +13,28 @@ The "Launch" button. Deploys your infrastructure and application to the cluster.
 - **Validation:** Use `--dry-run` to perform a full architectural validation of your manifests before deploying.
 - **Deduplicated Manifests:** LaraKube uses a unique single-pass engine to ensure your Kubernetes resources are never registered twice.
 
-## `deploy {environment}`
-The "Release" button. Build and deploy the application to a remote environment.
-- **CI/CD Integration**: Designed to work seamlessly with GitHub Actions or other CI providers.
-- **Environment Targeting**: Specify the target environment as an argument (e.g., `larakube deploy production`).
+## `build`
+The "Image Builder." Rebuild the local Docker image for the project and re-import it into the local k3d cluster.
+- **Use Cases**: After a `Dockerfile.php` change, or to refresh a stale local image without a full `up`.
+- **Automatic Sideload**: Images are automatically imported into the k3d cluster via `k3d image import`.
+
+:::info Looking for `deploy`?
+Production deployments are now under the [`cloud:*` namespace](./cloud) — use `larakube cloud:deploy {environment}`. The flat `larakube deploy` was renamed in v0.3.0 to consolidate all cloud-related commands.
+:::
 
 ## `env {name}`
 The "Workspace" tool. Create a new Kubernetes environment overlay (e.g., `staging`, `production`).
 - **Isolation**: Each environment gets its own namespace and dedicated resources.
 - **Blueprint Inheritance**: Inherits your base architectural DNA while allowing environment-specific overrides.
 
-## `test {environment}`
+## `smoke {environment}`
 The "Smoke Test" tool. Performs a connectivity smoke test to ensure the application is reachable and responding correctly.
 - **Automatic Execution**: Usually run automatically after `up`, but can be called manually for verification.
 - **Default**: Targets the `local` environment if no argument is provided.
+
+:::note Renamed in v0.3.0
+This was previously `larakube test`. The new `larakube test` is a [phpunit/pest runner](./development#test) — separate, dedicated command. Scripts that called the old name should switch to `larakube smoke`.
+:::
 
 ## `about {environment}`
 The "Health Check" button. Display a unified architectural and health overview of the project.
@@ -48,6 +56,12 @@ The "Cleanup" button. Removes your application's resources and internal volumes 
 - **Safety Preview**: Use `--dry-run` to see which resources will be deleted before they are removed.
 - **Confirmation**: Requires you to type the project name to confirm the deletion.
 - **Force Mode**: Use `--force` to skip the manual confirmation.
+
+## `purge {environment}`
+The "Nuclear Cleanup." Completely removes LaraKube manifests AND all cluster resources for the project, including database PVCs.
+- **More destructive than `down`**: `down` removes app/internal volumes but `purge` also wipes persistent data (databases, storage volumes).
+- **Use when**: Starting completely fresh, or when `reset` of the project's blueprint is also planned.
+- **Confirmation**: Requires explicit project-name confirmation.
 
 ## `reset`
 The "Hard Reset." Remove all LaraKube DNA and manifests from the project.

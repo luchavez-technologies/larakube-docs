@@ -32,6 +32,13 @@ The "Total Cleanup." Completely removes the Traefik Ingress Controller and its c
 - **Safety**: Requires confirmation unless the `--force` flag is used.
 - **Usage**: `larakube traefik:destroy`
 
+## `hosts`
+The "Domain Sync." Manages `/etc/hosts` entries for your project's `.dev.test` domains. Run after `up` if your browser can't resolve a project URL.
+- **Idempotent**: Safe to run multiple times; existing entries are reused.
+- **Mac/Windows**: Maps your project domains to `127.0.0.1` for local Docker Desktop / OrbStack setups.
+- **Linux**: Maps to the cluster LoadBalancer IP (MetalLB or k3d's built-in).
+- **Sudo**: Prompts for elevation since `/etc/hosts` is a protected file.
+
 ## `trust`
 The "Authority Installer." Installs the LaraKube Local CA into your system's trust store.
 - **Support**: Works natively on **macOS**, **Linux**, and **Windows WSL2**.

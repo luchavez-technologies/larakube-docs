@@ -152,12 +152,12 @@ If you need a secondary database (e.g. MongoDB alongside Postgres for analytics)
 
 The Laravel ecosystem switches. Crucially, this is **a single project-wide list** — you don't repeat features per environment.
 
-LaraKube knows where each feature naturally applies via `LaravelFeature::defaultEnvironments()`:
+LaraKube knows where each feature naturally applies via `LaravelFeature::appliesToEnvironment($env)` — and it's environment-name-agnostic, so the rules hold for any env you create (`staging`, `qa`, …), not just `local`/`production`:
 
 | Feature | Applies to |
 |---|---|
 | `horizon`, `queues`, `scheduler`, `reverb`, `scout`, `octane` | All envs |
-| `ssr` | Production only (Vite handles local SSR natively in dev) |
+| `ssr` | Every cloud (non-local) env — Vite handles local SSR natively in dev |
 | `boost`, `ai`, `mcp`, `mailpit` | Local only (dev tooling) |
 
 You **almost never** need to override this. If you do (e.g. you want Boost in a sandbox env), use the per-env `addFeatures` / `excludeFeatures` arrays inside `environments[env]`.

@@ -9,6 +9,28 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### May 2026: The "Environment-Aware Generation" Release (CLI v0.6.0)
+Building on the per-environment schema, manifest generation now honors **every** environment in `.larakube.json` — not just the conventional `local` + `production`. Environment names became a soft contract: rename `production` to `main`, add a `qa`, and the only follow-up is `larakube heal`.
+
+- **Per-environment overlays**: the engine renders a complete overlay for each cloud environment (its own namespace, ingress, hosts, and per-env feature set). `larakube env <name>` now generates the new env's overlay from its own config instead of copying production, and `larakube heal` regenerates every environment.
+- **Managed services fully removed where managed**: marking a service `managed` in an env now strips its Deployment/Service via a kustomize `$patch: delete` (local keeps running it), and its volume manifest is no longer written into that env at all — no more stray, unreferenced files.
+- **Name-agnostic feature scoping**: feature applicability is computed per env (`appliesToEnvironment`) rather than a fixed env list. Common features (Horizon, Queues, Reverb, Scheduler) now correctly reach custom envs like `staging`/`qa`; SSR applies to every cloud env; local-only tooling (Boost/AI/MCP/Mailpit) stays local.
+- **`larakube heal --prune`**: removes generated manifests the blueprint no longer produces — stale volumes, overlays for dropped environments — while always preserving locked files. Opt-in; never automatic.
+- **Smarter `larakube env` prompts**: the "managed externally" prompt now offers the project's full externalizable stack (database, cache, search, object storage), and per-service custom-host prompts are limited to genuinely client-facing endpoints (Reverb WebSocket, S3) so you're not pestered for admin consoles.
+- **Per-service host correctness**: each environment's ingress now routes to its own configured host, fixing cloud overlays that previously inherited the production domain.
+
+Production and local manifest output are unchanged (snapshot-verified) — this release is additive for custom environments and managed services.
+
+### May 2026: The "Environment-Aware Commands" Release (CLI v0.5.0)
+Makes day-to-day commands understand environments as data, and gives every service its own optional hostname.
+
+- **Config-driven environment discovery**: environment lists come solely from `.larakube.json`. Rename or add environments freely — commands no longer reference hardcoded env names.
+- **Per-service hosts**: each environment can give a service its own subdomain (e.g. Reverb on `ws.example.com`, S3 on `cdn.example.com`) independent of the web host, via a declarative `HasHosts` contract. New `getHost()` / `setHost()` accessors.
+- **`larakube env` rewired** to the per-environment schema (fixing a crash after v0.4.0); it now gathers ingress, managed services, web host, and per-service host overrides for new environments.
+- **Sensible command defaults**: observation commands (`k9s`, `kustomize`, `console`) default to `local` with no prompt; cloud/GitHub commands drop hardcoded `production` and prompt from the configured cloud environments instead.
+- **Security fix**: database/cache admin consoles no longer leak into non-local (cloud) ingress hosts — they remain local-only.
+- **Reliability**: `larakube cloud:provision` is now idempotent, so re-running it while adding a second project to a node is safe.
+
 ### May 2026: The "Per-Environment Schema" Release (CLI v0.4.0)
 This release reshapes `.larakube.json` so every environment owns its own configuration — ingress, managed services, hosts. It's the foundation for multi-environment deployments where local, staging, QA, and production may legitimately need different settings (e.g., projects deployed across isolated VPCs/networks where each env runs an entirely different ingress controller).
 
@@ -22,7 +44,7 @@ This release reshapes `.larakube.json` so every environment owns its own configu
   - `managedServices` (top-level, production-only) → `environments.<env>.managed`
   - `productionHost` → `environments.production.hosts.web`
   - `environments: ["local", "production"]` → `environments: {"local": {…}, "production": {…}}`
-- **Migration**: edit `.larakube.json` to the new shape (see the [environments-config-schema plan](https://github.com/luchavez-technologies/larakube-cli/blob/main/plans/active/environments-config-schema.md) for the full target shape), then run `larakube heal` to regenerate manifests against the new schema. Existing K8s deployments stay running — no cluster-level migration needed.
+- **Migration**: edit `.larakube.json` to the new shape (see the [environments-config-schema plan](https://github.com/luchavez-technologies/larakube-cli/blob/main/plans/completed/environments-config-schema.md) for the full target shape), then run `larakube heal` to regenerate manifests against the new schema. Existing K8s deployments stay running — no cluster-level migration needed.
 
 ### May 2026: The "First-Class Testing" Release (CLI v0.3.0)
 This milestone made local Laravel testing inside Kubernetes feel **native and safe**, while shipping the foundation for production-grade SSR.

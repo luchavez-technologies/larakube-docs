@@ -85,6 +85,7 @@ const sidebars: SidebarsConfig = {
         'deployment/overview',
         'deployment/gitops',
         'deployment/6dollar-baseline',
+        'deployment/multiple-projects',
         'deployment/surgical-credentials',
         'deployment/github-actions',
       ],

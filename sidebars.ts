@@ -36,6 +36,7 @@ const sidebars: SidebarsConfig = {
         'onboarding/first-app',
         'onboarding/full-flight-plan',
         'onboarding/configuration',
+        'onboarding/without-the-cli',
         'onboarding/glossary',
       ],
     },

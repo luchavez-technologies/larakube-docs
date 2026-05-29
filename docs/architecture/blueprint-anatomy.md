@@ -73,8 +73,7 @@ Here's a more grown-up project — Filament admin, React frontend, a real databa
                 "ip": "203.0.113.20",
                 "user": "deploy",
                 "port": 22,
-                "key": "~/.ssh/id_rsa",
-                "teammates": []
+                "key": "~/.ssh/id_rsa"
             }
         },
         "production": {
@@ -88,8 +87,7 @@ Here's a more grown-up project — Filament admin, React frontend, a real databa
                 "ip": "203.0.113.10",
                 "user": "deploy",
                 "port": 22,
-                "key": "~/.ssh/id_rsa",
-                "teammates": []
+                "key": "~/.ssh/id_rsa"
             }
         }
     },
@@ -221,7 +219,7 @@ The simplest case. LaraKube runs everything for you (Postgres, Redis, Meilisearc
         "reverb": "ws-stg.acme.example",
         "s3": "cdn-stg.acme.example"
     },
-    "cloud": { "ip": "203.0.113.20", "user": "deploy", "port": 22, "key": "~/.ssh/id_rsa", "teammates": [] }
+    "cloud": { "ip": "203.0.113.20", "user": "deploy", "port": 22, "key": "~/.ssh/id_rsa" }
 }
 ```
 
@@ -237,7 +235,7 @@ A real server, but still self-contained: LaraKube runs Postgres, Redis, Meilisea
         "reverb": "ws.acme.example",
         "s3": "cdn.acme.example"
     },
-    "cloud": { "ip": "203.0.113.10", "user": "deploy", "port": 22, "key": "~/.ssh/id_rsa", "teammates": [] }
+    "cloud": { "ip": "203.0.113.10", "user": "deploy", "port": 22, "key": "~/.ssh/id_rsa" }
 }
 ```
 
@@ -290,7 +288,18 @@ Each environment that deploys to a server keeps its connection details right ins
             "user": "deploy",
             "port": 22,
             "key": "~/.ssh/id_rsa",
-            "teammates": []
+            "teammates": [
+                {
+                    "username": "alice",
+                    "name": "Alice Rivera",
+                    "state": "present",
+                    "groups": ["sudo"],
+                    "shell": "/bin/bash",
+                    "authorized_keys": [
+                        { "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5... alice@laptop" }
+                    ]
+                }
+            ]
         }
     }
 }
@@ -300,7 +309,13 @@ You fill this in by running `larakube cloud:configure`. It's used to reach your 
 
 - **`ip` / `user` / `port`** — how to SSH into the server.
 - **`key`** — path to your SSH private key (absolute, or `~`-relative).
-- **`teammates`** — people you've granted SSH access to this server, added via `larakube cloud:configure users`. Each environment keeps its own list.
+- **`teammates`** — other people who should be able to SSH into *this* server. You add them with `larakube cloud:configure users` (you won't hand-write these), and LaraKube creates the matching Linux user on the box and installs their public key. Each environment keeps its own list, so you can give a teammate access to staging but not production. Each entry has:
+  - **`username`** / **`name`** — the login name to create and a human label.
+  - **`groups`** / **`shell`** — the Linux groups (e.g. `sudo`) and login shell for that user.
+  - **`state`** — `present` to ensure the user exists, or `absent` to remove them on the next sync.
+  - **`authorized_keys`** — the public SSH keys allowed to log in as that user.
+
+A fresh `cloud` block has no `teammates` until you add some — it's an optional list, so leaving it out (as the examples above do) is perfectly normal.
 
 :::note Older projects
 LaraKube used to store all of this in one top-level `cloud` block. If you have an older `.larakube.json`, LaraKube quietly moves it into each environment the next time it saves — you don't have to change anything.

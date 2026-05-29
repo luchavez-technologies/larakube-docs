@@ -7,7 +7,7 @@ description: A real-world .larakube.json walkthrough — every field explained o
 
 `.larakube.json` is the source of truth for every LaraKube project. The CLI reads it during `larakube up`, `heal`, `add`, `env`, and every cloud command — there is no separate database, no IaC sidecar, no inferred state. If you can edit this file, you can change how the cluster is shaped.
 
-This page walks through a **mature blueprint** — one that exercises most of LaraKube's surface area: multiple databases, scout, object storage, full Laravel feature stack, Inertia SSR, three environments (local / staging / production), per-env managed services, and per-service hostnames (Reverb on its own subdomain, S3 on its own subdomain).
+This page walks through a **mature blueprint** — one that exercises most of LaraKube's surface area: multiple databases, scout, object storage, full Laravel feature stack, Inertia SSR, three environments (local / staging / production), a per-env deployment strategy (single-node staging, multi-node-HA production), per-env managed services, per-service hostnames (Reverb on its own subdomain, S3 on its own subdomain), and the managed-Kubernetes overlay knobs that let production land on EKS (IRSA, existing namespace, ALB annotations).
 
 Use it as a reference when designing your own setup. You almost certainly don't need every section — most production apps use 60-70% of it.
 
@@ -57,11 +57,29 @@ Use it as a reference when designing your own setup. You almost certainly don't 
         },
         "production": {
             "ingress": "aws-alb",
+            "strategy": "multi-node-ha",
+            "namespace": "acme-app",
             "managed": ["postgres", "redis", "meilisearch"],
             "hosts": {
                 "web": "acme.example",
                 "reverb": "ws.acme.example",
                 "s3": "cdn.acme.example"
+            },
+            "serviceAccount": "acme-app-sa",
+            "serviceAccountAnnotations": {
+                "eks.amazonaws.com/role-arn": "arn:aws:iam::123456789012:role/acme-app"
+            },
+            "omitImagePullSecret": true,
+            "ingressAnnotations": {
+                "alb.ingress.kubernetes.io/certificate-arn": "arn:aws:acm:us-east-1:123456789012:certificate/abcd-1234",
+                "alb.ingress.kubernetes.io/security-groups": "sg-0123456789abcdef0"
+            },
+            "cloud": {
+                "ip": "203.0.113.10",
+                "user": "deploy",
+                "port": 22,
+                "key": "~/.ssh/id_rsa",
+                "teammates": []
             }
         }
     },
@@ -83,15 +101,7 @@ Use it as a reference when designing your own setup. You almost certainly don't 
         "routes",
         "composer.lock",
         ".env"
-    ],
-    "cloud": {
-        "production": {
-            "ip": "203.0.113.10",
-            "user": "deploy",
-            "port": 22,
-            "key": "~/.ssh/id_rsa"
-        }
-    }
+    ]
 }
 ```
 
@@ -104,7 +114,7 @@ Use it as a reference when designing your own setup. You almost certainly don't 
 ```
 
 - **`id`** — A UUID generated on first `larakube init`. Persistent across folder renames and machine moves. The Console uses it as the primary key for activity history. Don't edit by hand.
-- **`name`** — The Kubernetes-friendly slug for this project. Namespaces are derived as `{name}-{environment}` (e.g. `acme-app-local`, `acme-app-production`). The project folder name must match exactly (case-sensitive) — see [Architectural DNA](./architectural-dna).
+- **`name`** — The Kubernetes-friendly slug for this project. Namespaces are derived as `{name}-{environment}` (e.g. `acme-app-local`, `acme-app-production`) unless an environment overrides it with `namespace` (see [Managed-Kubernetes overlay knobs](#managed-kubernetes-overlay-knobs)). The project folder name must match exactly (case-sensitive) — see [Architectural DNA](./architectural-dna).
 - **`email`** — Used by Let's Encrypt certbot when LaraKube manages TLS for you in production.
 
 ## 🏗️ Stack choices
@@ -172,13 +182,17 @@ You **almost never** need to override this. If you do (e.g. you want Boost in a 
 }
 ```
 
-The heart of the blueprint. Each environment is its own `EnvironmentData` with five optional fields:
+The heart of the blueprint. Each environment is its own `EnvironmentData`. Every field is optional and defaults to the project-level / Single-Node-Hero behavior, so a minimal env (`{}`) is perfectly valid. The core fields:
 
 - **`ingress`** — Override the default Traefik ingress for this env. Common reasons: production on AWS ALB, staging on Nginx, QA on a different controller because it lives in a separate VPC.
+- **`strategy`** — Per-env deployment strategy: `single-node` or `multi-node-ha`. Overrides the project-level `strategy` for this env only — so staging can run `single-node` while production runs `multi-node-ha` from one blueprint. **`local` is always `single-node`** regardless (it's one machine), so its volumes stay `ReadWriteOnce`.
 - **`managed`** — Services that are **externally managed** in this env (e.g. RDS Postgres in production). LaraKube skips their Deployment manifests for this env but still wires the env vars to point at the external endpoint your `.env.{env}` provides.
 - **`hosts`** — Per-service externally-visible hostnames. See the next section for the Reverb/S3 patterns.
+- **`cloud`** — SSH connection (`ip`, `user`, `port`, `key`) and `teammates` (SSH-key access) for deploying this env to a remote host. Populated by `larakube cloud:configure`. See the **Cloud connection** section below.
 - **`addFeatures`** — Opt a feature INTO this env that's normally excluded (e.g. enable Boost in a "sandbox" env).
 - **`excludeFeatures`** — Opt a feature OUT of this env that's normally included (e.g. disable Horizon in QA).
+
+Plus the optional [Managed-Kubernetes overlay knobs](#managed-kubernetes-overlay-knobs) (`namespace`, `serviceAccount`, `serviceAccountAnnotations`, `imagePullSecret` / `omitImagePullSecret`, `ingressAnnotations`) for dropping an overlay into EKS/GKE/AKS — shown on `production` above and detailed in their own section.
 
 ### Local
 
@@ -212,16 +226,24 @@ A real cluster, but still self-contained: LaraKube runs Postgres/Redis/Meilisear
 ```json
 "production": {
     "ingress": "aws-alb",
+    "strategy": "multi-node-ha",
+    "namespace": "acme-app",
     "managed": ["postgres", "redis", "meilisearch"],
-    "hosts": {
-        "web": "acme.example",
-        "reverb": "ws.acme.example",
-        "s3": "cdn.acme.example"
-    }
+    "hosts": { "web": "acme.example", "reverb": "ws.acme.example", "s3": "cdn.acme.example" },
+    "serviceAccount": "acme-app-sa",
+    "serviceAccountAnnotations": { "eks.amazonaws.com/role-arn": "arn:aws:iam::123456789012:role/acme-app" },
+    "omitImagePullSecret": true,
+    "ingressAnnotations": {
+        "alb.ingress.kubernetes.io/certificate-arn": "arn:aws:acm:us-east-1:123456789012:certificate/abcd-1234",
+        "alb.ingress.kubernetes.io/security-groups": "sg-0123456789abcdef0"
+    },
+    "cloud": { "ip": "203.0.113.10", "user": "deploy", "port": 22, "key": "~/.ssh/id_rsa", "teammates": [] }
 }
 ```
 
-The grown-up environment: AWS ALB instead of Traefik (managed TLS termination + WAF integration), and the three heavy data services are **externally managed** (RDS Postgres, ElastiCache Redis, a hosted Meilisearch). LaraKube skips those Deployments and trusts your `.env.production` to point at the real endpoints.
+The grown-up environment, here shown as a managed EKS cluster. AWS ALB instead of Traefik (managed TLS termination + WAF integration), `multi-node-ha` so the workload runs replicated, and the three heavy data services are **externally managed** (RDS Postgres, ElastiCache Redis, a hosted Meilisearch). LaraKube skips those Deployments and trusts your `.env.production` to point at the real endpoints.
+
+It also uses the [Managed-Kubernetes overlay knobs](#managed-kubernetes-overlay-knobs): the overlay lands in the existing `acme-app` namespace, the pods run under an IRSA-annotated ServiceAccount, the image pull secret is dropped (ECR is reached via the node/IRSA role), and the ALB cert ARN + security groups ride through as ingress annotations. None of those are needed for the Single-Node-Hero path — they only appear when you set them.
 
 MinIO is **not** in `managed` — we're still running our own S3-compatible storage in this env. The `s3` host override exposes it through `cdn.acme.example`.
 
@@ -240,6 +262,17 @@ Common patterns worth knowing:
 - **Horizon and Queues are NOT in `hosts`.** Horizon mounts under `/horizon` on the main web host; queues have no UI. They don't need their own subdomain.
 - **Database/cache consoles are local-only.** LaraKube refuses to publish `mysql-{name}.dev.test` style consoles through cloud ingress — they only render on local. Use a bastion + port-forward for production database access.
 
+## ☸️ Managed-Kubernetes overlay knobs {#managed-kubernetes-overlay-knobs}
+
+These optional per-env fields let a generated overlay drop into a managed cluster (EKS / GKE / AKS) without hand-editing. **Every one defaults to today's Single-Node-Hero behavior when unset** — they only change the output when you set them, so an ordinary blueprint never carries them. They're shown on the `production` env in the example above.
+
+- **`namespace`** — Land the overlay in an existing namespace instead of the derived `{name}-{environment}`. In-cluster service FQDNs (`DB_HOST`, `REDIS_HOST`, …) follow the override too.
+- **`serviceAccount`** — Run the app pods under a named ServiceAccount. By default user pods have no SA; set this for IRSA (EKS) or Workload Identity (GKE). LaraKube emits the ServiceAccount resource and sets `serviceAccountName` on the workloads.
+- **`serviceAccountAnnotations`** — Annotations on that ServiceAccount, e.g. `{"eks.amazonaws.com/role-arn": "arn:aws:iam::…:role/…"}` for IRSA. Only emitted when `serviceAccount` is set.
+- **`imagePullSecret`** — Name of the image pull secret. Defaults to `ghcr-login` (the Single-Node-Hero GHCR secret).
+- **`omitImagePullSecret`** — Drop the `imagePullSecrets` block entirely, for clusters that pull via the node/IRSA role (e.g. ECR on EKS) and need no secret.
+- **`ingressAnnotations`** — A raw passthrough map merged over the controller's default ingress annotations. This is where ALB specifics live — ACM `certificate-arn`, `security-groups`, `conditions.*` / `actions.*`. Values are emitted JSON-safe, so free-form JSON-string conditions stay valid YAML. It's a dumb merge: your entries extend (and can override) the defaults.
+
 ## ⚙️ Strategy & deployment
 
 ```json
@@ -249,27 +282,38 @@ Common patterns worth knowing:
 "provisionTestDb": true
 ```
 
-- **`strategy`** — `single-node` (one VPS, k3d-on-prod for the $6 baseline) or `cluster` (multi-node, real production at scale). Drives whether LaraKube generates Let's Encrypt cert resolvers or expects external TLS.
+- **`strategy`** — The project-level default: `single-node` (one VPS / k3s, the $6 baseline — `ReadWriteOnce` volumes, Let's Encrypt cert resolver) or `multi-node-ha` (multiple replicas, `ReadWriteMany` volumes, external/managed TLS). Any environment can override it with its own `strategy` (see the **Environments** section) — e.g. `single-node` staging + `multi-node-ha` production from one blueprint. `local` is always `single-node`.
 - **`githubActions`** — Whether the GHA Cloud Pilot workflow is enabled. When `true`, `larakube gha:configure` is wired to push secrets and the deploy workflow exists at `.github/workflows/larakube-deploy-{env}.yml`.
 - **`withCompanions`** — Include developer-facing companion apps (Mailpit, PhpMyAdmin, RedisInsight, Grafana) on local. Set `false` if you want a leaner local cluster.
 - **`provisionTestDb`** — When `true`, `larakube test --db` provisions `{name}_testing` on your project's real DB engine. Auto-set on first `larakube test --db` invocation. Useful for projects with engine-specific tests (Postgres JSONB, MySQL JSON ops) that can't run on in-memory SQLite.
 
 ## ☁️ Cloud connection
 
+Cloud connection lives **inside the environment it describes**, as `environments[env].cloud` — so it can't drift from the env it belongs to:
+
 ```json
-"cloud": {
+"environments": {
     "production": {
-        "ip": "203.0.113.10",
-        "user": "deploy",
-        "port": 22,
-        "key": "~/.ssh/id_rsa"
+        "cloud": {
+            "ip": "203.0.113.10",
+            "user": "deploy",
+            "port": 22,
+            "key": "~/.ssh/id_rsa",
+            "teammates": []
+        }
     }
 }
 ```
 
-SSH connection info for each cloud env, populated by `larakube cloud:configure`. Used by `larakube cloud:deploy`, `cloud:provision`, and the GHA Cloud Pilot to reach the VPS. One block per cloud environment — staging would have its own entry if you're deploying to a separate VPS.
+SSH connection info for a cloud env, populated by `larakube cloud:configure`. Used by `larakube cloud:deploy`, `cloud:provision`, and the GHA Cloud Pilot to reach the host. Each cloud env carries its own block — staging deploying to a separate VPS gets its own `environments.staging.cloud`.
 
-The `key` field can be an absolute path or `~`-relative. Permissions on the local file are validated before LaraKube attempts to use it.
+- **`ip` / `user` / `port`** — how to SSH in.
+- **`key`** — the private key path; absolute or `~`-relative. Permissions on the local file are validated before LaraKube uses it.
+- **`teammates`** — SSH-key access entries synced to this host by `larakube cloud:configure users`. Per-env, so different hosts can grant different people access.
+
+:::note Legacy blueprints
+Older projects stored a single top-level `"cloud": { "<env>": { … }, "users": [ … ] }` map. LaraKube migrates that into `environments[env].cloud` automatically on load and rewrites it in the new shape on the next save — no manual edit required.
+:::
 
 ## 🔒 Maintenance fields
 

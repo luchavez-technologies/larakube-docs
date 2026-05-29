@@ -52,6 +52,7 @@ const sidebars: SidebarsConfig = {
         'architecture/console',
         'architecture/multi-blueprint',
         'architecture/architectural-dna',
+        'architecture/blueprint-anatomy',
         'architecture/startup-sequence',
       ],
     },

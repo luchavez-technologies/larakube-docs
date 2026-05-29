@@ -335,11 +335,15 @@ Older projects stored a single top-level `"cloud": { "<env>": { … }, "users": 
 
 ## 🤖 System fields
 
-Three fields you'll usually leave alone but should recognize when reading other projects' blueprints:
+Fields you'll usually leave alone but should recognize when reading blueprints:
 
 - **`isSystem`** — LaraKube's own infrastructure projects set this to `true` (e.g. the Console itself). Skips a few user-app conventions. Always `false` for your apps.
-- **`isScaffolding`** — Transiently `true` during `larakube new` while the project is being scaffolded. Should be `false` in a healthy committed blueprint.
-- **`productionImage`** — The OCI image reference (e.g. `ghcr.io/team/acme-app`) that cloud deployments pull. Auto-populated by `larakube cloud:configure`. Leave `null` if you're not deploying to cloud yet.
+- **`productionImage`** — An optional OCI image reference (e.g. `ghcr.io/team/acme-app`), set via the `--production-image` flag on `larakube init`. Advisory metadata — current manifest generation uses a `{name}:latest` placeholder that CI substitutes with the freshly built image — so leaving it `null` is the norm.
+
+You may also see these **transient** fields in the in-memory object, but **never in a committed `.larakube.json`** — they're stripped on save:
+
+- **`isScaffolding`** — `true` only mid-`larakube new` while the project is being scaffolded.
+- **`path`** — the absolute filesystem path of the project, set at runtime (machine-specific, so it's never written to disk).
 
 ## 🚦 Editing safely
 

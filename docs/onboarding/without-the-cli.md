@@ -50,14 +50,34 @@ artisan <args>               # php artisan ... in the web pod
 composer <args>              # composer ... in the web pod
 npm <args>                   # npm ... in the node pod
 
+# Local URLs (app + Vite HMR + Reverb over https://*.dev.test)
+hosts                        # map ingress hosts → 127.0.0.1 in /etc/hosts (sudo)
+tls                          # cluster Traefik serves the local cert
+trust                        # trust the local CA so HTTPS + Reverb WSS work (sudo)
+
 # Introspection
 status                       # pods / services / ingress
 logs [deploy]                # tail logs (default: web)
 shell [deploy]               # shell into a pod (default: web)
-forward [port]               # port-forward web to localhost (default: 8080)
+forward [port]               # quick web-only check (does NOT cover Vite/Reverb)
 ```
 
 It auto-imports the freshly-built image for k3d, kind, and minikube; Docker Desktop and OrbStack share the daemon's images, so nothing extra is needed there.
+
+### Reaching the app over its real URLs
+
+`up` gets the pods running, but the app, Vite (HMR), and Reverb (WebSockets) are each served on their own ingress hostname. To use them, after `up`:
+
+```bash
+./larakube.sh tls      # the cluster's Traefik serves the LaraKube local cert
+./larakube.sh trust    # trust that cert locally (sudo)
+./larakube.sh hosts    # *.dev.test → 127.0.0.1 in /etc/hosts (sudo)
+# then open https://<project>.dev.test
+```
+
+- `tls` needs an ingress controller already running — **k3s ships Traefik** (works out of the box); on Docker Desktop/OrbStack install one first, or use the full CLI.
+- `trust` is required for **Reverb**: browsers silently reject self-signed certs on WebSocket connections.
+- `forward` is only a quick "is the web app up?" check (`http://localhost:8080`); it does **not** route Vite or Reverb.
 
 ## What it deliberately does *not* do
 

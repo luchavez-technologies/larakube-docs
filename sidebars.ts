@@ -84,6 +84,7 @@ const sidebars: SidebarsConfig = {
       label: 'Digging Deeper (Deployment)',
       items: [
         'deployment/overview',
+        'deployment/scaling-journey',
         'deployment/gitops',
         'deployment/6dollar-baseline',
         'deployment/multiple-projects',

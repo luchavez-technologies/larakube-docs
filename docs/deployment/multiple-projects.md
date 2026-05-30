@@ -7,7 +7,7 @@ description: Run multiple independent LaraKube projects on a single VPS — sepa
 
 You don't need a server per project. Two (or more) independent LaraKube apps — **separate GitHub repositories** — can live on a single VPS, each isolated in its own Kubernetes namespace, each on its own domain. This is the natural next step after the [Single-Node Hero](../architecture/single-node-hero) strategy: same cheap box, more than one app.
 
-This page covers the **simple, supported-today** approach: each project keeps its own data services (or points at an external managed database). For the more advanced "share one Postgres/Redis across projects to save RAM" model, see the future [Tenement](#-going-further-the-tenement) note at the end.
+This page covers the **simple, supported-today** approach: each project keeps its own data services (or points at an external managed database). For the more advanced "share one Postgres/Redis across projects to save RAM" model, see the future [Plex](#going-further-plex) note at the end.
 
 ## 💡 Why this just works
 
@@ -75,7 +75,7 @@ The deciding factor is **how heavy each app's data services are**:
 - **Lightweight apps fit comfortably.** A FrankenPHP + Inertia/React + **SQLite** app has no database pod and no Redis pod — just the web process. Two of those sit happily on a $12/2GB box.
 - **Data-heavy apps need a plan.** If each app wants its own Postgres + Redis + Meilisearch, two full stacks will blow past 2GB. Two good options:
   1. **Use an external managed database.** Mark the service as `managed` in `environments.production` and point the host at a provider endpoint (e.g. DigitalOcean Managed Database). LaraKube then skips deploying that pod entirely. See [Blueprint Anatomy](../architecture/blueprint-anatomy#-environments).
-  2. **Bump the droplet** to 4GB, or wait for the Tenement (below).
+  2. **Bump the droplet** to 4GB, or wait for a Plex (below).
 
 When in doubt, keep at least one of the two apps on the lightweight (SQLite/file-cache) profile.
 
@@ -90,10 +90,10 @@ When in doubt, keep at least one of the two apps on the lightweight (SQLite/file
 | The Kubernetes node itself & Traefik | **Shared** — one control plane, one ingress |
 | Raw CPU / RAM | **Shared** — this is why capacity planning matters |
 
-Because the node and its RAM are shared, a runaway app *can* affect its neighbor. For a hobbyist running their own handful of apps that's an acceptable trade; if you need hard resource fences between apps, that's a feature of the Tenement tier.
+Because the node and its RAM are shared, a runaway app *can* affect its neighbor. For a hobbyist running their own handful of apps that's an acceptable trade; if you need hard resource fences between apps, that's a feature of the Plex tier.
 
-## 🏘️ Going further: the Tenement
+## 🏘️ Going further: a Plex {#going-further-plex}
 
-The approach above keeps each app's data services separate (or external). A future LaraKube tier — **the Tenement** — will let multiple apps **share** a single Postgres/Redis instance on the node, each with its own isolated database and credentials (exactly like several apps sharing one managed database). That reclaims the RAM wasted by running duplicate data services and pushes the $12 box further.
+The approach above keeps each app's data services separate (or external). A future LaraKube tier — **Plex** (`larakube plex`) — will let multiple apps **share** a single Postgres/Redis instance on the node, each with its own isolated database and credentials (exactly like several apps sharing one managed database). That reclaims the RAM wasted by running duplicate data services and pushes the $12 box further. See [The Scaling Journey](./scaling-journey) for where this fits.
 
 Until then, "Two Apps, One Server" with lightweight apps or an external managed database is the recommended, fully-supported path.

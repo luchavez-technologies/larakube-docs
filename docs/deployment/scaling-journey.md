@@ -104,7 +104,7 @@ For agencies and platforms running many small tenants that still need to stay on
 The whole point: **moving between rungs is configuration, not a port.** Your application code never knows which rung it's on.
 
 - **More resilience (down → right on the grid):** change `strategy` from `single-node` to `multi-node-ha`. LaraKube replicates your workloads and adjusts storage.
-- **Offload a heavy service:** mark it `managed` and point at a provider endpoint. Your app just sees a connection string — whether that's an in-Tenement Postgres, a DigitalOcean Managed Database, or RDS.
+- **Offload a heavy service:** mark it `managed` and point at a provider endpoint. Your app just sees a connection string — whether that's an in-Plex Postgres, a DigitalOcean Managed Database, or RDS.
 - **More density:** add a second repo to the same cluster (rung ②), or join a **Plex** to share the Commons (rung ③/⑥) with `larakube plex join`.
 
 Because a service is "just a host" to your app, the scariest-sounding migration — *"move our database off the shared box"* — is a hostname change and a redeploy. That's the endgame LaraKube is built for: **pick the rung that fits your wallet and your risk today, and climb the moment you need to — never by rewriting, only by reconfiguring.**

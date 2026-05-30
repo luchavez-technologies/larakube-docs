@@ -9,6 +9,22 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### May 2026: The "Any-Cluster Deployments" Release (CLI v0.9.0)
+Two themes: the per-environment blueprint matures, and generated overlays now drop into a **managed Kubernetes cluster** (EKS, GKE, AKS, DigitalOcean) without hand-editing — while the cheap single-VPS path stays exactly as it was.
+
+- **Per-environment deployment strategy**: each environment sets its own `strategy` (`single-node` or `multi-node-ha`); `local` is always single-node. App storage volumes (PVCs) moved into each environment's overlay so their access mode follows that env's strategy (ReadWriteOnce for single-node, ReadWriteMany for HA).
+- **Cloud config moved into the environment**: SSH connection details and teammate access now live under `environments[env].cloud` instead of a detached top-level map, so they can't drift from the environment they describe. Older blueprints migrate automatically on load.
+- **Managed-Kubernetes overlay knobs** (all optional; each defaults to today's output): a per-env `namespace` override (in-cluster service addresses follow it), an opt-in `serviceAccount` + annotations for IRSA / Workload Identity, image-pull-secret control (`omitImagePullSecret` for clusters that pull via the node role, e.g. ECR), and a raw `ingressAnnotations` passthrough for ALB certificate ARNs, security groups, and conditions.
+- **Fixes**: `larakube cloud:configure base` and `users` no longer crash (they called methods that didn't exist); removed the dead `productionImage` field; corrected stale `.larakube.yml` references (the config has long been `.larakube.json`).
+
+Single-node and existing-blueprint output is unchanged (snapshot-verified) — this release is additive, with legacy cloud config migrating transparently.
+
+### May 2026: The "Portable Local Environment" Release (CLI v0.7 – v0.8)
+A CLI-free path for collaborators. `larakube portable` generates a self-contained `larakube.sh` wrapper so a teammate can run the project locally with just `docker`, `kubectl`, and `jq` — no LaraKube binary install required.
+
+- **The wrapper covers the full lifecycle** plus host / TLS / trust setup, so Vite HMR and Reverb WebSockets work over real `*.dev.test` URLs on a teammate's machine.
+- **Leaner committed blueprint**: transient, machine-specific fields (`isScaffolding`, `path`) are now stripped from `.larakube.json` on save.
+
 ### May 2026: The "Environment-Aware Generation" Release (CLI v0.6.0)
 Building on the per-environment schema, manifest generation now honors **every** environment in `.larakube.json` — not just the conventional `local` + `production`. Environment names became a soft contract: rename `production` to `main`, add a `qa`, and the only follow-up is `larakube heal`.
 

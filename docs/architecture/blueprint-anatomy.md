@@ -317,6 +317,12 @@ You fill this in by running `larakube cloud:configure`. It's used to reach your 
 
 A fresh `cloud` block has no `teammates` until you add some — it's an optional list, so leaving it out (as the examples above do) is perfectly normal.
 
+:::caution Single-server access only
+`teammates` is built for the **single-server (VPS) setup**: it creates a normal Linux login with `sudo` on that one machine. It does **not** fit a multi-node or managed cluster (EKS/GKE/AKS) — those nodes are disposable and often can't be logged into, and `sudo` is all-or-nothing anyway (there's no "read-only" or "just this one namespace").
+
+For scoped, multi-person access to a real cluster, the Kubernetes answer is **RBAC**: each person gets their own cluster credentials (a kubeconfig) and a defined set of permissions, so you can hand out read-only or single-namespace access. LaraKube doesn't automate that yet — for now, treat `teammates` as a single-VPS convenience only.
+:::
+
 :::note Older projects
 LaraKube used to store all of this in one top-level `cloud` block. If you have an older `.larakube.json`, LaraKube quietly moves it into each environment the next time it saves — you don't have to change anything.
 :::

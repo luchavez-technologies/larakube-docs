@@ -1,0 +1,11 @@
+# Cloudflare Pages — server-side 301s for merged docs pages.
+# (Better SEO than client-side redirects: real 301 link-equity transfer.
+#  Keep these in sync when pages are merged/renamed.)
+
+# "The Scaling Roadmap" → "The Scaling Journey"
+/docs/architecture/CLOUD_STRATEGY   /docs/deployment/scaling-journey   301
+/docs/architecture/CLOUD_STRATEGY/  /docs/deployment/scaling-journey   301
+
+# "GitOps with GitHub Actions" → "CI/CD with GitHub Actions"
+/docs/deployment/gitops             /docs/deployment/github-actions    301
+/docs/deployment/gitops/            /docs/deployment/github-actions    301

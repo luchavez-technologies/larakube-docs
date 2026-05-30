@@ -67,20 +67,6 @@ const config: Config = {
     ],
   ],
 
-  plugins: [
-    [
-      '@docusaurus/plugin-client-redirects',
-      {
-        redirects: [
-          // Merged: "The Scaling Roadmap" → "The Scaling Journey"
-          {from: '/docs/architecture/CLOUD_STRATEGY', to: '/docs/deployment/scaling-journey'},
-          // Merged: "GitOps with GitHub Actions" → "CI/CD with GitHub Actions"
-          {from: '/docs/deployment/gitops', to: '/docs/deployment/github-actions'},
-        ],
-      },
-    ],
-  ],
-
   themeConfig: {
     metadata: [
       {name: 'keywords', content: 'laravel, kubernetes, k8s, docker, php, orchestration, cli, devops, larakube, mcp, model context protocol, k3d, self-healing infrastructure, laravel cloud'},

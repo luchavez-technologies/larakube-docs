@@ -1,52 +1,77 @@
 ---
 sidebar_position: 11
 title: Declarative Teammate Access
-description: Manage your team's SSH access to your Kubernetes fleet using a declarative .larakube.yml configuration.
+description: Give teammates SSH access to a LaraKube server declaratively — defined per environment in .larakube.json and synced with one command.
 ---
 # 👤 Declarative Teammate Access
 
-LaraKube provides a modern, declarative way to manage SSH access for your team. Instead of manually editing `authorized_keys` on every server, you define your teammates in a central configuration file and sync them with one command.
+LaraKube gives you a declarative way to manage **SSH access** to a server. Instead of hand-editing `authorized_keys` on the box, you list your teammates in the blueprint and sync them with one command — so access lives in version control alongside everything else.
 
-## 🛠 The `.larakube.yml` Configuration
-Your team's access is stored in the `.larakube.yml` file in your project root. This allows you to track access changes in your version control system.
+## 🛠 Where teammates live
 
-```yaml
-users:
-  - username: carlo
-    name: James Carlo Luchavez
-    state: present
-    groups: [sudo]
-    shell: /bin/bash
-    authorized_keys:
-      - public_key: "ssh-rsa AAAAB3NzaC1yc2EA..."
+Teammates are defined **per environment**, inside that environment's `cloud` block in `.larakube.json`. That's deliberate: you can grant someone access to `staging` without giving them `production`.
+
+```json title=".larakube.json"
+"environments": {
+  "production": {
+    "cloud": {
+      "ip": "203.0.113.10",
+      "user": "deploy",
+      "port": 22,
+      "key": "~/.ssh/id_rsa",
+      "teammates": [
+        {
+          "username": "alice",
+          "name": "Alice Rivera",
+          "state": "present",
+          "groups": ["sudo"],
+          "shell": "/bin/bash",
+          "authorized_keys": [
+            { "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5... alice@laptop" }
+          ]
+        }
+      ]
+    }
+  }
+}
 ```
 
-### Configuration Options
--   **`username`**: The Linux username to be created on the VPS.
--   **`state`**: Set to `present` to ensure the user exists, or `absent` to remove them.
--   **`groups`**: A list of groups (e.g., `sudo`) the user should belong to.
--   **`authorized_keys`**: A list of public keys that should be granted access.
+### Each entry
+- **`username`** — the Linux user to create on the server.
+- **`name`** — a human label (whose key this is).
+- **`state`** — `present` to ensure the user exists, or `absent` to remove them on the next sync.
+- **`groups`** — Linux groups to add them to (e.g. `sudo`).
+- **`shell`** — their login shell (e.g. `/bin/bash`).
+- **`authorized_keys`** — the public SSH keys allowed to log in as that user.
 
-## 🔄 Syncing Access
-Adding a teammate to your cluster is as simple as:
+## 🔄 Adding & syncing
 
-1.  **Add** their details to `.larakube.yml` (using the CLI or manual edit).
-2.  **Run** the sync command:
+You don't usually hand-write these — the CLI does it for you:
 
 ```bash
 larakube cloud:configure users
 ```
 
-### What the CLI handles:
--   **User Creation**: Automatically creates the Linux user if they don't exist.
--   **Group Management**: Ensures the user has the correct `sudo` permissions.
--   **SSH Key Rotation**: Completely synchronizes the `authorized_keys` file with your YAML configuration.
--   **Permission Hardening**: Sets secure ownership (`700` for `.ssh`, `600` for `authorized_keys`).
+It asks which environment (server) you're granting access to, collects the teammate's details, writes them into that environment's `cloud.teammates`, and offers to sync to the server immediately.
 
-## 💡 Standard Habits
-If you are coming from **Spin Pro** or other VPS management tools, you can continue your habit of maintaining a central list of keys. LaraKube's declarative approach ensures that your fleet's access state always matches your source code.
+### What the sync handles
+- **User creation** — creates the Linux user if it doesn't exist.
+- **Group management** — ensures the user is in the right groups (e.g. `sudo`).
+- **SSH key rotation** — writes the `authorized_keys` file to match the blueprint.
+- **Permission hardening** — secure ownership and modes (`700` for `.ssh`, `600` for `authorized_keys`).
 
-## 🛡 Security Best Practice
--   Always use `sudo` groups sparingly.
--   Encourage teammates to use **ED25519** keys for better security.
--   When a teammate leaves, set their state to `absent` and run `larakube cloud:configure users` to immediately revoke access across your fleet.
+To **revoke** access, set that teammate's `state` to `absent` and run `larakube cloud:configure users` again.
+
+:::caution Single-server access only
+This is **SSH/OS-level access to one server** — it creates a Linux login with `sudo` on the host at `cloud.ip`. It fits the [Single-Node Hero](../architecture/single-node-hero) / VPS setup, where you and your teammates run `larakube` and `kubectl` from the box itself.
+
+It does **not** fit a multi-node or managed cluster (EKS/GKE/AKS/DOKS) — those nodes are disposable and often can't be logged into, and `sudo` is all-or-nothing (no "read-only" or "just this namespace"). Scoped, multi-person access to a real cluster is **Kubernetes RBAC** — a per-person kubeconfig + a defined role — which is on the [roadmap](../community/roadmap).
+:::
+
+## 🛡 Security best practices
+- Use `sudo` groups sparingly.
+- Prefer **ED25519** SSH keys.
+- When a teammate leaves, set `state: absent` and re-run the sync to revoke their access immediately.
+
+## 💡 Coming from Spin Pro?
+If you're used to maintaining a central list of keys with tools like Spin Pro, this is the same habit — declare the team in one place, sync it to the server. The difference is the list lives in your blueprint, so your server's access always matches your source control.

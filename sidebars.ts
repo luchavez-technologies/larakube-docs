@@ -97,8 +97,6 @@ const sidebars: SidebarsConfig = {
         'deployment/6dollar-baseline',
         'deployment/multiple-projects',
         'architecture/strategy-switching',
-        'architecture/CLOUD_STRATEGY',
-        'deployment/gitops',
         'deployment/github-actions',
         'deployment/surgical-credentials',
       ],

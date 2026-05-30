@@ -8,7 +8,7 @@ description: Provision VPS infrastructure and deploy to remote Kubernetes cluste
 The `cloud:*` namespace covers the journey from local development to a production-grade VPS. These commands graduate your project from `.dev.test` to a real domain on a real cluster.
 
 :::tip Pairs with the deployment guides
-For the full graduation story, see [Cloud Strategy](../architecture/CLOUD_STRATEGY), the [$6/mo Baseline](../deployment/6dollar-baseline), and [GitHub Actions](../deployment/github-actions) for CI/CD wiring.
+For the full graduation story, see [The Scaling Journey](../deployment/scaling-journey), the [$6/mo Baseline](../deployment/6dollar-baseline), and [GitHub Actions](../deployment/github-actions) for CI/CD wiring.
 :::
 
 ## `cloud:provision`

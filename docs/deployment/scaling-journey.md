@@ -109,4 +109,36 @@ The whole point: **moving between rungs is configuration, not a port.** Your app
 
 Because a service is "just a host" to your app, the scariest-sounding migration — *"move our database off the shared box"* — is a hostname change and a redeploy. That's the endgame LaraKube is built for: **pick the rung that fits your wallet and your risk today, and climb the moment you need to — never by rewriting, only by reconfiguring.**
 
+## 🛠️ The same commands at every stage
+
+Climbing barely changes your workflow — the commands are nearly identical from your laptop to a managed cluster. What changes is the blueprint's `strategy` and where the cluster lives.
+
+```mermaid
+sequenceDiagram
+    participant You
+    participant Local as Local (k3d)
+    participant VPS as Single-Node VPS (k3s)
+    participant Cloud as Managed Cluster (DOKS)
+
+    Note over You,Local: Develop
+    You->>Local: larakube up
+    Local-->>You: App on *.dev.test
+
+    Note over You,VPS: Rung ① — Single-Node Hero
+    You->>VPS: larakube cloud:provision
+    VPS-->>You: k3s installed, kubeconfig returned
+    You->>VPS: larakube cloud:configure gha
+    You->>VPS: git push  (GitHub Actions builds & deploys)
+    VPS-->>You: Live on your production domain
+
+    Note over You,Cloud: Rung ④ — Multi-Node HA
+    You->>Cloud: Create the managed cluster, fetch its kubeconfig
+    You->>Cloud: Set strategy: multi-node-ha in .larakube.json
+    You->>Cloud: larakube cloud:configure gha  (with the DOKS kubeconfig)
+    You->>Cloud: git push
+    Cloud-->>You: Running with high availability
+```
+
+Same app, same blueprint — you turned the resilience dial and pointed at a bigger cluster. No application code changes. (Note: a managed cluster like DOKS is created through your provider and its kubeconfig handed to LaraKube — `cloud:provision` is for standing up k3s on a plain VPS.)
+
 → Next: pin down every field on the blueprint in the [Blueprint Anatomy](../architecture/blueprint-anatomy).

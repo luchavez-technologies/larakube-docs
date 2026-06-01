@@ -166,6 +166,58 @@ export default function Home(): React.JSX.Element {
       <HomepageHeader />
       
       <main>
+        {/* Free / Open / Yours */}
+        <section id="open-and-yours" className={styles.section}>
+          <div className="container">
+            <div className={styles.textCenter}>
+              <span className={styles.techLabel}>No Catch</span>
+              <div className={clsx(styles.headingWrapper, styles.headingWrapperCentered)}>
+                <Heading as="h2" style={{fontSize: '3.5rem'}}>Free, open, and entirely yours</Heading>
+                <AnchorLink id="open-and-yours" title="Direct link to this section" />
+              </div>
+              <p style={{fontSize: '1.4rem', opacity: 0.8, marginBottom: '2rem'}}>
+                A generator you run on infrastructure you own — not a platform you rent.
+              </p>
+            </div>
+
+            <div className={styles.schematicGrid}>
+              <div className={styles.schematicNode}>
+                <div className={styles.schematicHex}>
+                  <span className={styles.hexEmoji}>🆓</span>
+                </div>
+                <Heading as="h3">Free &amp; Open Source</Heading>
+                <p>
+                  100% free and <Link to="https://github.com/luchavez-technologies/larakube-cli">open source on GitHub</Link>.
+                  No subscription, no per-seat pricing, no usage fees, no hidden costs—the CLI is the whole product.
+                </p>
+              </div>
+
+              <div className={styles.schematicNode}>
+                <div className={styles.schematicHex}>
+                  <span className={styles.hexEmoji}>📄</span>
+                </div>
+                <Heading as="h3">A Generator, Not a Lock-In</Heading>
+                <p>
+                  It writes standard Kubernetes manifests and Dockerfiles into <em>your</em> repo. The output is plain
+                  YAML and Docker that runs <b>with or without</b> LaraKube—nothing phones home, and nothing runs in
+                  your cluster on our behalf.
+                </p>
+              </div>
+
+              <div className={styles.schematicNode}>
+                <div className={styles.schematicHex}>
+                  <span className={styles.hexEmoji}>🔑</span>
+                </div>
+                <Heading as="h3">You Own Everything</Heading>
+                <p>
+                  Deploy to your own cloud account, your servers, your data—you pay the provider directly. There's no
+                  LaraKube platform in the middle, and nothing to migrate off if you walk away.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Core Pillars */}
         <section id="pillars" className={clsx(styles.section, styles.pillarSection)}>
           <div className="container">

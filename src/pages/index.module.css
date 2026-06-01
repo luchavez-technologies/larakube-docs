@@ -35,12 +35,42 @@
 
 /* HERO */
 .heroBanner {
-  padding: 8rem 2rem 5rem 2rem;
+  min-height: calc(100vh - var(--ifm-navbar-height));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
   text-align: center;
   position: relative;
   background: var(--larakube-hero-bg);
   color: var(--larakube-hero-text);
   z-index: 2;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 2rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--larakube-hero-text);
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  text-decoration: none;
+  z-index: 1;
+  position: relative;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.heroBadge:hover {
+  background: rgba(59, 130, 246, 0.22);
+  text-decoration: none;
+  transform: translateY(-1px);
 }
 
 /* Remove linear-gradient smudge */
@@ -545,6 +575,7 @@
 /* RESPONSIVE OVERRIDES */
 @media screen and (max-width: 996px) {
   .heroBanner { padding: 3rem 1rem 4rem 1rem; }
+  .heroBadge { font-size: 0.75rem; margin-bottom: 1.25rem; padding: 0.3rem 0.8rem; }
   .heroTitle { font-size: 2.2rem; letter-spacing: -1px; line-height: 1.1; }
   .heroSubtitle { font-size: 0.9rem; margin-bottom: 1.5rem; text-align: left; }
   .heroLogo { width: 100px; height: 100px; }

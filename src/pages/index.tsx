@@ -44,10 +44,16 @@ function HomepageHeader() {
     <header className={styles.heroBanner}>
       <HexagonGrid />
       <div className="container" style={{position: 'relative', zIndex: 1}}>
-        <img 
-          src={useBaseUrl('/img/larakube-logo.svg')} 
-          alt="LaraKube CLI Logo" 
-          className={styles.heroLogo} 
+        <Link
+          className={styles.heroBadge}
+          to="https://github.com/luchavez-technologies/larakube-cli">
+          ★ Free &amp; Open Source
+        </Link>
+        <br />
+        <img
+          src={useBaseUrl('/img/larakube-logo.svg')}
+          alt="LaraKube CLI Logo"
+          className={styles.heroLogo}
         />
         <Heading as="h1" className={styles.heroTitle}>
           {siteConfig.title}

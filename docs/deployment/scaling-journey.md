@@ -19,6 +19,14 @@ That's a 2 × 3 grid. Here's the whole journey, who each rung is for, and how yo
 
 > **What's shipping today:** rungs ①, ②, ④, and ⑤ are available now. The **Plex** rungs (③ and ⑥) — multiple apps *sharing* a Postgres/Redis "Commons" via `larakube plex` — are on the near-term [roadmap](../community/roadmap); the sections below describe where they're headed.
 
+## 💸 What it costs — and what it doesn't
+
+The monthly figures in each rung below are what you'd pay **your cloud provider** — the examples use **DigitalOcean (early 2026, approximate; prices change and vary by region and usage)**. A few things that are explicitly *not* a cost or a catch:
+
+- **LaraKube is free and open source.** No subscription, no per-seat pricing, no usage fees, no paywalled "pro" tier — and no hidden fees. The CLI *is* the whole product.
+- **You own everything.** It deploys to *your* cloud account, *your* servers, *your* data — you pay the provider directly. There's no LaraKube-hosted platform in the middle, and nothing to "migrate off" if you stop using it tomorrow.
+- **It only generates files.** LaraKube writes standard Kubernetes manifests (kustomize) and Dockerfiles into your repo — that's it. **Nothing runs in your cluster on LaraKube's behalf, and nothing phones home.** The output is plain YAML and Docker you can read, audit, commit, and even `kubectl apply` *by hand* without the CLI. At runtime the only thing running is your own app, on infrastructure you control.
+
 ---
 
 ## ① Single node, single app — *the first launch*
@@ -31,6 +39,8 @@ LaraKube puts Tallio on a **single $6–12/mo droplet**: her app, its Postgres, 
 "strategy": "single-node",
 "environments": { "production": { "hosts": { "web": "tallio.app" } } }
 ```
+
+**Rough cost:** ~$6–12/mo — a single droplet (1–2 GB), nothing else.
 
 This is where ~90% of projects should start. → [The $6/mo Baseline](./6dollar-baseline) · [The Single-Node Hero](../architecture/single-node-hero)
 
@@ -45,6 +55,8 @@ one VPS
  ├─ drift-app-production       (drift.io)
  └─ drift-notify-production    (notify.drift.io)
 ```
+
+**Rough cost:** still ~$12–24/mo — one 2 GB droplet sized for both apps. A second server would double the bill; co-locating them doesn't.
 
 Great for microservices on a budget, or an app + its marketing site. → [Two Apps, One Server](./multiple-projects)
 
@@ -61,6 +73,8 @@ one $12 VPS
  ├─ app-b    ├─ each: own DB + login in the Commons
  └─ app-c   ─┘
 ```
+
+**Rough cost:** ~$12/mo — one droplet for *several* apps, since they share a single Postgres + Redis instead of each running their own.
 
 For the hobbyist whose constraint is *dollars*, not uptime. → [Roadmap](../community/roadmap)
 
@@ -79,6 +93,8 @@ The move is a **dial, not a rewrite**: flip the strategy, point the database at 
 }
 ```
 
+**Rough cost:** ~$50–90/mo — a 2-node managed cluster (DOKS) + a load balancer + a managed database. The jump from $12 is what "survives a node dying at 3am" costs.
+
 This is the natural "we're a real business now" step. → [Strategy Switching](../architecture/strategy-switching) · [Deployment providers](./overview)
 
 ## ⑤ Multiple nodes, two apps — *a company that wants clean lines*
@@ -89,11 +105,15 @@ Each product runs as its own app across a resilient multi-node cluster, in its o
 
 This is rungs ② and ④ combined — independent apps, each highly available.
 
+**Rough cost:** ~$90–160/mo — a larger node pool plus a managed database per product. You're paying for isolation and HA on purpose, not by accident.
+
 ## ⑥ Multiple nodes, Plex — *an agency keeping a fleet cheap*  🔜 *roadmap*
 
 **Meet Atelier, a bootstrapped agency.** They host a dozen small client apps. Each client wants their site to stay up, but a dozen separate databases would wreck the margins.
 
 A Plex on a **resilient cluster**: every client app shares a managed Commons (or a single managed database with per-tenant isolation), so they get multi-node uptime while paying for shared backing services once. When a client outgrows the shared tier, they **graduate** to their own managed database — a one-line host change, no migration.
+
+**Rough cost:** ~$60–120/mo for the *whole fleet* — a resilient cluster + one shared managed database across many client apps. Per-app cost keeps dropping as you add tenants.
 
 For agencies and platforms running many small tenants that still need to stay online. → [Roadmap](../community/roadmap)
 

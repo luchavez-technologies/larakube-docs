@@ -35,7 +35,7 @@
 
 /* HERO */
 .heroBanner {
-  padding: 8rem 2rem 12rem 2rem;
+  padding: 8rem 2rem 5rem 2rem;
   text-align: center;
   position: relative;
   background: var(--larakube-hero-bg);
@@ -206,17 +206,6 @@
   background: var(--ifm-color-primary) !important;
   color: white !important;
   opacity: 1 !important;
-}
-
-.pillarSection {
-  padding: 12rem 1.5rem 10rem 1.5rem !important;
-  margin-top: -10rem;
-  position: relative;
-  z-index: 2;
-  background: var(--larakube-hero-bg) !important;
-  /* Mask fades the background to reveal theme background underneath */
-  mask-image: linear-gradient(to bottom, var(--larakube-hero-mask-color) 0%, var(--larakube-hero-mask-color) 50%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, var(--larakube-hero-mask-color) 0%, var(--larakube-hero-mask-color) 50%, transparent 100%);
 }
 
 .sectionDark {
@@ -574,12 +563,6 @@
 
   .techLabel { display: block; text-align: center; margin-left: auto; margin-right: auto; width: fit-content; }
 
-  .pillarSection { 
-    padding: 2rem 1rem 4rem 1rem !important; 
-    margin-top: 0; 
-    mask-image: none !important;
-    -webkit-mask-image: none !important;
-  }
   .schematicGrid { gap: 0.5rem; }
   .schematicNode { flex: 1 1 100%; max-width: 100%; margin-bottom: 0.5rem; }
   .schematicHex { 

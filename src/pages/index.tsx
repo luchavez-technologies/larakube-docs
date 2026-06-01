@@ -166,47 +166,7 @@ export default function Home(): React.JSX.Element {
       <HomepageHeader />
       
       <main>
-        {/* Core Pillars */}
-        <section id="pillars" className={clsx(styles.section, styles.pillarSection)}>
-          <div className="container">
-            <div className={styles.schematicGrid}>
-              <div className={styles.schematicNode}>
-                <div className={styles.schematicHex}>
-                  <span className={styles.hexEmoji}>🚀</span>
-                </div>
-                <Heading as="h3">Standalone Engine</Heading>
-                <p>
-                  A self-contained binary with its own embedded PHP runtime. 
-                  Zero dependencies on your host machine—just pure orchestration.
-                </p>
-              </div>
-
-              <div className={styles.schematicNode}>
-                <div className={styles.schematicHex}>
-                  <span className={styles.hexEmoji}>💾</span>
-                </div>
-                <Heading as="h3">Shared Storage</Heading>
-                <p>
-                  Achieve true Workload Parity with shared volumes across Web, Worker, and Scheduler pods. 
-                  Synchronized state, zero friction.
-                </p>
-              </div>
-
-              <div className={styles.schematicNode}>
-                <div className={styles.schematicHex}>
-                  <span className={styles.hexEmoji}>🔌</span>
-                </div>
-                <Heading as="h3">Proxy-First Workflow</Heading>
-                <p>
-                  Run <code className={styles.inlineCode}>artisan</code>, <code className={styles.inlineCode}>composer</code>, and <code className={styles.inlineCode}>npm</code> directly through the CLI. 
-                  Execute commands inside the cluster as if they were local.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Free / Open / Yours */}
+        {/* Free / Open / Yours + Core Pillars (merged) */}
         <section id="open-and-yours" className={styles.section}>
           <div className="container">
             <div className={styles.textCenter}>
@@ -252,6 +212,39 @@ export default function Home(): React.JSX.Element {
                 <p>
                   Deploy to your own cloud account, your servers, your data—you pay the provider directly. There's no
                   LaraKube platform in the middle, and nothing to migrate off if you walk away.
+                </p>
+              </div>
+
+              <div className={styles.schematicNode}>
+                <div className={styles.schematicHex}>
+                  <span className={styles.hexEmoji}>🚀</span>
+                </div>
+                <Heading as="h3">Standalone Engine</Heading>
+                <p>
+                  A self-contained binary with its own embedded PHP runtime—zero
+                  dependencies on your host machine, just pure orchestration.
+                </p>
+              </div>
+
+              <div className={styles.schematicNode}>
+                <div className={styles.schematicHex}>
+                  <span className={styles.hexEmoji}>💾</span>
+                </div>
+                <Heading as="h3">Shared Storage</Heading>
+                <p>
+                  True Workload Parity with shared volumes across Web, Worker, and
+                  Scheduler pods—synchronized state, zero friction.
+                </p>
+              </div>
+
+              <div className={styles.schematicNode}>
+                <div className={styles.schematicHex}>
+                  <span className={styles.hexEmoji}>🔌</span>
+                </div>
+                <Heading as="h3">Proxy-First Workflow</Heading>
+                <p>
+                  Run <code className={styles.inlineCode}>artisan</code>, <code className={styles.inlineCode}>composer</code>, and <code className={styles.inlineCode}>npm</code> straight
+                  through the CLI—commands run inside the cluster as if they were local.
                 </p>
               </div>
             </div>

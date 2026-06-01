@@ -58,19 +58,35 @@
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: var(--larakube-hero-text);
-  background: rgba(59, 130, 246, 0.12);
-  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #2563eb;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.45);
   text-decoration: none;
   z-index: 1;
   position: relative;
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
+.heroBadge svg {
+  flex-shrink: 0;
+}
+
 .heroBadge:hover {
-  background: rgba(59, 130, 246, 0.22);
+  color: #1d4ed8;
+  background: rgba(59, 130, 246, 0.2);
   text-decoration: none;
   transform: translateY(-1px);
+}
+
+[data-theme='dark'] .heroBadge {
+  color: #93c5fd;
+  background: rgba(96, 165, 250, 0.14);
+  border-color: rgba(96, 165, 250, 0.45);
+}
+
+[data-theme='dark'] .heroBadge:hover {
+  color: #bfdbfe;
+  background: rgba(96, 165, 250, 0.24);
 }
 
 /* Remove linear-gradient smudge */

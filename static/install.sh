@@ -7,15 +7,11 @@ set -e
 
 echo "🚀 LaraKube Installer starting..."
 
-# 1. System Check
+# 1. System Check — Docker is the only prerequisite. The local Kubernetes
+#    cluster (k3s/k3d) and kubectl are set up for you on your first `larakube up`.
 echo "🔍 Checking prerequisites..."
 if ! command -v docker &> /dev/null; then
     echo "❌ Error: Docker is not installed. Please install Docker first: https://docs.docker.com/get-docker/"
-    exit 1
-fi
-
-if ! command -v kubectl &> /dev/null; then
-    echo "❌ Error: kubectl is not installed. Please install kubectl first: https://kubernetes.io/docs/tasks/tools/"
     exit 1
 fi
 

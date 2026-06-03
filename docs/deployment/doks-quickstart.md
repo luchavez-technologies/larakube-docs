@@ -120,7 +120,7 @@ Edit `.larakube.json` to target DOKS:
     "local": {},
     "production": {
       "ingress": "nginx",
-      "strategy": "single-node",
+      "strategy": "multi-node-ha",
       "managed": ["postgres", "redis"],
       "hosts": {
         "web": "app.example.com"
@@ -134,7 +134,8 @@ Edit `.larakube.json` to target DOKS:
 
 **Key points:**
 - `ingress: "nginx"` — matches DOKS's nginx controller
-- `managed: ["postgres", "redis"]` — use DO Managed Postgres/Redis (recommended for production)
+- `strategy: "multi-node-ha"` — high availability across DOKS nodes (ReadWriteMany volumes)
+- `managed: ["postgres", "redis"]` — use DO Managed Postgres/Redis (recommended for production; avoids need for RWX storage)
 - `storageClass: "do-block-storage"` — DigitalOcean's block storage
 - `certManagerIssuer: "letsencrypt-prod"` — automatic TLS via cert-manager
 

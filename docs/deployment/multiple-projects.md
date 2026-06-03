@@ -7,7 +7,7 @@ description: Run multiple independent LaraKube projects on a single VPS — sepa
 
 You don't need a server per project. Two (or more) independent LaraKube apps — **separate GitHub repositories** — can live on a single VPS, each isolated in its own Kubernetes namespace, each on its own domain. This is the natural next step after the [Single-Node Hero](../architecture/single-node-hero) strategy: same cheap box, more than one app.
 
-This page covers the **simple, supported-today** approach: each project keeps its own data services (or points at an external managed database). For the more advanced "share one Postgres/Redis across projects to save RAM" model, see the future [Plex](#going-further-plex) note at the end.
+This page covers the **simplest** approach: each project keeps its own data services (or points at an external managed database). For the more advanced "share one set of services across projects to save RAM" model, see the [Plex](#going-further-plex) section at the end.
 
 ## 💡 Why this just works
 
@@ -75,7 +75,7 @@ The deciding factor is **how heavy each app's data services are**:
 - **Lightweight apps fit comfortably.** A FrankenPHP + Inertia/React + **SQLite** app has no database pod and no Redis pod — just the web process. Two of those sit happily on a $12/2GB box.
 - **Data-heavy apps need a plan.** If each app wants its own Postgres + Redis + Meilisearch, two full stacks will blow past 2GB. Two good options:
   1. **Use an external managed database.** Mark the service as `managed` in `environments.production` and point the host at a provider endpoint (e.g. DigitalOcean Managed Database). LaraKube then skips deploying that pod entirely. See [Blueprint Anatomy](../architecture/blueprint-anatomy#-environments).
-  2. **Bump the droplet** to 4GB, or wait for a Plex (below).
+  2. **Bump the droplet** to 4GB, or share one set of services across the apps with **[Plex](#going-further-plex)** (below).
 
 When in doubt, keep at least one of the two apps on the lightweight (SQLite/file-cache) profile.
 
@@ -92,8 +92,36 @@ When in doubt, keep at least one of the two apps on the lightweight (SQLite/file
 
 Because the node and its RAM are shared, a runaway app *can* affect its neighbor. For a hobbyist running their own handful of apps that's an acceptable trade; if you need hard resource fences between apps, that's a feature of the Plex tier.
 
-## 🏘️ Going further: a Plex {#going-further-plex}
+## 🏘️ Going further: share a Commons with Plex {#going-further-plex}
 
-The approach above keeps each app's data services separate (or external). A future LaraKube tier — **Plex** (`larakube plex`) — will let multiple apps **share** a single Postgres/Redis instance on the node, each with its own isolated database and credentials (exactly like several apps sharing one managed database). That reclaims the RAM wasted by running duplicate data services and pushes the $12 box further. See [The Scaling Journey](./scaling-journey) for where this fits.
+The approach above keeps each app's data services separate (or external). **Plex** goes one step further: multiple apps **share** a single set of backing services — the **Commons** — on the node, each tenant getting its own isolated database, login, Redis logical DB, and S3 bucket (exactly like several apps sharing one managed database). That reclaims the RAM wasted by running duplicate data services and pushes the cheap box further. See [The Scaling Journey](./scaling-journey) for where this fits.
 
-Until then, "Two Apps, One Server" with lightweight apps or an external managed database is the recommended, fully-supported path.
+The Commons can run any mix of:
+
+- a database — **Postgres**, **MySQL**, or **MariaDB**
+- **Redis**
+- **Meilisearch**
+- S3-compatible object storage — **SeaweedFS** or **MinIO**
+
+It's **demand-driven**: each app's blueprint declares its own drivers, and joining provisions only what that app needs (and never tears down a service another tenant still uses).
+
+```bash
+# On the server's cluster, stand up (or extend) the Commons:
+larakube plex:init                 # pick the services to share; prompts for the cluster context
+
+# From each app's repo, join the Commons — provisions its isolated DB + bucket,
+# and rewrites the app's .env to point at the shared services:
+larakube plex:join production
+
+larakube plex:status               # see the Commons services and every tenant
+larakube plex:leave production     # detach an app (backs up + drops its tenant data)
+larakube plex:remove <service>     # drop an unused Commons service (guarded)
+```
+
+:::caution Capacity still applies — more so
+Sharing services saves RAM versus duplicate stacks, but the Commons pods (a database + Redis + any S3) still live on the node alongside every app. A **1 GB box cannot host a database + Redis + an S3 backend plus app pods** — plan for 2 GB+ and watch the [capacity table](#-will-it-fit-capacity-reality) above.
+:::
+
+:::note Verified scope today
+Plex is verified on a **single-node VPS deployed manually with `larakube cloud:deploy`**. Driving Plex deploys through **GitHub Actions** and running the Commons on **multi-node** clusters (e.g. DOKS) are on the [roadmap](../community/roadmap) but not yet validated — prefer the manual single-node path for now.
+:::

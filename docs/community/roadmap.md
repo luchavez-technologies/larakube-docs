@@ -19,6 +19,7 @@ LaraKube is an ecosystem built on three pillars: the **CLI** (the engine), the *
 - [x] **CLI**: **Managed-cluster overlay knobs** — namespace override, ServiceAccount + IRSA annotations, image-pull-secret control, and ingress-annotation passthrough, so generated overlays drop into EKS / GKE / AKS / DOKS.
 - [x] **CLI**: **Two apps, one server** — multiple projects on a single node, isolated by namespace (see [Two Apps, One Server](../deployment/multiple-projects)).
 - [x] **CLI**: **Portable** CLI-free wrapper so teammates can run the lifecycle without installing the binary.
+- [x] **CLI — Plex** 🏘️: multiple apps **share** one Commons — a Postgres *or* MySQL/MariaDB database, Redis, Meilisearch, and S3 (SeaweedFS *or* MinIO) — each tenant getting its own isolated database, login, Redis logical DB, and bucket. Commands: `plex:init | plex:join | plex:status | plex:leave | plex:remove | plex:destroy | plex:export`. *Verified on a single-node VPS via manual `larakube cloud:deploy`; the GHA-triggered and multi-node paths are still being validated (see "Next up").*
 - [x] **Console**: High-fidelity Kubernetes Control Plane (Filament).
 - [x] **Docs**: Linear learning path, [Blueprint Anatomy](../architecture/blueprint-anatomy), and the [Scaling Journey](../deployment/scaling-journey).
 
@@ -28,7 +29,7 @@ LaraKube is an ecosystem built on three pillars: the **CLI** (the engine), the *
 
 *Closing the gap from "single VPS" to "any cluster, shared or isolated." These have specs and are the active focus.*
 
-- [ ] **CLI — Plex** 🏘️: run multiple apps that **share** one Postgres + Redis (the "Commons"), each with its own isolated database and login — the shoestring-hobbyist and agency tiers of the [Scaling Journey](../deployment/scaling-journey). Commands: `larakube plex init | join | status | leave`. Works on single- and multi-node.
+- [ ] **CLI — Plex on GHA + multi-node** 🏘️: the [Plex](../deployment/multiple-projects#going-further-plex) commands are verified today on a single-node VPS via manual `larakube cloud:deploy`; validating GHA-triggered deploys and multi-node clusters (DOKS) for the shared Commons is the active follow-up.
 - [ ] **CLI — DigitalOcean Kubernetes (DOKS)**: a clean managed multi-node deploy path, with storage-class control and cert-manager TLS for managed clusters.
 - [ ] **CLI — Per-environment container registry**: publish each environment's image to **GHCR, Docker Hub, AWS ECR, Google Artifact Registry, or a custom registry** (e.g. local builds locally, staging → GHCR, production → ECR).
 - [ ] **CLI — GitLab CI/CD**: generate a `.gitlab-ci.yml` pipeline alongside the existing GitHub Actions workflow.

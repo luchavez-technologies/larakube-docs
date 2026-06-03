@@ -81,3 +81,20 @@ You've just completed a professional Kubernetes deployment workflow:
 2.  **Hardening**: VPS secured and stabilized with Swap.
 3.  **GitOps**: Fully automated pipeline with GHCR.
 4.  **Scaling Ready**: You can now scale horizontally or "graduate" to multi-node managed K8s without changing your `.larakube.json` blueprint.
+
+---
+
+## 🏘️ Going Further: Share a Commons (Plex)
+Running a second app on the same box? You don't need a duplicate Postgres/Redis/S3 stack. **Plex** lets multiple apps share one **Commons** — a database (Postgres/MySQL/MariaDB), Redis, Meilisearch, and S3 (SeaweedFS/MinIO) — each app fully isolated with its own database, login, and bucket:
+
+```bash
+larakube plex:init             # stand up (or extend) the shared Commons on the cluster
+larakube plex:join production  # join this app — provisions its isolated DB + bucket
+larakube plex:status           # inspect the Commons and its tenants
+```
+
+See **[Two Apps, One Server → Plex](../deployment/multiple-projects#going-further-plex)** for the full walkthrough.
+
+:::note
+Plex is verified today on a **single-node VPS deployed manually with `larakube cloud:deploy`**. The GitHub-Actions happy path above isn't yet validated *for Plex* — drive Commons deploys manually for now. (Tracking on the [roadmap](../community/roadmap).)
+:::

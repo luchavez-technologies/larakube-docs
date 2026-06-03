@@ -9,6 +9,15 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### June 2026: The "Plex Commons" Release (CLI v0.11.0)
+Multiple apps can now **share** one set of backing services — the **Commons** — on a single node, each tenant fully isolated. This is the shoestring-hobbyist and agency tier of the [Scaling Journey](../deployment/scaling-journey): reclaim the RAM wasted by duplicate data stacks without giving up per-app isolation.
+
+- **Shared Commons, isolated tenants**: one set of services, where each app gets its own database + login, Redis logical DB, and S3 bucket — the same isolation model as several apps sharing one managed database.
+- **Pick your backends**: the Commons runs any mix of a **Postgres / MySQL / MariaDB** database, **Redis**, **Meilisearch**, and S3 object storage (**SeaweedFS** or **MinIO**). MySQL/MariaDB and MinIO landed in this release alongside the original Postgres/Redis/SeaweedFS; the driver enums own each backend's image, port, and tenant-provisioning, so the Commons never drifts from the project defaults.
+- **Demand-driven & additive**: each app's blueprint declares its drivers; `plex:join` provisions only what that app needs and never disables a service another tenant still uses.
+- **Commands**: `plex:init`, `plex:join`, `plex:status`, `plex:leave`, `plex:remove`, `plex:destroy`, `plex:export`. `plex:status` works inside or outside a project (it'll prompt for a cluster context, like `plex:init`).
+- **Honest scope**: verified on a **single-node VPS via manual `larakube cloud:deploy`**. GitHub-Actions-driven Plex deploys and multi-node clusters (DOKS) are on the [roadmap](./roadmap) but not yet validated.
+
 ### May 2026: The "Any-Cluster Deployments" Release (CLI v0.9.0)
 Two themes: the per-environment blueprint matures, and generated overlays now drop into a **managed Kubernetes cluster** (EKS, GKE, AKS, DigitalOcean) without hand-editing — while the cheap single-VPS path stays exactly as it was.
 

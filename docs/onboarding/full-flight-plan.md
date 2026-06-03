@@ -96,5 +96,5 @@ larakube plex:status           # inspect the Commons and its tenants
 See **[Two Apps, One Server → Plex](../deployment/multiple-projects#going-further-plex)** for the full walkthrough.
 
 :::note
-Plex is verified today on a **single-node VPS deployed manually with `larakube cloud:deploy`**. The GitHub-Actions happy path above isn't yet validated *for Plex* — drive Commons deploys manually for now. (Tracking on the [roadmap](../community/roadmap).)
+Plex is validated on a **single-node VPS via both the manual deploy and the GitHub Actions flow above** — apps sharing a Commons deploy cleanly either way. Running the Commons across a **multi-node** cluster (DOKS) isn't validated yet. (Tracking on the [roadmap](../community/roadmap).)
 :::

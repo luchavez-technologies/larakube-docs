@@ -123,5 +123,5 @@ Sharing services saves RAM versus duplicate stacks, but the Commons pods (a data
 :::
 
 :::note Verified scope today
-Plex is verified on a **single-node VPS deployed manually with `larakube cloud:deploy`**. Driving Plex deploys through **GitHub Actions** and running the Commons on **multi-node** clusters (e.g. DOKS) are on the [roadmap](../community/roadmap) but not yet validated — prefer the manual single-node path for now.
+Plex is validated end-to-end on a **single-node VPS** — apps sharing a Commons deploy cleanly via **both manual `cloud:deploy` and GitHub Actions** (proven with a React/Inertia app sharing MySQL + Redis + MinIO, on valid Let's Encrypt TLS and production-safe config). Running the Commons across a **multi-node** cluster (e.g. DOKS) is on the [roadmap](../community/roadmap) but not yet validated.
 :::

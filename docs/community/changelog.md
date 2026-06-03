@@ -9,6 +9,15 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### June 2026: Cloud Deploy Hardening (CLI v0.11.1 – v0.11.2)
+Shaking out the first real multi-app deploy onto a shared Commons. The Plex tier is now **validated end-to-end on a single-node VPS via GitHub Actions** — a React/Inertia app sharing MySQL + Redis + MinIO, on valid Let's Encrypt TLS with production-safe config. Multi-node (DOKS) remains the next validation.
+
+- **One guided `cloud:configure`**: the whole setup now runs in order from a single command — server + web host, an optional Commons join, then CI + secrets — asking the environment once. No more remembering `base → server → plex:join → gha`; the single-step sub-actions remain for surgical re-runs.
+- **`plex:join` auto-heals**: after marking the Commons services managed, it regenerates manifests itself, so a deploy never ships duplicate self-hosted pods next to the Commons.
+- **Production-safe by default**: cloud environments deploy with `APP_ENV=production` and `APP_DEBUG=false` instead of inheriting the scaffold's local values — no more debug mode live on a public URL. A locked `.env.<env>` is still honoured.
+- **`cluster:setup` prefers native k3s** (the lightest option) and defaults to it on Linux; k3d (k3s-in-Docker) is the macOS/Windows fallback, and Docker is only required for that path.
+- **Fixes**: the Wayfinder CI step now fires for any app that actually uses Wayfinder (it was gated on an unrelated feature, breaking React/Vue/Svelte builds); `gha:configure` no longer crashes while uploading the kubeconfig; and the web-host prompt can't be skipped or left on a local `.dev.test` host.
+
 ### June 2026: The "Plex Commons" Release (CLI v0.11.0)
 Multiple apps can now **share** one set of backing services — the **Commons** — on a single node, each tenant fully isolated. This is the shoestring-hobbyist and agency tier of the [Scaling Journey](../deployment/scaling-journey): reclaim the RAM wasted by duplicate data stacks without giving up per-app isolation.
 

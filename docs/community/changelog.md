@@ -9,6 +9,20 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### June 2026: Local Dev Hardening (CLI v0.11.6 – v0.11.8)
+Stability fixes for the local development experience, addressing Vite HMR and test suite reliability.
+
+- **Fixed Vite HMR full-reload loops**: MinIO temporary files were triggering constant full-reload messages. Added `watch.ignored` configuration to exclude `.infrastructure/volume_data` from Vite's file watcher.
+- **Fixed hanging test suite**: The `PortableCommandTest` was hanging when prompts ran in subprocesses. Tests now complete cleanly without user input (277 passing).
+- **Cleaned volume_data from gitignore**: Runtime data (MinIO temps, service databases) now excluded from git by default, preventing untracked file clutter.
+
+### June 2026: Split .env Architecture (CLI v0.11.3 – v0.11.5)
+Local development configuration now uses `.env` as the single source of truth, allowing config changes to take effect immediately without `larakube up` restarts.
+
+- **Split .env architecture**: Service connection variables (DB_HOST, REDIS_PORT, etc.) now come via Kubernetes ConfigMap/Secret (environment-driven), while app config lives in `.env` for instant edits without cluster restarts.
+- **Wayfinder keep-alive**: The CLI no longer strips Wayfinder from `vite.config` during scaffolding; Wayfinder is now conditional on `wayfinder()` plugin presence instead.
+- **WSL2 & local setup fixes**: Improved k3s setup, host trust, and `/etc/hosts` management for WSL2 and Linux environments without flaky elevation prompts.
+
 ### June 2026: Cloud Deploy Hardening (CLI v0.11.1 – v0.11.2)
 Shaking out the first real multi-app deploy onto a shared Commons. The Plex tier is now **validated end-to-end on a single-node VPS via GitHub Actions** — a React/Inertia app sharing MySQL + Redis + MinIO, on valid Let's Encrypt TLS with production-safe config. Multi-node (DOKS) remains the next validation.
 

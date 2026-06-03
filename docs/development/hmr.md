@@ -29,6 +29,24 @@ If you are using the **FrankenPHP** server variation, LaraKube automatically ena
 ---
 
 ### 💡 Troubleshooting
-If changes are not reflecting:
+
+**Changes not reflecting:**
 1.  Run `larakube about` to ensure the `laravel-web` and `laravel-node` pods are **Ready 🟢**.
 2.  Check your console for any "Connection Refused" errors. If found, run `larakube doctor` to verify your `/etc/hosts` and port mappings.
+
+**Constant full-reload messages in browser:**
+If your browser repeatedly shows full-reload notifications every few seconds (especially after running `larakube up`), the issue is likely MinIO temporary files triggering Vite's file watcher. 
+
+LaraKube automatically excludes `.infrastructure/volume_data` from Vite's watch list in v0.11.8+. If you're on an older version:
+
+```javascript
+// vite.config.ts
+server: {
+  watch: {
+    ignored: ['**/.infrastructure/volume_data/**'],
+  },
+  // ... rest of config
+},
+```
+
+This prevents MinIO temp files (which change constantly) from triggering unwanted reloads.

@@ -126,7 +126,10 @@ Edit `.larakube.json` to target DOKS:
         "web": "app.example.com"
       },
       "storageClass": "do-block-storage",
-      "certManagerIssuer": "letsencrypt-prod"
+      "certManagerIssuer": "letsencrypt-prod",
+      "registry": {
+        "provider": "ghcr"
+      }
     }
   }
 }
@@ -134,10 +137,11 @@ Edit `.larakube.json` to target DOKS:
 
 **Key points:**
 - `ingress: "nginx"` — matches DOKS's nginx controller
-- `strategy: "multi-node-ha"` — high availability across DOKS nodes (ReadWriteMany volumes)
-- `managed: ["postgres", "redis"]` — use DO Managed Postgres/Redis (recommended for production; avoids need for RWX storage)
+- `strategy: "multi-node-ha"` — high availability across DOKS nodes
+- `managed: ["postgres", "redis"]` — use DO Managed Postgres/Redis (recommended for production)
 - `storageClass: "do-block-storage"` — DigitalOcean's block storage
 - `certManagerIssuer: "letsencrypt-prod"` — automatic TLS via cert-manager
+- `registry: { "provider": "ghcr" }` — use GitHub Container Registry (or `"dockerhub"` for Docker Hub)
 
 ## Step 5: Set Up CI/CD (GitHub Actions)
 
@@ -150,12 +154,14 @@ larakube cloud:configure gha
 When prompted:
 - **Environment**: `production`
 - **Cluster context**: Use the DOKS kubeconfig context (usually `do-nyc3-my-larakube-cluster`)
-- **Registry**: `ghcr.io` (default, GHCR works on DOKS via pull secret)
 
-This generates `.github/workflows/larakube.yml` which:
+This generates `.github/workflows/larakube-deploy-production.yml` which:
 1. Builds your Docker image
-2. Pushes to GHCR
-3. Applies Kustomize overlays to your DOKS cluster
+2. Pushes to your configured registry (GHCR or Docker Hub)
+3. Creates/updates ConfigMaps and Secrets from `.env`
+4. Applies Kustomize overlays to your DOKS cluster
+
+**Registry choice:** The workflow automatically detects your registry from the blueprint. If you specified `"provider": "ghcr"`, it will use GHCR (via `GITHUB_TOKEN`). For Docker Hub, use `"provider": "dockerhub"` and ensure `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` secrets are added to your GitHub repository.
 
 ## Step 6: Create Managed Databases
 

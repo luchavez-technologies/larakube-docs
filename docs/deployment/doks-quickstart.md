@@ -1,12 +1,12 @@
 ---
 sidebar_position: 5
 title: DigitalOcean Kubernetes (DOKS) Deployment
-description: Deploy a LaraKube app to DigitalOcean Kubernetes with automatic TLS and managed databases.
+description: Deploy a LaraKube app to DigitalOcean Kubernetes with automatic TLS and self-hosted services.
 ---
 
 # 🚀 Deploy to DigitalOcean Kubernetes (DOKS)
 
-LaraKube supports **DigitalOcean Kubernetes (DOKS)** as a managed multi-node cluster platform. This guide walks you through a minimal end-to-end deployment with automatic HTTPS via cert-manager.
+LaraKube supports **DigitalOcean Kubernetes (DOKS)** as a managed multi-node cluster platform. This guide walks you through deployment with automatic HTTPS via Traefik and self-hosted services (Postgres, Redis) in Kubernetes.
 
 ## Prerequisites
 
@@ -14,7 +14,8 @@ LaraKube supports **DigitalOcean Kubernetes (DOKS)** as a managed multi-node clu
 - ✅ A DigitalOcean account with billing enabled
 - ✅ `doctl` CLI installed and authenticated (`doctl auth login`)
 - ✅ `kubectl` installed locally
-- ✅ A GitHub repository with your project
+- ✅ `helm` installed locally
+- ✅ A domain name (for DNS)
 
 ## Step 1: Create the DOKS Cluster
 
@@ -28,85 +29,51 @@ doctl kubernetes cluster create my-larakube-cluster \
   --enable-monitoring
 ```
 
-Save the kubeconfig and set it as active:
+Save the kubeconfig:
 
 ```bash
 doctl kubernetes cluster kubeconfig save my-larakube-cluster
 kubectl cluster-info  # Verify connection
 ```
 
-## Step 2: Install nginx Ingress & cert-manager
+## Step 2: Provision Traefik & Get LoadBalancer IP
 
-Install nginx ingress controller:
+Run the LaraKube automation command:
 
 ```bash
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
-helm install nginx-ingress ingress-nginx/ingress-nginx \
-  --namespace ingress-nginx \
-  --create-namespace \
-  --set controller.service.type=LoadBalancer
+larakube cloud:provision doks
 ```
 
-Wait for the LoadBalancer IP:
+This will:
+1. ✅ Install Traefik ingress controller
+2. ✅ Wait for LoadBalancer IP assignment
+3. ✅ Prompt for Let's Encrypt email
+4. ✅ Output LoadBalancer IP and next steps
 
-```bash
-kubectl get svc -n ingress-nginx  # Note the EXTERNAL-IP
+**Output example:**
 ```
+LoadBalancer IP assigned: 123.45.67.89
 
-Install cert-manager:
-
-```bash
-helm repo add jetstack https://charts.jetstack.io
-helm repo update
-helm install cert-manager jetstack/cert-manager \
-  --namespace cert-manager \
-  --create-namespace \
-  --set installCRDs=true
-```
-
-Create a Let's Encrypt ClusterIssuer:
-
-```bash
-cat <<EOF | kubectl apply -f -
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-prod
-spec:
-  acme:
-    server: https://acme-v02.api.letsencrypt.org/directory
-    email: your-email@example.com
-    privateKeySecretRef:
-      name: letsencrypt-prod
-    solvers:
-      - http01:
-          ingress:
-            class: nginx
-EOF
+Next steps:
+1. Point your domain to 123.45.67.89 (A record)
+2. Update .larakube.json with your configuration
+3. Deploy: larakube cloud:deploy production
 ```
 
 ## Step 3: Configure DNS
 
-Point your domain's DNS to the LoadBalancer IP:
+Create an A record pointing to the LoadBalancer IP:
 
-```bash
-# Get the LoadBalancer IP
-kubectl get svc -n ingress-nginx nginx-ingress-ingress-nginx-controller \
-  -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
-```
-
-Create an A record:
 - **Name**: `app` (or your desired subdomain)
 - **Type**: A
-- **Value**: `<LoadBalancer IP>`
+- **Value**: `123.45.67.89` (from Step 2)
 - **TTL**: 3600
 
-Wait 5-10 minutes for DNS to propagate.
+Wait 5-10 minutes for DNS propagation.
 
 ## Step 4: Update Your LaraKube Blueprint
 
-Edit `.larakube.json` to target DOKS:
+Edit `.larakube.json` to target DOKS with self-hosted services:
 
 ```json
 {
@@ -114,19 +81,17 @@ Edit `.larakube.json` to target DOKS:
   "serverVariation": "fpm-nginx",
   "phpVersion": "8.4",
   "database": "postgres",
-  "strategy": "single-node",
+  "strategy": "multi-node-ha",
   "features": ["horizon", "queues", "scheduler"],
   "environments": {
     "local": {},
     "production": {
-      "ingress": "nginx",
+      "ingress": "traefik",
       "strategy": "multi-node-ha",
-      "managed": ["postgres", "redis"],
       "hosts": {
         "web": "app.example.com"
       },
       "storageClass": "do-block-storage",
-      "certManagerIssuer": "letsencrypt-prod",
       "registry": {
         "provider": "ghcr"
       }
@@ -135,17 +100,64 @@ Edit `.larakube.json` to target DOKS:
 }
 ```
 
-**Key points:**
-- `ingress: "nginx"` — matches DOKS's nginx controller
-- `strategy: "multi-node-ha"` — high availability across DOKS nodes
-- `managed: ["postgres", "redis"]` — use DO Managed Postgres/Redis (recommended for production)
-- `storageClass: "do-block-storage"` — DigitalOcean's block storage
-- `certManagerIssuer: "letsencrypt-prod"` — automatic TLS via cert-manager
-- `registry: { "provider": "ghcr" }` — use GitHub Container Registry (or `"dockerhub"` for Docker Hub)
+**Key configuration:**
+- `ingress: "traefik"` — Matches DOKS's Traefik installation
+- `strategy: "multi-node-ha"` — High availability across cluster nodes
+- `storageClass: "do-block-storage"` — DigitalOcean block storage for PVCs
+- `registry` — Container registry for deployments (GHCR or Docker Hub)
+- **Note:** No `"managed"` field → Postgres/Redis deployed as K8s pods (like VPS)
 
-## Step 5: Set Up CI/CD (GitHub Actions)
+## Step 5: Configure Registry
 
-Configure the production environment for GitHub Actions deployment:
+Set up your container registry for CI/CD deployments:
+
+```bash
+larakube cloud:configure registry
+```
+
+When prompted:
+- **Environment**: `production`
+- **Provider**: `ghcr` (GitHub Container Registry) or `dockerhub`
+- **Image** (optional): Your registry path (e.g., `owner/my-app`)
+
+This enables both `cloud:deploy` (manual) and GitHub Actions (CI/CD) to push images.
+
+## Step 6: Update .env.production
+
+Create or update `.env.production` with your app configuration:
+
+```bash
+APP_URL=https://app.example.com
+DB_HOST=postgres.production.svc.cluster.local
+DB_PORT=5432
+DB_DATABASE=myapp
+DB_USERNAME=postgres
+DB_PASSWORD=<generate-strong-password>
+REDIS_HOST=redis.production.svc.cluster.local
+REDIS_PORT=6379
+```
+
+K8s pods auto-discover each other via service DNS names. Store sensitive values securely (use `larakube cloud:deploy` or GitHub Secrets).
+
+## Step 7: Deploy
+
+### Option A: Manual Deploy (Quick Testing)
+
+Deploy directly from your machine:
+
+```bash
+larakube cloud:deploy production
+```
+
+This will:
+1. Build your Docker image
+2. Push to your configured registry (GHCR or Docker Hub)
+3. Apply Kubernetes manifests
+4. Wait for rollout to complete
+
+### Option B: GitHub Actions (Recommended for Production)
+
+Set up automated CI/CD:
 
 ```bash
 larakube cloud:configure gha
@@ -153,126 +165,69 @@ larakube cloud:configure gha
 
 When prompted:
 - **Environment**: `production`
-- **Cluster context**: Use the DOKS kubeconfig context (usually `do-nyc3-my-larakube-cluster`)
+- **Cluster context**: Your DOKS cluster context (e.g., `do-nyc3-my-larakube-cluster`)
 
 This generates `.github/workflows/larakube-deploy-production.yml` which:
-1. Builds your Docker image
-2. Pushes to your configured registry (GHCR or Docker Hub)
-3. Creates/updates ConfigMaps and Secrets from `.env`
-4. Applies Kustomize overlays to your DOKS cluster
+1. Builds & tests your app
+2. Builds Docker image
+3. Pushes to your registry
+4. Deploys to DOKS
 
-**Registry choice:** The workflow automatically detects your registry from the blueprint. If you specified `"provider": "ghcr"`, it will use GHCR (via `GITHUB_TOKEN`). For Docker Hub, use `"provider": "dockerhub"` and ensure `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` secrets are added to your GitHub repository.
-
-## Step 6: Create Managed Databases
-
-Create DO Managed Postgres and Redis:
-
-**PostgreSQL:**
-```bash
-doctl databases create my-app-db \
-  --engine pg \
-  --region nyc3 \
-  --num-nodes 1 \
-  --version 15
-```
-
-Create a database and user:
-```bash
-doctl databases db create my-app-db my-app
-doctl databases user create my-app-db larakube
-```
-
-**Redis:**
-```bash
-doctl databases create my-app-redis \
-  --engine redis \
-  --region nyc3 \
-  --num-nodes 1 \
-  --version 7
-```
-
-Get the connection strings from the DigitalOcean dashboard and set them in `.env.production`:
+Trigger deployment:
 
 ```bash
-DB_HOST=my-app-db-xxx.db.ondigitalocean.com
-DB_PORT=25060
-DB_DATABASE=my-app
-DB_USERNAME=larakube
-DB_PASSWORD=<password>
-REDIS_HOST=my-app-redis-xxx.db.ondigitalocean.com
-REDIS_PORT=25061
-REDIS_PASSWORD=<password>
-```
-
-## Step 7: Deploy
-
-Push your code to GitHub:
-
-```bash
-git add .
-git commit -m "Deploy to DOKS with managed databases"
 git push origin main
 ```
 
-GitHub Actions will:
-1. Build & test your app
-2. Build Docker image
-3. Push to GHCR
-4. Deploy to DOKS
+## Step 8: Verify Deployment
 
-Watch the workflow:
-```bash
-# In GitHub, go to Actions → larakube → Latest run
-```
-
-Verify the deployment:
+Check pod status:
 
 ```bash
 kubectl get pods -n my-app-production
+```
+
+View logs:
+
+```bash
 kubectl logs -n my-app-production deployment/web -f
 ```
 
-## Step 8: Verify HTTPS
+Visit your domain:
 
-Visit `https://app.example.com` and verify the Let's Encrypt certificate:
-
-```bash
-# Check cert status
-kubectl get certificate -n my-app-production
-
-# Describe for more details
-kubectl describe certificate -n my-app-production <cert-name>
 ```
+https://app.example.com
+```
+
+Browser should show your Laravel app with valid Let's Encrypt certificate.
 
 ---
 
 ## Troubleshooting
 
-### ❌ Ingress shows `<pending>` for IP
+### ❌ LoadBalancer IP stuck on `<pending>`
 
-The LoadBalancer service may not have an external IP yet:
-
-```bash
-kubectl get svc -n ingress-nginx
-# Wait a few minutes and retry
-```
-
-### ❌ Certificate not issuing (cert-manager stuck)
-
-Check cert-manager logs:
+Traefik may still be starting:
 
 ```bash
-kubectl logs -n cert-manager deployment/cert-manager -f
+kubectl get svc -n traefik
+# Wait 1-2 minutes and retry
 ```
 
-Common issues:
-- DNS not propagated yet (wait 10 minutes)
-- ClusterIssuer email not valid
-- Ingress class name doesn't match (`ingressClassName: nginx`)
+### ❌ DNS not resolving
+
+Verify DNS propagation:
+
+```bash
+nslookup app.example.com
+# Should return: 123.45.67.89
+```
+
+If still showing old IP, wait another 5 minutes and clear your browser cache.
 
 ### ❌ App pod won't start
 
-Check pod logs:
+Check logs:
 
 ```bash
 kubectl logs -n my-app-production deployment/web
@@ -280,33 +235,73 @@ kubectl logs -n my-app-production deployment/web
 
 Common issues:
 - `.env.production` missing or incomplete
-- Database not accessible (check security groups)
-- Docker image build failed (check GitHub Actions logs)
+- Image pull failed (check registry credentials)
+- Database service not reachable (`DB_HOST` wrong)
 
 ### ❌ Database connection refused
 
-Verify the connection string and firewall rules:
+Verify Postgres pod is running:
 
 ```bash
-# From a pod in the cluster
-kubectl run -it --rm debug \
-  --image=postgres:15 \
-  --restart=Never \
-  -- psql -h <DB_HOST> -U <DB_USER> -d <DB_NAME>
+kubectl get pods -n my-app-production -l app=postgres
+kubectl logs -n my-app-production deployment/postgres
 ```
+
+Run migrations:
+
+```bash
+kubectl exec -n my-app-production deployment/web -- php artisan migrate:fresh --seed
+```
+
+### ❌ HTTPS certificate not working
+
+Verify Traefik is routing correctly:
+
+```bash
+kubectl get ingress -n my-app-production
+kubectl describe ingress -n my-app-production
+```
+
+Traefik automatically provisions Let's Encrypt certificates. Check Traefik logs:
+
+```bash
+kubectl logs -n traefik deployment/traefik -f | grep acme
+```
+
+---
+
+## Architecture Diagram
+
+```
+Internet (DNS: app.example.com → 123.45.67.89)
+    ↓
+Traefik LoadBalancer Service (Port 80, 443)
+    ↓
+Traefik Ingress Controller (routes HTTP→HTTPS, cert renewal)
+    ↓
+Laravel Web Pod (Deployment/web)
+    ↓
+Postgres Pod (Deployment/postgres)
+Redis Pod (Deployment/redis)
+    ↓
+Block Storage PVCs (do-block-storage class)
+```
+
+All services (web, postgres, redis, horizon, queues) are Kubernetes deployments with automatic scaling, rolling updates, and self-healing.
 
 ---
 
 ## Next Steps
 
-- **Scale horizontally**: Change `strategy: "multi-node-ha"` and use managed databases
-- **Add more environments**: Duplicate the `production` block in `.larakube.json` for staging
-- **Custom domain**: Update DNS records to point multiple domains to the same LoadBalancer IP
-- **Backups**: Enable automated backups on DO Managed Databases dashboard
+- **Monitor**: Set up DOKS monitoring dashboard
+- **Scale**: Adjust `replicas` in manifests or use Horizontal Pod Autoscaler
+- **Backup**: Enable automated snapshots for block storage
+- **Multi-env**: Create `staging` environment alongside `production`
+- **Multi-tenancy**: Use `plex` for sharing Commons services across projects
 
 ## Further Reading
 
 - [DigitalOcean Kubernetes Docs](https://docs.digitalocean.com/products/kubernetes/)
-- [cert-manager Documentation](https://cert-manager.io/)
+- [Traefik Documentation](https://doc.traefik.io/)
 - [LaraKube Architecture](../architecture/blueprint-anatomy)
-- [Managing Multiple Environments](../deployment/scaling-journey)
+- [Multi-environment Deployments](../deployment/scaling-journey)

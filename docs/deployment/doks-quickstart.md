@@ -12,10 +12,39 @@ LaraKube supports **DigitalOcean Kubernetes (DOKS)** as a managed multi-node clu
 
 - ✅ A LaraKube project (created with `larakube new`)
 - ✅ A DigitalOcean account with billing enabled
-- ✅ `doctl` CLI installed and authenticated (`doctl auth login`)
+- ✅ `doctl` CLI installed and authenticated
 - ✅ `kubectl` installed locally
 - ✅ `helm` installed locally
 - ✅ A domain name (for DNS)
+
+### Install DigitalOcean CLI (doctl)
+
+If you don't have `doctl` installed:
+
+**macOS (Homebrew):**
+```bash
+brew install doctl
+```
+
+**Linux/Manual:**
+```bash
+cd ~
+wget https://github.com/digitalocean/doctl/releases/download/v1.99.0/doctl-1.99.0-linux-x64.tar.gz
+tar xf ~/doctl-1.99.0-linux-x64.tar.gz
+sudo mv ~/doctl /usr/local/bin
+```
+
+**Windows (Chocolatey):**
+```bash
+choco install doctl
+```
+
+Then authenticate:
+
+```bash
+doctl auth init
+# Follow the prompts to add your DigitalOcean API token
+```
 
 ## Step 1: Create the DOKS Cluster
 
@@ -200,6 +229,36 @@ https://app.example.com
 ```
 
 Browser should show your Laravel app with valid Let's Encrypt certificate.
+
+---
+
+## Storage & Pricing
+
+### Node Ephemeral Storage (Included)
+
+Each worker node includes **100GB ephemeral storage** (included in the $24/month cluster cost):
+- Container images and layers
+- Pod temporary/working files
+- Application logs
+- **⚠️ Data is lost when pods restart or nodes are replaced**
+
+### Block Storage (Pay-as-you-go)
+
+For **persistent data** (databases, file uploads), you use DigitalOcean Block Storage:
+- Separate resource, charged per GB (~$0.10/GB/month)
+- Survives pod restarts and node replacements
+- Configured via `storageClass: "do-block-storage"` in blueprint
+
+**Example cost:**
+- DOKS cluster (2 nodes): $24/month
+- Block storage (10GB for DB + Redis): ~$1/month
+- Container registry (GHCR): Free
+- **Total: ~$25/month**
+
+To minimize costs:
+- Use small block storage volumes for databases only
+- Let ephemeral storage handle logs and temp files
+- Monitor usage: `kubectl describe pvc -A` to see volume claims
 
 ---
 

@@ -100,8 +100,16 @@ const sidebars: SidebarsConfig = {
         'architecture/strategy-switching',
         'deployment/manual-deploy',
         'deployment/github-actions',
-        'deployment/surgical-credentials',
         'deployment/doks-quickstart',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Security',
+      items: [
+        'security/overview',
+        'deployment/surgical-credentials',
+        'security/server-hardening',
       ],
     },
     {

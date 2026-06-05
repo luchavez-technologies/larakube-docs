@@ -309,7 +309,7 @@ You fill this in by running `larakube cloud:configure`. It's used to reach your 
 
 - **`ip` / `user` / `port`** — how to SSH into the server.
 - **`key`** — path to your SSH private key (absolute, or `~`-relative).
-- **`teammates`** — other people who should be able to SSH into *this* server. You add them with `larakube cloud:configure users` (you won't hand-write these), and LaraKube creates the matching Linux user on the box and installs their public key. Each environment keeps its own list, so you can give a teammate access to staging but not production. Each entry has:
+- **`teammates`** — other people who should be able to SSH into *this* server. You add them with `larakube cloud:configure:users` (you won't hand-write these), and LaraKube creates the matching Linux user on the box and installs their public key. Each environment keeps its own list, so you can give a teammate access to staging but not production. Each entry has:
   - **`username`** / **`name`** — the login name to create and a human label.
   - **`groups`** / **`shell`** — the Linux groups (e.g. `sudo`) and login shell for that user.
   - **`state`** — `present` to ensure the user exists, or `absent` to remove them on the next sync.

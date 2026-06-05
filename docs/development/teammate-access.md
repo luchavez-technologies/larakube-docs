@@ -49,7 +49,7 @@ Teammates are defined **per environment**, inside that environment's `cloud` blo
 You don't usually hand-write these — the CLI does it for you:
 
 ```bash
-larakube cloud:configure users
+larakube cloud:configure:users
 ```
 
 It asks which environment (server) you're granting access to, collects the teammate's details, writes them into that environment's `cloud.teammates`, and offers to sync to the server immediately.
@@ -60,7 +60,7 @@ It asks which environment (server) you're granting access to, collects the teamm
 - **SSH key rotation** — writes the `authorized_keys` file to match the blueprint.
 - **Permission hardening** — secure ownership and modes (`700` for `.ssh`, `600` for `authorized_keys`).
 
-To **revoke** access, set that teammate's `state` to `absent` and run `larakube cloud:configure users` again.
+To **revoke** access, set that teammate's `state` to `absent` and run `larakube cloud:configure:users` again.
 
 :::caution Single-server access only
 This is **SSH/OS-level access to one server** — it creates a Linux login with `sudo` on the host at `cloud.ip`. It fits the [Single-Node Hero](../architecture/single-node-hero) / VPS setup, where you and your teammates run `larakube` and `kubectl` from the box itself.

@@ -141,7 +141,7 @@ Edit `.larakube.json` to target DOKS with self-hosted services:
 Set up your container registry for CI/CD deployments:
 
 ```bash
-larakube cloud:configure registry
+larakube cloud:configure:registry
 ```
 
 When prompted:
@@ -189,7 +189,7 @@ This will:
 Set up automated CI/CD:
 
 ```bash
-larakube cloud:configure gha
+larakube cloud:configure:gha
 ```
 
 When prompted:

@@ -34,7 +34,7 @@ Running `composer install` or `npm run build` directly on a 1GB droplet will cra
 The one-time setup generates the workflow and wires up your secrets:
 
 ```bash
-larakube cloud:configure gha
+larakube cloud:configure:gha
 ```
 
 This generates a hardened workflow at `.github/workflows/larakube-deploy-{env}.yml`, securely extracts minified cluster credentials, and configures the `ghcr-login` pull secret on your remote cluster. Under the hood it calls `gha:configure` for the secret upload — you can run that step on its own for a specific environment:

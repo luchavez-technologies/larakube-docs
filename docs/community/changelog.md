@@ -9,6 +9,18 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### June 2026: Least-Privilege Deploys & Managed Clusters (CLI v0.14.0)
+The headline is security: **deploys no longer ship your cluster-admin cert.** Both the manual path and CI now deploy as a credential that can touch exactly one namespace — plus first-class managed-cluster (DOKS) support and real server hardening.
+
+- **Namespace-scoped deploy credentials**: `larakube cloud:deploy` and the GitHub Actions workflow now deploy as a per-app, per-environment `deployer` **ServiceAccount** locked to its own `{app}-{env}` namespace. Your admin kubeconfig **never leaves your machine**; CI gets a namespace-scoped, Secret-bound token. If a repo leaks, the blast radius is one namespace — not your whole cluster. See [Surgical Credentials](../deployment/surgical-credentials). *Validated end-to-end on a single-node VPS via both manual deploy and GitHub Actions.*
+- **Managed Kubernetes (DOKS)**: `larakube cloud:provision:doks` installs Traefik and returns the LoadBalancer IP. Clusters are now identified by their **kube-context** (`cloud.context`) — so DOKS/EKS/GKE/AKS all work, picked from your kubeconfig instead of typing an IP — alongside a per-environment `storageClass`. *Tooling is wired; multi-node end-to-end validation is still in progress.*
+- **Server hardening**: `cloud:provision` now hardens the box — UFW default-deny firewall (allowing SSH/80/443/6443 + the k3s pod/service CIDRs), fail2ban, automatic security updates, key-only SSH, and a **guarded** disable-remote-root-login (only after the `larakube` user is proven to work, so you can't lock yourself out). New `larakube cloud:harden` re-applies all of it to an already-provisioned server.
+- **Discoverable `cloud:configure:*`**: `cloud:configure:base`, `:gha`, `:registry`, and `:users` now show up in `larakube list` (the bare `cloud:configure` still runs the full guided flow). The dead repo-clone-on-VPS `server` step was removed — both deploy paths ship a self-contained image.
+- **`plex:join` service picker**: choose *which* Commons services to join (e.g. share Redis but keep MySQL self-hosted) instead of all-or-nothing.
+- **`context:remove`**: cleanly drop a stale kube-context (and its cluster/user entries) after deleting a droplet; `cloud:nuke` offers it on teardown.
+- **Per-environment registry**: configure **GHCR** or **Docker Hub** per environment — it drives both `cloud:deploy`'s registry push (for multi-node) and the generated GitHub Actions workflow.
+- **Fixes**: the scoped apply strips the cluster-scoped `Namespace` object (the scoped SA owns only namespaced resources); corrected GitHub-expression rendering in the generated workflow; and `cloud:provision` / `cloud:configure` no longer accidentally clobber sibling commands.
+
 ### June 2026: Local Dev Hardening (CLI v0.11.6 – v0.11.8)
 Stability fixes for the local development experience, addressing Vite HMR and test suite reliability.
 

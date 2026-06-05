@@ -147,14 +147,14 @@ sequenceDiagram
     Note over You,VPS: Rung ① — Single-Node Hero
     You->>VPS: larakube cloud:provision
     VPS-->>You: k3s installed, kubeconfig returned
-    You->>VPS: larakube cloud:configure gha
+    You->>VPS: larakube cloud:configure:gha
     You->>VPS: git push  (GitHub Actions builds & deploys)
     VPS-->>You: Live on your production domain
 
     Note over You,Cloud: Rung ④ — Multi-Node HA
     You->>Cloud: Create the managed cluster, fetch its kubeconfig
     You->>Cloud: Set strategy: multi-node-ha in .larakube.json
-    You->>Cloud: larakube cloud:configure gha  (with the DOKS kubeconfig)
+    You->>Cloud: larakube cloud:configure:gha  (with the DOKS kubeconfig)
     You->>Cloud: git push
     Cloud-->>You: Running with high availability
 ```

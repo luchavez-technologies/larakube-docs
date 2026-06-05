@@ -20,6 +20,9 @@ LaraKube is an ecosystem built on three pillars: the **CLI** (the engine), the *
 - [x] **CLI**: **Two apps, one server** — multiple projects on a single node, isolated by namespace (see [Two Apps, One Server](../deployment/multiple-projects)).
 - [x] **CLI**: **Portable** CLI-free wrapper so teammates can run the lifecycle without installing the binary.
 - [x] **CLI — Plex** 🏘️: multiple apps **share** one Commons — a Postgres *or* MySQL/MariaDB database, Redis, Meilisearch, and S3 (SeaweedFS *or* MinIO) — each tenant getting its own isolated database, login, Redis logical DB, and bucket. Commands: `plex:init | plex:join | plex:status | plex:leave | plex:remove | plex:destroy | plex:export`. *Validated on a single-node VPS via **both** manual `larakube cloud:deploy` **and** GitHub Actions; multi-node (DOKS) is still being validated (see "Next up").*
+- [x] **CLI — Namespace-scoped deploy credentials** 🔐: both `larakube cloud:deploy` and the GitHub Actions workflow deploy as a per-app, per-environment `deployer` ServiceAccount locked to its own namespace — your admin kubeconfig never leaves your machine, and CI holds only a namespace-scoped token. *Validated on a single-node VPS via both manual deploy and GitHub Actions (see [Surgical Credentials](../deployment/surgical-credentials)).*
+- [x] **CLI — Server hardening**: `cloud:provision` hardens the box (UFW default-deny, fail2ban, automatic security updates, key-only SSH, and a guarded disable-remote-root-login); `cloud:harden` re-applies it to an already-provisioned server.
+- [x] **CLI — Per-environment registry**: publish each environment's image to **GHCR** or **Docker Hub**, driving both `cloud:deploy`'s registry push and the generated GitHub Actions workflow. *(AWS ECR / Google Artifact Registry / custom registries are next up.)*
 - [x] **Console**: High-fidelity Kubernetes Control Plane (Filament).
 - [x] **Docs**: Linear learning path, [Blueprint Anatomy](../architecture/blueprint-anatomy), and the [Scaling Journey](../deployment/scaling-journey).
 
@@ -30,10 +33,10 @@ LaraKube is an ecosystem built on three pillars: the **CLI** (the engine), the *
 *Closing the gap from "single VPS" to "any cluster, shared or isolated." These have specs and are the active focus.*
 
 - [ ] **CLI — Plex on multi-node** 🏘️: [Plex](../deployment/multiple-projects#going-further-plex) is validated on a single-node VPS via both manual `larakube cloud:deploy` and GitHub Actions; running the shared Commons across a multi-node cluster (DOKS) is the remaining validation.
-- [ ] **CLI — DigitalOcean Kubernetes (DOKS)**: a clean managed multi-node deploy path, with storage-class control and cert-manager TLS for managed clusters.
-- [ ] **CLI — Per-environment container registry**: publish each environment's image to **GHCR, Docker Hub, AWS ECR, Google Artifact Registry, or a custom registry** (e.g. local builds locally, staging → GHCR, production → ECR).
+- [ ] **CLI — DigitalOcean Kubernetes (DOKS) end-to-end**: the tooling shipped in v0.14.0 — `cloud:provision:doks` (Traefik + LoadBalancer IP), managed-cluster identity via `cloud.context`, and per-env `storageClass` — but a clean managed multi-node deploy is still being validated end-to-end.
+- [ ] **CLI — More registries**: extend per-environment publishing to **AWS ECR, Google Artifact Registry, and custom registries** (GHCR and Docker Hub already ship).
 - [ ] **CLI — GitLab CI/CD**: generate a `.gitlab-ci.yml` pipeline alongside the existing GitHub Actions workflow.
-- [ ] **CLI / Console — RBAC teammate access**: scoped cluster access via a per-person kubeconfig + role presets (admin / read-only / single-namespace), replacing SSH logins for real clusters.
+- [ ] **CLI / Console — RBAC teammate access**: scoped cluster access via a per-person kubeconfig + role presets (admin / read-only / single-namespace), replacing SSH logins for real clusters. *(The namespace-scoped ServiceAccount machinery from v0.14.0 is the foundation for this.)*
 
 ---
 

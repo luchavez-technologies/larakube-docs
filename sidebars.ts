@@ -92,13 +92,16 @@ const sidebars: SidebarsConfig = {
       label: 'Digging Deeper (Deployment)',
       items: [
         'deployment/overview',
+        'deployment/journey',
         'deployment/scaling-journey',
         'architecture/single-node-hero',
         'deployment/6dollar-baseline',
         'deployment/multiple-projects',
         'architecture/strategy-switching',
+        'deployment/manual-deploy',
         'deployment/github-actions',
         'deployment/surgical-credentials',
+        'deployment/doks-quickstart',
       ],
     },
     {

@@ -83,7 +83,6 @@ const sidebars: SidebarsConfig = {
         'development/hmr',
         'development/logs',
         'development/tunneling',
-        'development/teammate-access',
         'development/ai-native-orchestration',
       ],
     },

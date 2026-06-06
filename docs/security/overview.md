@@ -69,6 +69,6 @@ Security is layered, and a few hardening knobs are deliberately deferred (tracke
 
 - The **k3s API (6443)** is open to the internet by default — restricting it to your operator IP is a recommended manual follow-up.
 - The **`larakube` admin user keeps full sudo** (it's the box's admin once root login is off) — OS-level deploy isolation, if ever wanted, would be a separate dedicated user.
-- **Per-person RBAC** (teammate kubeconfigs with role presets) is on the [roadmap](../community/roadmap); the namespace-scoped ServiceAccount machinery here is its foundation.
+- **Real SSO (OIDC)** for human access is a longer-term path; today, [Team Access](../teams/overview) issues per-person, revocable, scoped kubeconfigs (in-cluster credentials rather than federated identities).
 
 LaraKube's goal isn't to claim perfection — it's to make the **secure path the default one**, and to be honest about the edges.

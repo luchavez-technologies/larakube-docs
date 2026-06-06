@@ -287,19 +287,7 @@ Each environment that deploys to a server keeps its connection details right ins
             "ip": "203.0.113.10",
             "user": "deploy",
             "port": 22,
-            "key": "~/.ssh/id_rsa",
-            "teammates": [
-                {
-                    "username": "alice",
-                    "name": "Alice Rivera",
-                    "state": "present",
-                    "groups": ["sudo"],
-                    "shell": "/bin/bash",
-                    "authorized_keys": [
-                        { "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5... alice@laptop" }
-                    ]
-                }
-            ]
+            "key": "~/.ssh/id_rsa"
         }
     }
 }
@@ -307,20 +295,11 @@ Each environment that deploys to a server keeps its connection details right ins
 
 You fill this in by running `larakube cloud:configure`. It's used to reach your server for deploys.
 
-- **`ip` / `user` / `port`** — how to SSH into the server.
+- **`ip` / `user` / `port`** — how to SSH into the server (VPS). A managed cluster (DOKS/EKS/GKE/AKS) uses **`context`** instead — the kube-context name from your provider's CLI.
 - **`key`** — path to your SSH private key (absolute, or `~`-relative).
-- **`teammates`** — other people who should be able to SSH into *this* server. You add them with `larakube cloud:configure:users` (you won't hand-write these), and LaraKube creates the matching Linux user on the box and installs their public key. Each environment keeps its own list, so you can give a teammate access to staging but not production. Each entry has:
-  - **`username`** / **`name`** — the login name to create and a human label.
-  - **`groups`** / **`shell`** — the Linux groups (e.g. `sudo`) and login shell for that user.
-  - **`state`** — `present` to ensure the user exists, or `absent` to remove them on the next sync.
-  - **`authorized_keys`** — the public SSH keys allowed to log in as that user.
 
-A fresh `cloud` block has no `teammates` until you add some — it's an optional list, so leaving it out (as the examples above do) is perfectly normal.
-
-:::caution Single-server access only
-`teammates` is built for the **single-server (VPS) setup**: it creates a normal Linux login with `sudo` on that one machine. It does **not** fit a multi-node or managed cluster (EKS/GKE/AKS) — those nodes are disposable and often can't be logged into, and `sudo` is all-or-nothing anyway (there's no "read-only" or "just this one namespace").
-
-For scoped, multi-person access to a real cluster, the Kubernetes answer is **RBAC**: each person gets their own cluster credentials (a kubeconfig) and a defined set of permissions, so you can hand out read-only or single-namespace access. LaraKube doesn't automate that yet — for now, treat `teammates` as a single-VPS convenience only.
+:::tip Giving other people access
+SSH is for **you** administering the box. To let teammates work with your apps, see [Team Access](../teams/overview) — each person gets their own RBAC-scoped kubeconfig (no SSH, no server login), which works the same on a single VPS or a managed cluster.
 :::
 
 :::note Older projects

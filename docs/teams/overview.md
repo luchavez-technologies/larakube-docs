@@ -7,7 +7,7 @@ description: Give teammates their own scoped access to your cluster — no SSH, 
 
 Give a teammate access to your cluster **without giving them a login on your server**. Each person gets their own **kubeconfig**, scoped by Kubernetes RBAC to exactly the apps and level of access you choose. No SSH, no `sudo`, no OS user — and you can audit, change, or revoke it in one command.
 
-> This replaces the old SSH-based teammate flow (which created a passwordless-root Linux user). SSH stays only for **you** administering the box.
+> SSH stays only for **you** administering the box — teammates never need a server login.
 
 ## The model in one picture
 

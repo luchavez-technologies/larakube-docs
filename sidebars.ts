@@ -109,6 +109,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'security/overview',
         'deployment/surgical-credentials',
+        'security/rotating-credentials',
         'security/server-hardening',
       ],
     },

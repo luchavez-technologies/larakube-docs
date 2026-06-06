@@ -9,6 +9,13 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### June 2026: Teammate RBAC & Credential Lifecycle (CLI v0.15.0)
+Cluster access for your team **without giving anyone SSH to your server** — plus the tools to audit, rotate, and revoke every credential, and a safety net for your kubeconfig.
+
+- **Teammate RBAC (cluster-native, no SSH):** `larakube cluster:grant <namespace> --name lloyd` gives a teammate their own **namespace-scoped kubeconfig** — built on Kubernetes' built-in `view` / `edit` / `admin` roles (`--read` / `--edit` *(default)* / `--admin`). One person is **one identity**: granting them a second app just adds a binding, their kubeconfig never changes, and re-running `grant` with a different flag **upgrades/downgrades** their role instantly. Before you grant an app, they can't even *see* it exists. They onboard with one command — `larakube context:import lloyd.kubeconfig` — and you remove them with `cluster:revoke --name lloyd` (one app, or off-board entirely). This **replaces** the old SSH-teammate flow, which gave collaborators passwordless root on your box.
+- **Credential lifecycle:** `cluster:users` lists every deploy SA *and* teammate (and audits a namespace's *live* RBAC scope, so drift shows); `cluster:revoke` is the kill-switch; and `cloud:configure:gha <env> --rotate` kills a leaked CI token and re-issues a fresh one — CI keeps working, the leaked copy dies. See [Rotating & Revoking Credentials](../security/rotating-credentials).
+- **Kubeconfig safety:** `context:backup` snapshots your `~/.kube/config` (dated), and `context:restore` lets you pick one from a list — handy before anything that rewrites it (an `orb reset`, a cloud CLI, etc.). It also snapshots your current config before restoring, so a restore is itself reversible.
+
 ### June 2026: Least-Privilege Deploys & Managed Clusters (CLI v0.14.0)
 The headline is security: **deploys no longer ship your cluster-admin cert.** Both the manual path and CI now deploy as a credential that can touch exactly one namespace — plus first-class managed-cluster (DOKS) support and real server hardening.
 

@@ -22,6 +22,7 @@ LaraKube is an ecosystem built on three pillars: the **CLI** (the engine), the *
 - [x] **CLI — Plex** 🏘️: multiple apps **share** one Commons — a Postgres *or* MySQL/MariaDB database, Redis, Meilisearch, and S3 (SeaweedFS *or* MinIO) — each tenant getting its own isolated database, login, Redis logical DB, and bucket. Commands: `plex:init | plex:join | plex:status | plex:leave | plex:remove | plex:destroy | plex:export`. *Validated on a single-node VPS via **both** manual `larakube cloud:deploy` **and** GitHub Actions; multi-node (DOKS) is still being validated (see "Next up").*
 - [x] **CLI — Namespace-scoped deploy credentials** 🔐: both `larakube cloud:deploy` and the GitHub Actions workflow deploy as a per-app, per-environment `deployer` ServiceAccount locked to its own namespace — your admin kubeconfig never leaves your machine, and CI holds only a namespace-scoped token. *Validated on a single-node VPS via both manual deploy and GitHub Actions (see [Surgical Credentials](../deployment/surgical-credentials)).*
 - [x] **CLI — Server hardening**: `cloud:provision` hardens the box (UFW default-deny, fail2ban, automatic security updates, key-only SSH, and a guarded disable-remote-root-login); `cloud:harden` re-applies it to an already-provisioned server.
+- [x] **CLI — Teammate RBAC** 👥: per-person, namespace-scoped kube access with **no SSH** — `cluster:grant --name <person> <namespace> [--read|--edit|--admin]` (built-in `view`/`edit`/`admin`), one identity across many apps, instant upgrade/downgrade, `context:import` onboarding, `cluster:revoke --name` off-boarding. Replaces the old SSH-teammate flow. *(Per-person OIDC/SSO is the longer-term graduation path.)*
 - [x] **CLI — Per-environment registry**: publish each environment's image to **GHCR** or **Docker Hub**, driving both `cloud:deploy`'s registry push and the generated GitHub Actions workflow. *(AWS ECR / Google Artifact Registry / custom registries are next up.)*
 - [x] **Console**: High-fidelity Kubernetes Control Plane (Filament).
 - [x] **Docs**: Linear learning path, [Blueprint Anatomy](../architecture/blueprint-anatomy), and the [Scaling Journey](../deployment/scaling-journey).
@@ -36,7 +37,6 @@ LaraKube is an ecosystem built on three pillars: the **CLI** (the engine), the *
 - [ ] **CLI — DigitalOcean Kubernetes (DOKS) end-to-end**: the tooling shipped in v0.14.0 — `cloud:provision:doks` (Traefik + LoadBalancer IP), managed-cluster identity via `cloud.context`, and per-env `storageClass` — but a clean managed multi-node deploy is still being validated end-to-end.
 - [ ] **CLI — More registries**: extend per-environment publishing to **AWS ECR, Google Artifact Registry, and custom registries** (GHCR and Docker Hub already ship).
 - [ ] **CLI — GitLab CI/CD**: generate a `.gitlab-ci.yml` pipeline alongside the existing GitHub Actions workflow.
-- [ ] **CLI / Console — RBAC teammate access**: scoped cluster access via a per-person kubeconfig + role presets (admin / read-only / single-namespace), replacing SSH logins for real clusters. *(The namespace-scoped ServiceAccount machinery from v0.14.0 is the foundation for this.)*
 
 ---
 

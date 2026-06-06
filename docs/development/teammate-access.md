@@ -3,7 +3,11 @@ sidebar_position: 11
 title: Declarative Teammate Access
 description: Give teammates SSH access to a LaraKube server declaratively — defined per environment in .larakube.json and synced with one command.
 ---
-# 👤 Declarative Teammate Access
+# 👤 Declarative Teammate Access (SSH)
+
+:::warning Deprecated for cluster access
+This page covers **SSH** access — a Linux login on the VPS itself. For letting teammates **work with your apps** (deploy, logs, exec, restart pods), use [**Team Access**](../teams/overview) instead: a per-person, RBAC-scoped kubeconfig with **no SSH and no server login**. SSH teammates grant a sudo-capable OS user on the box (effectively root), which is far more than app access needs. Reserve SSH for **server administration** only.
+:::
 
 LaraKube gives you a declarative way to manage **SSH access** to a server. Instead of hand-editing `authorized_keys` on the box, you list your teammates in the blueprint and sync them with one command — so access lives in version control alongside everything else.
 

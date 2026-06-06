@@ -115,6 +115,13 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Teams',
+      items: [
+        'teams/overview',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Ecosystem & Advanced',
       items: [
         {

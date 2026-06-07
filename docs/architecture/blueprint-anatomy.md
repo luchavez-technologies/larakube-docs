@@ -321,10 +321,10 @@ SSH is for **you** administering the box. To let teammates work with your apps, 
 LaraKube used to store all of this in one top-level `cloud` block. If you have an older `.larakube.json`, LaraKube quietly moves it into each environment the next time it saves — you don't have to change anything.
 :::
 
-:::warning Don't commit infra coordinates to a public repo
-`.larakube.json` holds **no secrets** — no passwords, tokens, kubeconfigs, or SSH key material (those live in `.env*`, Kubernetes Secrets, and `~/.kube`). But a **VPS** `cloud` block does record your server's **IP, SSH user/port, and key path** — useful reconnaissance for an attacker. (A **managed** env only stores the kube-context name + provider, which is low-risk.)
+:::note Where the `cloud` connection is stored
+`.larakube.json` holds **no secrets** (no passwords, tokens, kubeconfigs, or SSH key material — those live in `.env*`, Kubernetes Secrets, and `~/.kube`), and as of LaraKube it also carries **no infra coordinates**. The per-environment `cloud` connection — server **IP, SSH user/port, key path**, or managed **kube-context** — is operator/machine-specific, so LaraKube keeps it in a separate **`.larakube.local.json`** that's created and **gitignored automatically** on save, then merged back in at load time. The committed blueprint stays shareable and safe to push; you don't manage the split by hand.
 
-If your repository is **public**, either keep `.larakube.json` out of it (`echo '.larakube.json' >> .gitignore`) or scrub the `cloud` blocks before pushing. On a private repo it's a non-issue. A future release will split the operator-specific `cloud` connection into a gitignored `.larakube.local.json` so the shareable blueprint never carries it.
+Existing projects migrate on the next save (the `cloud` block moves out of `.larakube.json` into `.larakube.local.json`). The examples above show `cloud` under each environment because that's how it's *resolved in memory* — on disk it lives in the local file.
 :::
 
 ## 📦 Container registry {#container-registry}

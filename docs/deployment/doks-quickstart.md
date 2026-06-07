@@ -57,8 +57,8 @@ doctl kubernetes cluster create my-larakube-cluster \
   --enable-monitoring
 ```
 
-:::caution One node to start
-Begin with a **1-node** pool and the default `single-node` strategy. On a multi-node pool, app pods that share a `ReadWriteOnce` volume (`do-block-storage` can't do `ReadWriteMany`) can land on different nodes and get stuck `Pending`. True multi-node HA needs fully externalized state — see [Going multi-node](#going-multi-node) below — so get a single-node deploy green first, then scale.
+:::tip Node count drives the strategy
+A **1-node** pool is the simplest first run (`single-node` strategy → a shared `do-block-storage` volume). A **multi-node** pool runs app pods **stateless** (`multi-node-ha` → per-pod `emptyDir`), which needs externalized state — see [Going multi-node](#going-multi-node). Either way, LaraKube derives the strategy from the cluster's node count when you record the target, so you don't set it by hand.
 :::
 
 Import the cluster's kubeconfig so `kubectl`/`larakube` can reach it:
@@ -194,7 +194,7 @@ curl -H "Host: app.example.com" http://<LoadBalancer IP>/up
 
 ## Going multi-node {#going-multi-node}
 
-`do-block-storage` is `ReadWriteOnce`, so a shared `storage/` volume can't span nodes. To run **multi-node-ha** safely, the app must be **stateless**: uploads on S3 (MinIO/Commons), cache+sessions on Redis, logs to stdout. A Plex Commons gives you exactly that (S3 + Redis), which is why it's the natural multi-node target. See the [roadmap](../community/roadmap) for the in-progress multi-node storage work, and [The Scaling Journey](./scaling-journey) for where this fits.
+`do-block-storage` is `ReadWriteOnce`, so a shared `storage/` volume can't span nodes. On **`multi-node-ha`** LaraKube therefore runs the app pods **stateless** — each gets a per-pod `emptyDir` (no shared PVC), so they spread across nodes freely. State must then be externalized: uploads on S3 (MinIO/Commons), sessions/cache on Redis or the database. A Plex Commons provides exactly that, and `cloud:deploy` warns if anything is still on local storage. SQLite stays single-node (its DB is a file). See [The Scaling Journey](./scaling-journey).
 
 ---
 

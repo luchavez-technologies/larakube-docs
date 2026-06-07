@@ -272,7 +272,7 @@ A couple of things worth knowing:
 
 - **`strategy`** — How your app is spread across servers:
   - `single-node` — one server (the classic, low-cost setup). This is the default.
-  - `multi-node-ha` — several servers for high availability, with shared storage.
+  - `multi-node-ha` — several servers for high availability. App pods run **stateless** (per-pod storage, no shared volume), so state is externalized: uploads → S3, sessions/cache → Redis or the database. LaraKube can set this from the cluster's node count when you record the target.
 
   This is the project-wide default, and any environment can override it (e.g. a `single-node` staging and a `multi-node-ha` production from the same blueprint). **`local` is always `single-node`** — it's just your one machine.
 - **`githubActions`** — Whether the GitHub Actions deploy workflow is set up. When `true`, `larakube gha:configure` wires up the secrets and creates the deploy workflow for you.
@@ -319,6 +319,12 @@ SSH is for **you** administering the box. To let teammates work with your apps, 
 
 :::note Older projects
 LaraKube used to store all of this in one top-level `cloud` block. If you have an older `.larakube.json`, LaraKube quietly moves it into each environment the next time it saves — you don't have to change anything.
+:::
+
+:::warning Don't commit infra coordinates to a public repo
+`.larakube.json` holds **no secrets** — no passwords, tokens, kubeconfigs, or SSH key material (those live in `.env*`, Kubernetes Secrets, and `~/.kube`). But a **VPS** `cloud` block does record your server's **IP, SSH user/port, and key path** — useful reconnaissance for an attacker. (A **managed** env only stores the kube-context name + provider, which is low-risk.)
+
+If your repository is **public**, either keep `.larakube.json` out of it (`echo '.larakube.json' >> .gitignore`) or scrub the `cloud` blocks before pushing. On a private repo it's a non-issue. A future release will split the operator-specific `cloud` connection into a gitignored `.larakube.local.json` so the shareable blueprint never carries it.
 :::
 
 ## 📦 Container registry {#container-registry}

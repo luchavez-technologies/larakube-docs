@@ -12,10 +12,10 @@ The [namespace-scoped deploy credentials](./overview#2--namespace-scoped-deploys
 ```bash
 larakube cluster:users
 ```
-Lists every LaraKube deploy ServiceAccount across the cluster — `Namespace · ServiceAccount · App · Env · CI token`. To audit one credential's *actual* permissions (read live, so drift shows):
+Lists every LaraKube identity across the cluster — deploy ServiceAccounts (`Namespace · ServiceAccount · App · Env · CI token`) and teammates. Inside a project, name an environment (or omit it to pick one) to list just who has access there. To audit one credential's *actual* permissions (read live, so drift shows), add `--scope`:
 
 ```bash
-larakube cluster:users myapp-production
+larakube cluster:users myapp-production --scope
 ```
 This prints the live `deployer` Role's rules, confirms the RoleBinding actually binds the SA (flags "no scope!" if not), and shows the CI token state.
 
@@ -49,7 +49,7 @@ To re-grant later, just run `larakube cloud:configure:gha <env>` (or `cloud:depl
 
 | Situation | Command |
 |---|---|
-| "Is anything granted? What can it do?" | `cluster:users [namespace]` |
+| "Who has access?" / "What can a credential do?" | `cluster:users [env]` lists access · add `--scope` to audit a deploy SA's live rules |
 | "A CI secret leaked — kill it, keep deploying" | `cloud:configure:gha <env> --rotate` |
 | "Decommissioning this app/env" | `cluster:revoke <namespace> --with-secret` |
 | "I upgraded the CLI and the Role changed" | `cloud:configure:gha <env>` (re-applies the Role) |

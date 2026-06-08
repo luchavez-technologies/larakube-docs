@@ -9,6 +9,14 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### June 2026: Environment-First Cluster Ops & Multi-Node Storage (CLI v0.17.0)
+Two themes: the `cluster:*` commands stop making you memorize namespaces and contexts, and multi-node storage gets an honest, guided story — stateless by default, with a one-command path to externalize and an opt-in shared filesystem for the apps that truly need one.
+
+- **Environment-first `cluster:*`:** `cluster:grant`, `cluster:revoke`, and `cluster:users` now take an **environment** inside a project — `larakube cluster:grant production --name lloyd` — and target that env's namespace *and* its own cluster context automatically (a literal namespace still works standalone). Standalone, they prompt for a context instead of silently using whatever `kubectl` points at. `cluster:users <env>` now **lists who has access**; auditing a deploy SA's live RBAC rules moved behind `--scope`. `cluster:grant` also auto-creates a missing namespace and gitignores the minted `*.kubeconfig`, and `context:import` binds the imported context to the matching environment so teammates get the same env-first DX. See [Team Access](../teams/overview) and [Rotating & Revoking Credentials](../security/rotating-credentials).
+- **Multi-node storage, made honest:** on `multi-node-ha`, app pods run **stateless** (per-pod ephemeral storage) so they spread freely across nodes — state is externalized to object storage (S3/Spaces) and Redis/database. New **`larakube cloud:externalize <env>`** turns that into one guided step: it flips the env's `FILESYSTEM_DISK` / `SESSION_DRIVER` / `CACHE_STORE` / `QUEUE_CONNECTION`, offers to join a Plex Commons for the S3 + Redis backends, and never clobbers Commons-owned credentials — and `cloud:deploy` now *offers* to run it instead of only warning.
+- **Opt-in shared storage (experimental):** apps that genuinely need a shared cross-node folder can set `sharedStorage: true` and run **`larakube cloud:provision:nfs`** to install an in-cluster NFS provisioner (the `larakube-nfs` ReadWriteMany StorageClass). It's a soft single-point-of-failure (one NFS pod, while your app pods stay HA) and **does not work on DOKS** (the mount hangs) — prefer externalizing where you can. See [Shared Storage](../architecture/shared-storage#-storage-across-the-scaling-journey).
+- **Cloud connection split out of `.larakube.json`:** a project's infra coordinates (cluster context, server) now live in a **gitignored `.larakube.local.json`**, so the committed blueprint carries no cluster details. Plus a scheduler **cloud-wait** so CronJobs don't fire before managed/Commons services are reachable.
+
 ### June 2026: Teammate RBAC & Credential Lifecycle (CLI v0.15.0)
 Cluster access for your team **without giving anyone SSH to your server** — plus the tools to audit, rotate, and revoke every credential, and a safety net for your kubeconfig.
 

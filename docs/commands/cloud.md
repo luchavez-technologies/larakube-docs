@@ -33,3 +33,13 @@ The "Remote Cleanup." Wipes all project resources from the remote cluster — na
 - **Destructive**: Everything the project deployed to the cluster is removed. The cluster itself stays up.
 - **Use when**: Decommissioning a project or starting over after a major architectural change.
 - **Confirmation**: Requires explicit confirmation.
+
+## `cloud:provision:nfs`
+The "Shared Folder" escape hatch for multi-node clusters. Installs an in-cluster NFS provisioner so an environment can opt in to **`ReadWriteMany` (RWX)** shared storage instead of the stateless default — see [Storage across the scaling journey](../architecture/shared-storage#-storage-across-the-scaling-journey).
+- **What it installs**: a single NFS server (a block volume re-exported over NFS) plus a dynamic provisioner, exposed as the `larakube-nfs` StorageClass. After it's installed, set `"sharedStorage": true` on the environment and redeploy.
+- **Flags**: `--context`, `--size=10Gi` (backing block volume), `--storage-class=` (block class for the backing volume; defaults to the cluster default, e.g. `do-block-storage`), `--retain` (keep the PV on PVC delete).
+- **Idempotent**: the `larakube-nfs` StorageClass is the marker — a completed install is a no-op. *(If an install half-fails, delete the StorageClass before re-running.)*
+
+:::warning Experimental — not for DOKS
+The NFS server is a single pod (a **soft storage SPOF** — your app pods stay HA) and depends on the node's NFS mount path, which **does not work on DigitalOcean Kubernetes (DOKS)**: the mount hangs. Prefer externalizing state to object storage + Redis; reach for this only when an app needs a genuine shared cross-node folder.
+:::

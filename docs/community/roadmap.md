@@ -24,6 +24,7 @@ LaraKube is an ecosystem built on three pillars: the **CLI** (the engine), the *
 - [x] **CLI — Server hardening**: `cloud:provision` hardens the box (UFW default-deny, fail2ban, automatic security updates, key-only SSH, and a guarded disable-remote-root-login); `cloud:harden` re-applies it to an already-provisioned server.
 - [x] **CLI — Teammate RBAC** 👥: per-person, namespace-scoped kube access with **no SSH** — `cluster:grant --name <person> <namespace> [--read|--edit|--admin]` (built-in `view`/`edit`/`admin`), one identity across many apps, instant upgrade/downgrade, `context:import` onboarding, `cluster:revoke --name` off-boarding. Replaces the old SSH-teammate flow. *(Per-person OIDC/SSO is the longer-term graduation path.)*
 - [x] **CLI — Per-environment registry**: publish each environment's image to **GHCR** or **Docker Hub**, driving both `cloud:deploy`'s registry push and the generated GitHub Actions workflow. *(AWS ECR / Google Artifact Registry / custom registries are next up.)*
+- [x] **CLI — Multi-node storage strategy** 🗄️: multi-node apps default to **stateless** (uploads on S3/Spaces, sessions/cache on Redis — a Plex Commons supplies both, and `cloud:deploy` warns on anything still local). Apps that need a real shared cross-node folder can opt in with `cloud:provision:nfs` + `sharedStorage` (in-cluster NFS → `larakube-nfs` RWX class). *In-cluster NFS is **experimental** — it works on some clusters but not DOKS (mount hangs); see [Shared Storage](../architecture/shared-storage#-storage-across-the-scaling-journey).*
 - [x] **Console**: High-fidelity Kubernetes Control Plane (Filament).
 - [x] **Docs**: Linear learning path, [Blueprint Anatomy](../architecture/blueprint-anatomy), and the [Scaling Journey](../deployment/scaling-journey).
 
@@ -45,6 +46,7 @@ LaraKube is an ecosystem built on three pillars: the **CLI** (the engine), the *
 *Bigger bets, once the foundation above is solid.*
 
 - [ ] **CLI**: Autoscaling (Horizontal Pod Autoscaler) for production workloads.
+- [ ] **CLI — Truly-HA shared filesystem**: a `ReadWriteMany` storage class without the single-NFS-pod SPOF — **CephFS / Longhorn / `csi-driver-nfs`** or a managed filer — for teams that need both a shared cross-node folder *and* high availability (today's `cloud:provision:nfs` is the experimental, single-pod stopgap).
 - [ ] **Console**: Multi-cluster fleet management from one dashboard.
 - [ ] **Console**: Real-time Prometheus / Grafana monitoring built in.
 - [ ] **Security**: Automated security audits of production manifests.

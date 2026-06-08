@@ -196,6 +196,17 @@ curl -H "Host: app.example.com" http://<LoadBalancer IP>/up
 
 `do-block-storage` is `ReadWriteOnce`, so a shared `storage/` volume can't span nodes. On **`multi-node-ha`** LaraKube therefore runs the app pods **stateless** — each gets a per-pod `emptyDir` (no shared PVC), so they spread across nodes freely. State must then be externalized: uploads on S3 (MinIO/Commons), sessions/cache on Redis or the database. A Plex Commons provides exactly that, and `cloud:deploy` warns if anything is still on local storage. SQLite stays single-node (its DB is a file). See [The Scaling Journey](./scaling-journey).
 
+### Need a shared cross-node folder?
+
+Some apps genuinely rely on a shared filesystem — e.g. a worker writes `public/storage/sitemap.xml` and the web pod serves it. For those, opt in to **shared (ReadWriteMany) storage**:
+
+```bash
+larakube cloud:provision:nfs          # installs an in-cluster NFS provisioner → larakube-nfs StorageClass
+# then set "sharedStorage": true on the env, and redeploy
+```
+
+LaraKube stands up a single NFS server (a block volume re-exported over NFS) and points the shared PVC at its RWX class, so the folder works across nodes unchanged. The NFS server is one pod — a **soft SPOF for storage** (your app pods stay HA); a truly-HA shared filesystem (CephFS / managed filer) is a heavier, later option. Prefer externalizing to S3 where you can; reach for this only when an app needs a real shared folder.
+
 ---
 
 ## Storage & pricing

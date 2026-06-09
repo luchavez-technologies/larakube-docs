@@ -9,6 +9,9 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### June 2026: Digest-Pinned Deploys (CLI v0.17.1)
+A security hardening for remote deploys. The manual registry path now deploys the **immutable image digest** the registry assigned (`repo@sha256:…`) instead of a mutable `:tag` — a tag can be re-pushed to point at different bytes, a digest can't. GitHub Actions already pinned the digest; this brings `larakube cloud:deploy` to parity. (It falls back to the tag, with a warning, only if `docker buildx` can't resolve the digest.)
+
 ### June 2026: Environment-First Cluster Ops & Multi-Node Storage (CLI v0.17.0)
 Two themes: the `cluster:*` commands stop making you memorize namespaces and contexts, and multi-node storage gets an honest, guided story — stateless by default, with a one-command path to externalize and an opt-in shared filesystem for the apps that truly need one.
 

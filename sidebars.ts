@@ -44,7 +44,6 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Architecture Concepts',
       items: [
-        'architecture/architectural-dna',
         'architecture/blueprint-anatomy',
         'architecture/multi-blueprint',
         'architecture/infrastructure',

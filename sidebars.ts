@@ -96,6 +96,7 @@ const sidebars: SidebarsConfig = {
         'deployment/6dollar-baseline',
         'deployment/multiple-projects',
         'architecture/strategy-switching',
+        'deployment/airgapped-bundles',
         'deployment/manual-deploy',
         'deployment/github-actions',
         'deployment/doks-quickstart',

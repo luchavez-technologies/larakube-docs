@@ -68,12 +68,6 @@ Here's a more grown-up project — Filament admin, React frontend, a real databa
                 "web": "staging.acme.example",
                 "reverb": "ws-stg.acme.example",
                 "s3": "cdn-stg.acme.example"
-            },
-            "cloud": {
-                "ip": "203.0.113.20",
-                "user": "deploy",
-                "port": 22,
-                "key": "~/.ssh/id_rsa"
             }
         },
         "production": {
@@ -91,12 +85,6 @@ Here's a more grown-up project — Filament admin, React frontend, a real databa
                 "web": "acme.example",
                 "reverb": "ws.acme.example",
                 "s3": "cdn.acme.example"
-            },
-            "cloud": {
-                "ip": "203.0.113.10",
-                "user": "deploy",
-                "port": 22,
-                "key": "~/.ssh/id_rsa"
             }
         }
     },
@@ -231,12 +219,11 @@ The simplest case. LaraKube runs everything for you (Postgres, Redis, Meilisearc
         "web": "staging.acme.example",
         "reverb": "ws-stg.acme.example",
         "s3": "cdn-stg.acme.example"
-    },
-    "cloud": { "ip": "203.0.113.20", "user": "deploy", "port": 22, "key": "~/.ssh/id_rsa" }
+    }
 }
 ```
 
-A real server, but still self-contained: LaraKube runs Postgres, Redis, Meilisearch, and MinIO right inside this environment (cheap, isolated, easy to wipe and recreate). Here it uses the **Nginx** ingress instead of the default Traefik, and it has its own server connection details.
+A real server, but still self-contained: LaraKube runs Postgres, Redis, Meilisearch, and MinIO right inside this environment (cheap, isolated, easy to wipe and recreate). Here it uses the **Nginx** ingress instead of the default Traefik. (Note: The server connection details for this environment are stored separately in `.larakube.local.json`).
 
 ### Production
 
@@ -247,8 +234,7 @@ A real server, but still self-contained: LaraKube runs Postgres, Redis, Meilisea
         "web": "acme.example",
         "reverb": "ws.acme.example",
         "s3": "cdn.acme.example"
-    },
-    "cloud": { "ip": "203.0.113.10", "user": "deploy", "port": 22, "key": "~/.ssh/id_rsa" }
+    }
 }
 ```
 
@@ -289,18 +275,28 @@ A couple of things worth knowing:
 - **`withCompanions`** — Whether to include the handy local-only dev apps (Mailpit, phpMyAdmin, RedisInsight, Grafana). Set to `false` for a leaner local setup.
 - **`provisionTestDb`** — When `true`, `larakube test --db` runs your tests against a real copy of your database engine instead of in-memory SQLite. Useful when your tests rely on database-specific features. LaraKube sets this for you the first time you run `larakube test --db`.
 
-## ☁️ Cloud connection {#cloud-connection}
+## ☁️ Cloud connection (`.larakube.local.json`) {#cloud-connection}
 
-Each environment that deploys keeps its connection details right inside it, under `cloud`. There are **two shapes**, depending on how LaraKube reaches the cluster — you fill either one in with `larakube cloud:configure:base` (no hand-editing).
+Because `.larakube.json` is committed to version control, it holds **no secrets** and **no infrastructure coordinates**. Server IPs, managed Kubernetes contexts, and SSH keys are machine-specific (and potentially sensitive), so LaraKube stores them in a completely separate, git-ignored file: **`.larakube.local.json`**. 
+
+You never edit this file by hand—you populate it using `larakube cloud:configure:base`.
+
+When you do, it will generate an environment block with one of two shapes depending on your cluster:
 
 **A VPS** (your own server, reached over SSH):
 
-```json
-"cloud": {
-    "ip": "203.0.113.10",
-    "user": "deploy",
-    "port": 22,
-    "key": "~/.ssh/id_rsa"
+```json title=".larakube.local.json"
+{
+    "environments": {
+        "staging": {
+            "cloud": {
+                "ip": "203.0.113.20",
+                "user": "deploy",
+                "port": 22,
+                "key": "~/.ssh/id_rsa"
+            }
+        }
+    }
 }
 ```
 
@@ -309,10 +305,16 @@ Each environment that deploys keeps its connection details right inside it, unde
 
 **A managed cluster** (DOKS / EKS / GKE / AKS — no SSH):
 
-```json
-"cloud": {
-    "context": "do-sgp1-acme",
-    "provider": "doks"
+```json title=".larakube.local.json"
+{
+    "environments": {
+        "production": {
+            "cloud": {
+                "context": "do-sgp1-acme",
+                "provider": "doks"
+            }
+        }
+    }
 }
 ```
 
@@ -325,16 +327,6 @@ Either shape also accepts:
 
 :::tip Giving other people access
 SSH is for **you** administering the box. To let teammates work with your apps, see [Team Access](../teams/overview) — each person gets their own RBAC-scoped kubeconfig (no SSH, no server login), which works the same on a single VPS or a managed cluster.
-:::
-
-:::note Older projects
-LaraKube used to store all of this in one top-level `cloud` block. If you have an older `.larakube.json`, LaraKube quietly moves it into each environment the next time it saves — you don't have to change anything.
-:::
-
-:::note Where the `cloud` connection is stored
-`.larakube.json` holds **no secrets** (no passwords, tokens, kubeconfigs, or SSH key material — those live in `.env*`, Kubernetes Secrets, and `~/.kube`), and as of LaraKube it also carries **no infra coordinates**. The per-environment `cloud` connection — server **IP, SSH user/port, key path**, or managed **kube-context** — is operator/machine-specific, so LaraKube keeps it in a separate **`.larakube.local.json`** that's created and **gitignored automatically** on save, then merged back in at load time. The committed blueprint stays shareable and safe to push; you don't manage the split by hand.
-
-Existing projects migrate on the next save (the `cloud` block moves out of `.larakube.json` into `.larakube.local.json`). The examples above show `cloud` under each environment because that's how it's *resolved in memory* — on disk it lives in the local file.
 :::
 
 ## 📦 Container registry {#container-registry}
@@ -404,17 +396,18 @@ A managed environment is just one whose `cloud` block uses `context`/`provider` 
 - **`imagePullSecret`** / **`omitImagePullSecret`** — change or drop the credential used to pull your container image (some clusters pull images using the server's own cloud role, so no secret is needed).
 - **`ingressAnnotations`** — extra settings passed straight through to your ingress/load balancer (for example, a TLS certificate ID, a firewall group, or — on a DOKS Traefik cluster — `traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt` to fetch a cert for this app).
 
-A managed `production` therefore looks like:
+A managed `production` therefore looks like this in your main blueprint:
 
-```json
+```json title=".larakube.json"
 "production": {
-    "cloud": { "context": "do-sgp1-acme", "provider": "doks" },
     "registry": { "provider": "ghcr", "image": "acme/acme-app" },
     "storageClass": "do-block-storage",
     "hosts": { "web": "acme.example", "s3": "cdn.acme.example" },
     "plex": ["postgres", "redis", "minio"]
 }
 ```
+
+*(Remember: the `"cloud": { "context": "do-sgp1-acme" }` block for this environment is securely generated in `.larakube.local.json` when you run `larakube cloud:configure:base`).*
 
 If any of the terms above are unfamiliar, that's a sign you don't need this section yet.
 

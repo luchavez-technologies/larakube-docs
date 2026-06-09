@@ -194,7 +194,7 @@ curl -H "Host: app.example.com" http://<LoadBalancer IP>/up
 
 ## Going multi-node {#going-multi-node}
 
-`do-block-storage` is `ReadWriteOnce`, so a shared `storage/` volume can't span nodes. On **`multi-node-ha`** LaraKube therefore runs the app pods **stateless** — each gets a per-pod `emptyDir` (no shared PVC), so they spread across nodes freely. State must then be externalized: uploads on S3 (MinIO/Commons), sessions/cache on Redis or the database. A Plex Commons provides exactly that, and `cloud:deploy` warns if anything is still on local storage. SQLite stays single-node (its DB is a file). See [The Scaling Journey](./scaling-journey).
+`do-block-storage` is `ReadWriteOnce`, so a shared `storage/` volume can't span nodes. On **`multi-node-ha`** LaraKube therefore runs the app pods **stateless** — each gets a per-pod `emptyDir` (no shared PVC), so they spread across nodes freely. State must then be externalized: uploads on S3 (MinIO/Commons), sessions/cache on Redis or the database. Run **`larakube cloud:externalize production`** to do this in one guided step — it flips the drivers and wires the backends (Plex Commons, self-hosted, or managed); `cloud:deploy` also offers it when it finds local state. SQLite stays single-node (its DB is a file). See [`cloud:externalize`](../commands/cloud#cloud-externalize) and [The Scaling Journey](./scaling-journey).
 
 ### Need a shared cross-node folder?
 

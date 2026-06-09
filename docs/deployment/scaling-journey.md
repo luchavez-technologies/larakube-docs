@@ -123,7 +123,7 @@ For agencies and platforms running many small tenants that still need to stay on
 
 The whole point: **moving between rungs is configuration, not a port.** Your application code never knows which rung it's on.
 
-- **More resilience (down → right on the grid):** change `strategy` from `single-node` to `multi-node-ha`. LaraKube replicates your workloads and adjusts storage.
+- **More resilience (down → right on the grid):** change `strategy` from `single-node` to `multi-node-ha`. LaraKube replicates your workloads and runs the app pods **stateless** (block storage can't span nodes), so state externalizes to object storage + Redis. **`larakube cloud:externalize <env>`** wires that up in one guided step — see [`cloud:externalize`](../commands/cloud#cloud-externalize) and [Shared Storage](../architecture/shared-storage#-storage-across-the-scaling-journey).
 - **Offload a heavy service:** mark it `managed` and point at a provider endpoint. Your app just sees a connection string — whether that's an in-Plex Postgres, a DigitalOcean Managed Database, or RDS.
 - **More density:** add a second repo to the same cluster (rung ②), or join a **Plex** to share the Commons (rung ③/⑥) with `larakube plex join`.
 

@@ -58,9 +58,15 @@ When you graduate to a **multi-node managed cluster** (`multi-node-ha`), block s
 State then lives outside the pods:
 
 - **Uploads / `app/public`** → object storage (DO Spaces, S3, or a Plex Commons running MinIO/SeaweedFS).
-- **Sessions / cache** → Redis or the database.
+- **Sessions / cache** → Redis (or Memcached, or the database).
 
-`cloud:deploy` warns if anything is still pointed at local storage. A [Plex Commons](../deployment/multiple-projects#going-further-plex) provides the S3 + Redis backends out of the box. SQLite stays single-node by nature (its DB is a file).
+**`larakube cloud:externalize <env>`** does this in one guided step — it flips the env's
+`FILESYSTEM_DISK`/`SESSION_DRIVER`/`CACHE_STORE`/`QUEUE_CONNECTION` and wires the backends from whichever
+source you choose: a [Plex Commons](../deployment/multiple-projects#going-further-plex), a self-hosted
+MinIO/Redis (via `larakube add`), or your own managed services — without clobbering existing connection
+values. `cloud:deploy` also *offers* to run it when it finds local state. SQLite stays single-node by
+nature (its DB is a file), so it prompts you to switch to a networked engine first. See
+[`cloud:externalize`](../commands/cloud#cloud-externalize).
 
 > **Why externalize instead of a shared disk?** It's the only path that's genuinely HA — no shared-storage single point of failure, pods reschedule anywhere, and it's how managed platforms expect Laravel to scale.
 

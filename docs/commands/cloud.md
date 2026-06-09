@@ -34,6 +34,16 @@ The "Remote Cleanup." Wipes all project resources from the remote cluster — na
 - **Use when**: Decommissioning a project or starting over after a major architectural change.
 - **Confirmation**: Requires explicit confirmation.
 
+## `cloud:externalize {environment}` {#cloud-externalize}
+The "Go Multi-Node" helper. On `multi-node-ha`, app pods run **stateless** (per-pod ephemeral storage), so state must live outside them. This rewrites an environment's state drivers to do exactly that — turning the requirement into one guided step. `cloud:deploy` also *offers* to run it when it detects local state on a multi-node env.
+- **What it changes**: in `.env.{env}` it flips `SESSION_DRIVER` / `CACHE_STORE` / `QUEUE_CONNECTION` and `FILESYSTEM_DISK=s3`. It writes **only** these selector keys — never the connection values (`AWS_*`, `REDIS_*`), so a Commons or self-hosted connection is never clobbered.
+- **Sessions & cache**: pick **Redis**, **Memcached**, or **Database** (the driver enum decides the values; Database is hidden when the primary DB is SQLite, since that can't span nodes).
+- **Backends — three ways**: when S3/Redis aren't already wired it asks where they come from — **join a Plex Commons** (offered *only* when one is actually initialized on that env's cluster), **self-host** them in-project (reuses [`larakube add`](./management)), or **managed/external** (you set the creds). If a backend is already wired, it shows you the source (e.g. *"sessions & cache (redis) → Plex Commons"*) instead of silently accepting.
+- **SQLite**: detected and called out — SQLite can't go multi-node, so it offers to switch to a networked engine first (Postgres/MySQL/MariaDB).
+- **Idempotent**: re-running on an already-externalized env is a no-op. After it runs, **redeploy** to apply.
+
+See [Storage across the scaling journey](../architecture/shared-storage#-storage-across-the-scaling-journey).
+
 ## `cloud:provision:nfs`
 The "Shared Folder" escape hatch for multi-node clusters. Installs an in-cluster NFS provisioner so an environment can opt in to **`ReadWriteMany` (RWX)** shared storage instead of the stateless default — see [Storage across the scaling journey](../architecture/shared-storage#-storage-across-the-scaling-journey).
 - **What it installs**: a single NFS server (a block volume re-exported over NFS) plus a dynamic provisioner, exposed as the `larakube-nfs` StorageClass. After it's installed, set `"sharedStorage": true` on the environment and redeploy.

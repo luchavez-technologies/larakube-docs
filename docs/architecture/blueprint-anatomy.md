@@ -132,8 +132,8 @@ Let's walk through it section by section.
 "email": "team@acme.example"
 ```
 
-- **`id`** — A unique ID created the first time you run `larakube init`. It sticks with the project even if you rename the folder or move machines. You never edit this by hand.
-- **`name`** — Your project's short name. LaraKube uses it to label everything it creates in the cluster (each environment gets its own isolated space named `acme-app-local`, `acme-app-production`, and so on). The project folder name must match exactly — see [Architectural DNA](./architectural-dna).
+- **`id`** — A permanent UUID created the first time you run `larakube init`. It acts as the "DNA" of your project. If you move your project folder or rename it, LaraKube still recognizes it by this ID. Your activity history and chat memory in the Console are linked to this ID, ensuring consistency even if your local file path changes. You never edit this by hand.
+- **`name`** — Your project's short name. LaraKube uses it to label everything it creates in the cluster (each environment gets its own isolated space named `acme-app-local`, `acme-app-production`, and so on). The project folder name must match exactly.
 - **`email`** — Used when LaraKube requests free HTTPS certificates from Let's Encrypt for your production site.
 
 ## 🏗️ Stack choices
@@ -421,3 +421,14 @@ If any of the terms above are unfamiliar, that's a sign you don't need this sect
 :::tip One ingress IP, many hosts
 On a managed cluster every host — your app, plus any shared S3/Commons host — resolves to the **same** ingress LoadBalancer IP. Point one DNS **A record** ("anchor") at that IP, then **CNAME** every host to the anchor. Each new app you add is just another CNAME, and if the IP ever changes you update a single record. `larakube cloud:provision:doks`, `plex:init`, and `cloud:deploy` all print this guidance with your real IP.
 :::
+
+## 🧠 Console Memory & Sync
+
+LaraKube treats your `.larakube.json` as infrastructure as code, but it also pairs this with a global SQLite database maintained by the **LaraKube Console**. This provides a unified history for all your projects without scattering logs across different folders.
+
+Whenever you run a command via the CLI, it automatically "calls home" to the Console API to register the event. This real-time sync tracks:
+- **Operational Verbs:** Every `up`, `down`, `heal`, or `purge` command.
+- **Architectural Evolution:** When you add features or swap databases via the CLI or UI.
+- **AI Diagnostics:** Full reports from the `doctor` command and AI-powered fix history.
+
+This ensures your visual dashboard and AI agents always have an accurate, up-to-date memory of your project's evolution, even if you prefer working entirely in the terminal.

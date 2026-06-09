@@ -49,6 +49,13 @@ The "Health Check" tool. Display a unified architectural and health overview of 
 The "Self-Healing" tool. Regenerates your entire Kubernetes manifest and patch structure from your project's architectural DNA (`.larakube.json`).
 - **Stability**: Use this to apply the latest LaraKube architectural standards to an existing project.
 - **Cluster Resilience**: LaraKube automatically backs up your blueprint to your cluster. If your local `.larakube.json` is missing or corrupted, `heal` will restore it directly from the cluster.
+- **Hand-Edit Safety**: Edit the blueprint, not the manifest! If you hand-edit a generated manifest in `.infrastructure/k8s`, `heal` will detect the divergence, warn you, and preserve your changes. To permanently lock a file from regeneration, add it to the `locked_manifests` array in your blueprint.
+
+## `resources {environment}` {#resources}
+The "Limits Manager." Interactively configures Kubernetes CPU and memory requests and limits for your application pods.
+- **Guided Configuration**: Prompts you for k8s-valid quantities (e.g., `100m`, `512Mi`) and saves them to your `.larakube.json` blueprint.
+- **Per-Component Overrides**: Set a baseline for `default` (all app pods), or specify precise overrides for roles like `horizon` and `ssr`.
+- **Drift Protection**: Redundant overrides that match the inherited defaults are automatically pruned to keep your blueprint clean.
 
 ## `init`
 The "Adoption" tool. Initializes LaraKube for an existing Laravel project.

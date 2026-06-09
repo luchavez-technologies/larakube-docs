@@ -35,6 +35,8 @@ A leaked App A secret can deploy to **`app-a-prod` and nothing else** — not Ap
 
 The cluster-admin kubeconfig (from `cloud:provision`, or your provider's CLI for managed clusters) lives only in your `~/.kube/config`. LaraKube **never uploads it** to GitHub or any runner. It's the bootstrapping authority — used locally to *mint* the narrower credentials below — and it stays put.
 
+*Note: LaraKube also aggressively masks secrets (like server passwords, DigitalOcean tokens, or raw AWS keys) in its diagnostic and runtime logs to prevent accidental exposure.*
+
 ## 2 · Namespace-scoped deploys
 
 Both `larakube cloud:deploy` (manual) and the generated GitHub Actions workflow deploy as a per-app, per-environment **`deployer` ServiceAccount** locked to its own `{app}-{env}` namespace by a namespaced `Role`. A namespaced Role *can only* grant namespaced resources, so the token is forbidden everywhere else — by construction, not by policy.

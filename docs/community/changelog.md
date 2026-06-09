@@ -9,6 +9,13 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### June 2026: Resource Limits & Hand-edit Safety (CLI v0.17.2)
+A stability and safety release. This introduces:
+- **Secret masking**: Aggressive redaction of high-confidence token shapes in CLI logs.
+- **Sudo escapeshellarg**: Enhanced security when wrapping commands in `sudo`.
+- **Manifest hand-edit advisory**: `larakube heal` now detects manual edits to `.infrastructure/k8s` manifests, warns you, and preserves them instead of overwriting them.
+- **Per-component resource limits**: The interactive `larakube resources` command lets you define CPU and memory bounds for your app pods (with fallback inheritance and redundancy pruning) to ensure stability.
+
 ### June 2026: Digest-Pinned Deploys (CLI v0.17.1)
 A security hardening for remote deploys. The manual registry path now deploys the **immutable image digest** the registry assigned (`repo@sha256:…`) instead of a mutable `:tag` — a tag can be re-pushed to point at different bytes, a digest can't. GitHub Actions already pinned the digest; this brings `larakube cloud:deploy` to parity. (It falls back to the tag, with a warning, only if `docker buildx` can't resolve the digest.)
 

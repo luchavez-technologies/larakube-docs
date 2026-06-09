@@ -78,6 +78,15 @@ Here's a more grown-up project — Filament admin, React frontend, a real databa
         },
         "production": {
             "managed": ["postgres", "redis"],
+            "resources": {
+                "default": {
+                    "requests": { "cpu": "100m", "memory": "256Mi" },
+                    "limits": { "cpu": "1", "memory": "1Gi" }
+                },
+                "horizon": {
+                    "limits": { "memory": "2Gi" }
+                }
+            },
             "hosts": {
                 "web": "acme.example",
                 "reverb": "ws.acme.example",
@@ -202,6 +211,7 @@ This is the heart of the blueprint. Every project has a `local` environment; you
 - **`cloud`** — How LaraKube reaches the cluster for this environment — a VPS (SSH) or a managed kube-context. See [Cloud connection](#cloud-connection) below.
 - **`registry`** — The container registry CI/CD builds and pushes to (GHCR / Docker Hub). Required for managed clusters (which can't be SSH-sideloaded). See [Container registry](#container-registry) below.
 - **`storageClass`**, **`certManagerIssuer`**, and the managed-cluster knobs (`namespace`, `serviceAccount`, …) — only needed on managed Kubernetes. See [Advanced: managed Kubernetes](#advanced-managed-kubernetes).
+- **`resources`** — Memory and CPU requests/limits for the app pods. Defines a `default` block plus specific role overrides (e.g. giving `horizon` more memory). LaraKube manages this when you run `larakube resources` so you don't have to write the JSON by hand.
 - **`addFeatures` / `excludeFeatures`** — Turn a feature on or off just for this environment (rarely needed).
 
 ### Local

@@ -53,3 +53,8 @@ larakube heal
 ```
 
 This command **regenerates** your entire infrastructure based on your project's DNA, restoring your cluster to a known-good state in seconds.
+
+### Hand-Edit Safety & Locking
+Edit the blueprint, not the manifest! The engine uses cryptographic signatures to track generated files. If you hand-edit a generated manifest in `.infrastructure/k8s/`, the `heal` command will detect the divergence, warn you, and **preserve your manual changes**.
+
+If you intend to take over a manifest permanently, you can add it to the `locked_manifests` array in your `.larakube.json`. LaraKube will skip that file during future regenerations, ensuring your hand-crafted logic is completely safe from being overwritten.

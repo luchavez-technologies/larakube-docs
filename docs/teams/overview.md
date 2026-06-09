@@ -25,14 +25,20 @@ Because access is granted *per namespace*, a teammate **can't see — or even kn
 
 Say you run two apps, **blue** and **orange**, and you're bringing on **lloyd** (a developer) and **alex** (an intern).
 
+:::tip Two ways to name the target
+**Inside a project**, name the **environment** — `cluster:grant production --name lloyd` — and LaraKube targets that env's namespace (`<app>-production`) *and* its own cluster context automatically. **Outside a project** (administering several apps at once), pass the literal `<app>-<env>` **namespace** instead. Both forms work everywhere below.
+:::
+
 ### 1. Grant access
+
+From inside the **blue** app's repo, name the **environment** — it resolves to the `blue-production` namespace on that env's own cluster:
 
 ```bash
 # lloyd can operate blue (the default role is `edit`)
-larakube cluster:grant blue-production --name lloyd
+larakube cluster:grant production --name lloyd
 
 # alex is an intern — read-only
-larakube cluster:grant blue-production --name alex --read
+larakube cluster:grant production --name alex --read
 ```
 
 Each produces a kubeconfig file (`lloyd.kubeconfig`, `alex.kubeconfig`) — hand it to them **securely** (a password manager, not a public channel).
@@ -57,10 +63,10 @@ This merges it into their `~/.kube/config` and switches to it. They can now `kub
 
 ### 3. Entrust them with another app — no new file
 
-Later you trust lloyd with orange too:
+Later you trust lloyd with orange too — from the **orange** repo (or pass the literal `orange-production` namespace from anywhere):
 
 ```bash
-larakube cluster:grant orange-production --name lloyd
+larakube cluster:grant production --name lloyd
 ```
 
 This just adds a binding. **lloyd's kubeconfig doesn't change** — his existing token now works in orange. No re-onboarding, no second context cluttering his `~/.kube/`. He just uses `-n orange-production`.
@@ -70,8 +76,8 @@ This just adds a binding. **lloyd's kubeconfig doesn't change** — his existing
 Promote lloyd to admin on blue, or walk it back:
 
 ```bash
-larakube cluster:grant blue-production --name lloyd --admin    # upgrade
-larakube cluster:grant blue-production --name lloyd --read     # downgrade
+larakube cluster:grant production --name lloyd --admin    # upgrade (from blue's repo)
+larakube cluster:grant production --name lloyd --read     # downgrade
 ```
 
 Re-running `grant` replaces the binding. The change is **instant** — no new file, no re-onboarding.
@@ -79,15 +85,16 @@ Re-running `grant` replaces the binding. The change is **instant** — no new fi
 ### 5. See who has what
 
 ```bash
-larakube cluster:users
+larakube cluster:users                 # standalone: every identity across the cluster
+larakube cluster:users production      # in a project: who has access to this environment
 ```
-Shows a **Teammates** table — each person, their identity, and their `namespace:role` across the cluster (read live, so it's always accurate).
+Shows a **Teammates** table — each person, their identity, and their `namespace:role` (read live, so it's always accurate). Add **`--scope`** to audit a deploy ServiceAccount's live RBAC rules instead of listing people.
 
 ### 6. Off-board
 
 ```bash
-larakube cluster:revoke --name lloyd orange-production   # remove just orange
-larakube cluster:revoke --name lloyd                     # remove everything
+larakube cluster:revoke --name lloyd production   # from orange's repo: drop just orange
+larakube cluster:revoke --name lloyd              # remove everything (any repo / standalone)
 ```
 The first drops one app (his blue access still works). The second deletes his identity entirely — his kubeconfig becomes inert immediately.
 

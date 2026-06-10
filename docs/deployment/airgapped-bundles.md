@@ -62,7 +62,7 @@ The client plugs the USB stick into their offline Ubuntu server. They can option
 
 They run a single command:
 ```bash
-sudo ./larakube bundle:install --env-file=.env
+sudo ./larakube bundle:install --env=.env
 ```
 
 Here is the exact sequence of events that the generic `larakube` binary executes on the client's machine:

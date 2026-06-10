@@ -85,3 +85,49 @@ It injects the newly minted certificates and merged environment variables into K
 
 ### The Result
 The wizard finishes by providing the client with the path to the generated `ca.crt`. They install that CA to their local IT trust store, and your application is now running securely over HTTPS on an entirely air-gapped machine.
+
+---
+
+## Flags & Recovery Options
+
+### `--swap=<size>` — Prevent OOM Crashes on 1 GB Servers
+
+1 GB VPS instances will frequently OOM-kill k3s during startup when image import and Kubernetes initialisation run concurrently. The `--swap` flag allocates a swap file **before** the heavy work begins:
+
+```bash
+sudo ./larakube bundle:install --swap=1G
+```
+
+This runs `fallocate`, `mkswap`, and `swapon` and permanently registers the file in `/etc/fstab`. If `/swapfile` already exists the step is skipped safely, so re-running the command is harmless.
+
+:::tip
+Always use `--swap=1G` on any server with 1 GB of RAM. On 2 GB+ servers it is optional but still reduces the risk of transient OOM spikes during the initial rollout.
+:::
+
+---
+
+### `--skip-images` — Fast Re-configuration
+
+Importing the Docker image tarballs into containerd is the slowest part of the install (it can take several minutes). If you made a typo during hostname configuration (e.g., a blank Reverb URL) you can re-run the entire prompt wizard **without** re-importing images:
+
+```bash
+sudo ./larakube bundle:install --skip-images
+```
+
+This skips straight to secrets generation, hostname prompting, and certificate regeneration — so you can fix a configuration mistake in seconds rather than minutes.
+
+---
+
+## How Image Tags Work (No More Collisions)
+
+Before v0.18.27, both local dev images and production bundle images were tagged `:latest`. Building a bundle locally would overwrite the `:latest` tag on your development Docker daemon, instantly crashing your running local pods.
+
+LaraKube now uses **isolated tags** via Kustomize `images:` rewrite blocks:
+
+| Context | Image tag at apply time |
+|---------|------------------------|
+| Local k3d / k3s | `app:local` |
+| Air-gapped bundle | `app:airgap-latest` (or `app:{env}-latest`) |
+| Production (registry push) | pulled by digest |
+
+`larakube up` builds and sideloads `app:local`. `bundle:build` builds `app:airgap-latest`. The two tags can coexist on the same machine without interference.

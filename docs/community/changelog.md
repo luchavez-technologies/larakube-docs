@@ -9,6 +9,15 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### June 2026: Air-Gapped Bundle Hardening (CLI v0.18.x)
+A production-hardening series for the offline enterprise delivery path. All changes are backwards-compatible — existing bundles and `.larakube.json` files are unaffected.
+
+- **Image tag isolation** (v0.18.27): Local dev images and bundle images no longer share the `:latest` tag. `larakube up` now builds `app:local`; `bundle:build` produces `app:{env}-latest` (e.g. `app:airgap-latest`). Kustomize `images:` rewrite blocks in each overlay enforce the split. Building a bundle on your laptop no longer crashes your running local pods.
+- **`--skip-images` flag** (v0.18.28): `bundle:install --skip-images` re-runs the entire configuration wizard (hostname prompts, secret generation, TLS cert regeneration) without re-importing the Docker image tarballs. Turns a typo-correction from a minutes-long wait into a matter of seconds.
+- **`--swap=<size>` flag** (v0.18.29): `bundle:install --swap=1G` allocates swap space **before** k3s starts, preventing OOM crashes on 1 GB VPS instances. Uses `fallocate` + `mkswap` + `swapon` and persists the entry to `/etc/fstab`. Idempotent: skipped automatically if `/swapfile` already exists.
+
+See the full [Air-Gapped Bundles guide](../deployment/airgapped-bundles) for usage examples.
+
 ### June 2026: Resource Limits & Hand-edit Safety (CLI v0.17.2)
 A stability and safety release. This introduces:
 - **Secret masking**: Aggressive redaction of high-confidence token shapes in CLI logs.

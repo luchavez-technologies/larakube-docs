@@ -95,6 +95,26 @@ The wizard finishes by providing the client with the path to the generated `ca.c
 
 ---
 
+### Testing the Bundle from Your Dev Machine
+
+After a successful install, `bundle:install` prints the exact CA path on the server. To verify the deployment works end-to-end from your local browser, pull the cert back and trust it:
+
+```bash
+# Pull the CA from the server (the installer prints the exact path)
+rsync -P root@YOUR_SERVER_IP:/path/to/bundle/hospital-airgap-2026-06-11-ca.crt ~/Downloads/
+
+# Trust it locally
+larakube trust ~/Downloads/hospital-airgap-2026-06-11-ca.crt
+```
+
+Once trusted, open the domain(s) you configured during the hostname prompt — they will load over HTTPS without a browser warning.
+
+:::tip
+The CA file name includes the app name, environment, and date (e.g. `hospital-airgap-2026-06-11-ca.crt`), so multiple client installs don't clobber each other in `~/Downloads/`.
+:::
+
+---
+
 ## Bundle Management Utilities
 
 These commands let you manage bundle archives independently of the build/install cycle.

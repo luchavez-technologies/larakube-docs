@@ -154,18 +154,29 @@ sudo ./larakube bundle:update
 
 ## Flags & Recovery Options
 
-### `--swap=<size>` — Prevent OOM Crashes on 1 GB Servers
+### `--swap` — Prevent OOM Crashes on 1 GB Servers
 
-1 GB VPS instances will frequently OOM-kill k3s during startup when image import and Kubernetes initialisation run concurrently. The `--swap` flag allocates a swap file **before** the heavy work begins:
+1 GB VPS instances will frequently OOM-kill k3s during startup when image import and Kubernetes initialisation run concurrently. The `--swap` flag allocates a swap file **before** the heavy work begins.
+
+Pass it alone to use the safe 1 GB default:
 
 ```bash
-sudo ./larakube bundle:install --swap=1G
+sudo ./larakube bundle:install --swap
+```
+
+Or specify a size explicitly — either with a unit or as a bare number (gigabytes assumed):
+
+```bash
+sudo ./larakube bundle:install --swap=2G
+sudo ./larakube bundle:install --swap=2    # same as 2G
 ```
 
 This runs `fallocate`, `mkswap`, and `swapon` and permanently registers the file in `/etc/fstab`. If `/swapfile` already exists the step is skipped safely, so re-running the command is harmless.
 
+There is no hard kernel limit on swap size — the ceiling is your server's available disk space. A 1 GB VPS typically ships with 20–25 GB of disk, so `--swap` (1 GB) is a safe, conservative default.
+
 :::tip
-Always use `--swap=1G` on any server with 1 GB of RAM. On 2 GB+ servers it is optional but still reduces the risk of transient OOM spikes during the initial rollout.
+Always pass `--swap` on any server with 1 GB of RAM. On 2 GB+ servers it is optional but still reduces the risk of transient OOM spikes during the initial rollout.
 :::
 
 ---

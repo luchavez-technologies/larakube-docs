@@ -20,9 +20,9 @@ Here is the exact technical lifecycle of how LaraKube achieves this.
 
 You shouldn't bundle your `production` environment because your SaaS might rely on managed databases (like AWS RDS) or a shared [Plex Commons](../architecture/shared-storage.md). An air-gapped delivery must be 100% self-sufficient.
 
-Create an environment specifically for the bundle:
+Create an environment specifically for the bundle and mark it offline:
 ```bash
-larakube env:add airgap
+larakube env airgap --offline
 ```
 
 When selecting components, choose a **Standalone** architecture. Include your own Database, Redis, and MinIO components. This ensures your Kustomize blueprint (`.larakube.json`) is fully equipped to run autonomously.
@@ -37,15 +37,22 @@ When you are ready to ship the release, run the build command and specify the *c
 larakube bundle:build airgap --arch=amd64
 ```
 
+Add `--tar` to compress the output into a single `.tar.gz` archive and generate a ready-to-send `INSTRUCTIONS.txt` file alongside it:
+
+```bash
+larakube bundle:build airgap --arch=amd64 --tar
+```
+
 Here is exactly what LaraKube does under the hood during this step:
-1. **Code Compilation:** It builds your Laravel code into a production-ready Docker image.
+1. **Code Compilation:** It builds your Laravel code into a production-ready Docker image tagged `app:airgap-latest`.
 2. **Dependency Scraping:** It scrapes your `.larakube.json` and downloads the official Docker images for your database, Traefik, and Redis.
 3. **Tarball Generation:** It saves every Docker image as a flat `.tar` file in the `images/` directory.
 4. **Manifest Extraction:** It extracts your Kustomize YAML templates to `manifests/`.
-5. **K3s Offline Artifacts:** It securely downloads the official `k3s` binary, `k3s-install.sh`, and `k3s-airgap-images.tar` directly from GitHub.
-6. **The Wizard:** Finally, it copies the actual `larakube` CLI binary into the folder.
+5. **Kustomize Binary:** It downloads the standalone `kustomize` binary for the target architecture and bundles it alongside the kit. This bypasses the older parser built into K3s and ensures consistent manifest rendering on the client's server.
+6. **K3s Offline Artifacts:** It securely downloads the official `k3s` binary, `k3s-install.sh`, and `k3s-airgap-images.tar` directly from GitHub.
+7. **The Wizard:** Finally, it copies the actual `larakube` CLI binary into the folder.
 
-The output is a single folder `dist/<app>-airgap-amd64-bundle/`. You zip this up, put it on a USB stick, and hand it to the client. **Your raw source code is protected inside the Docker image.**
+The output is a single folder `dist/<app>-airgap-amd64-bundle-<timestamp>/`. With `--tar`, this folder is compressed to `<name>.tar.gz` and a plain-text `INSTRUCTIONS.txt` is written next to it with transfer and extraction commands ready to copy-paste. **Your raw source code is protected inside the Docker image.**
 
 ---
 

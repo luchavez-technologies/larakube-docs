@@ -95,6 +95,63 @@ The wizard finishes by providing the client with the path to the generated `ca.c
 
 ---
 
+## Bundle Management Utilities
+
+These commands let you manage bundle archives independently of the build/install cycle.
+
+### `bundle:zip` — Compress a Built Bundle
+
+If you already have an assembled bundle folder and want to compress it separately (e.g. you ran `bundle:build` without `--tar` and want to zip it now):
+
+```bash
+larakube bundle:zip
+```
+
+With no arguments it auto-discovers bundles under `dist/` and prompts if there are multiple. You can also point it at a specific folder:
+
+```bash
+larakube bundle:zip dist/myapp-airgap-amd64-bundle-20260611-120000
+```
+
+Options:
+- `--output=<name>` — custom archive filename (e.g. `--output=client-a` produces `client-a.tar.gz`). Defaults to the folder name with `.tar.gz` appended.
+- `--delete` — remove the uncompressed folder after zipping.
+
+---
+
+### `bundle:unzip` — Extract a Bundle Archive
+
+On the developer's side (or the client's server), extract a `.tar.gz` archive before running `bundle:install`:
+
+```bash
+larakube bundle:unzip
+```
+
+With no arguments it auto-discovers `.tar.gz` archives under `dist/` and prompts if there are multiple. You can also specify the path directly:
+
+```bash
+larakube bundle:unzip dist/myapp-airgap-amd64-bundle-20260611-120000.tar.gz
+```
+
+Options:
+- `--delete` — remove the archive file after extracting.
+
+---
+
+### `bundle:update` — Ship an App-Only Update
+
+Once the client's server is already running, you don't need to re-ship K3s, kustomize, and all dependency images on every release. `bundle:build --update` produces a lightweight update bundle (app image only), and `bundle:update` applies it on the server:
+
+```bash
+# On your machine
+larakube bundle:build airgap --arch=amd64 --update --tar
+
+# On the client's server
+sudo ./larakube bundle:update
+```
+
+---
+
 ## Flags & Recovery Options
 
 ### `--swap=<size>` — Prevent OOM Crashes on 1 GB Servers

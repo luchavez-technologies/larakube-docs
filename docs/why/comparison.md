@@ -1,5 +1,7 @@
 ---
-sidebar_position: 100
+sidebar_position: 1
+title: Tool Comparison
+description: How LaraKube CLI compares to Laravel Herd, Sail, Spin, Forge, Vapor, and Laravel Cloud.
 ---
 # ⚖️ Comparison Guide
 

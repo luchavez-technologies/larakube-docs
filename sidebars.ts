@@ -17,7 +17,15 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Prologue',
-      items: ['index', 'architecture/philosophy', 'comparison'],
+      items: ['index', 'architecture/philosophy'],
+    },
+    {
+      type: 'category',
+      label: 'Why LaraKube CLI',
+      items: [
+        'why/comparison',
+        'why/larakube-vs-swarm',
+      ],
     },
     {
       type: 'category',
@@ -91,6 +99,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'deployment/overview',
         'deployment/journey',
+        'deployment/how-builds-work',
         'deployment/scaling-journey',
         'architecture/single-node-hero',
         'deployment/6dollar-baseline',

@@ -12,15 +12,15 @@ A practical comparison for teams currently running **Docker Swarm** or **Spin** 
 
 ## The Docker Swarm Situation
 
-Docker Swarm was a reasonable choice for production orchestration in 2016–2019. That window has passed.
+Docker Swarm is not dead. Swarm Mode is built into Docker Engine, still receives security and bug fixes, and continues to work reliably for teams that use it — particularly in self-hosted and homelab environments where simplicity matters more than scalability.
 
-- The **standalone Docker Swarm binary** (`docker swarm`) was officially deprecated in Docker Engine 26.x.[^1]
-- Mirantis, which acquired Docker's enterprise business in 2019, has been actively migrating its own enterprise customers away from Swarm and toward Kubernetes.[^2]
-- Swarm Mode remains in Docker Engine but receives minimal new features. It is not on a growth trajectory.
+The honest picture:
 
-The industry has moved. The CNCF's 2023 Annual Survey found that **84% of respondents use Kubernetes in production**, with Swarm representing a small and declining share of the remaining alternatives.[^3]
+- The **standalone Docker Swarm binary** was deprecated in Docker Engine 26.x, but **Swarm Mode** (the orchestration layer built into Docker Engine) remains available and maintained.[^1]
+- New feature investment has shifted to Kubernetes. Swarm Mode is in maintenance, not active development.
+- The CNCF's 2023 Annual Survey found that **84% of respondents use Kubernetes in production**.[^3] Swarm remains a practical choice for smaller, stable deployments — just not a growing one.
 
-None of this means Swarm breaks tomorrow. It means that if you're building a deployment story for a customer that is meant to last — especially an on-premise customer who is not upgrading their stack every 18 months — Swarm is not the foundation to build on.
+If Swarm meets your needs today, it is a reasonable choice. The question for on-premise customer deployments is whether it will still meet those needs in three to five years, and whether it can grow with the customer if requirements change. That is where Kubernetes — and LaraKube CLI — makes a stronger case.
 
 ---
 
@@ -114,7 +114,6 @@ If you are currently using Docker Swarm and have on-premise customers:
 ---
 
 [^1]: Docker Engine Deprecations — standalone Swarm support: https://docs.docker.com/engine/deprecated/
-[^2]: Mirantis product direction on Docker Swarm: https://www.mirantis.com/blog/mirantis-to-take-over-support-of-docker-enterprise/
 [^3]: CNCF Annual Survey 2023 — Kubernetes production adoption: https://www.cncf.io/reports/cncf-annual-survey-2023/
 [^4]: Server Side Up Spin: https://getspin.pro
 [^5]: Server Side Up Docker PHP images — the base images LaraKube CLI builds on: https://serversideup.net/open-source/docker-php/

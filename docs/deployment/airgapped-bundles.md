@@ -79,8 +79,8 @@ It loops through your `images/` directory and executes `k3s ctr images import` o
 ### 4. Dynamic Credentials & Environment Merging
 It securely generates cryptographically strong, unique passwords for this specific installation (e.g., `DB_PASSWORD`, `MINIO_SECRET_KEY`). It intelligently merges these with any keys the client provided in their `.env` file, prioritizing the client's keys.
 
-### 5. Hostname Prompting
-It pauses and asks the client what domains or IP addresses the app will run on internally (e.g., `hospital.internal`, `s3.hospital.internal`). 
+### 5. Hostname Resolution
+If the bundle was built after running `larakube env airgap --offline` (which stores hostnames in `.larakube.json`), the installer uses those values automatically — no prompts. If hostnames are not pre-configured, it asks what domains or IP addresses the app will run on internally (e.g., `hospital.internal`, `s3.hospital.internal`).
 
 ### 6. On-Site TLS Generation
 Because Let's Encrypt cannot function without the internet, the CLI dynamically mints a custom **Certificate Authority (CA)** on the server. It then generates an SSL Server Certificate containing **Subject Alternative Names (SANs)** for all the domains the client requested. 
@@ -107,7 +107,7 @@ rsync -P root@YOUR_SERVER_IP:/path/to/bundle/hospital-airgap-2026-06-11-ca.crt ~
 larakube trust ~/Downloads/hospital-airgap-2026-06-11-ca.crt
 ```
 
-Once trusted, open the domain(s) you configured during the hostname prompt — they will load over HTTPS without a browser warning.
+Once trusted, open the domain(s) you set when running `larakube env airgap --offline` — they will load over HTTPS without a browser warning.
 
 :::tip
 The CA file name includes the app name, environment, and date (e.g. `hospital-airgap-2026-06-11-ca.crt`), so multiple client installs don't clobber each other in `~/Downloads/`.
@@ -203,13 +203,13 @@ Always pass `--swap` on any server with 1 GB of RAM. On 2 GB+ servers it is opti
 
 ### `--skip-images` — Fast Re-configuration
 
-Importing the Docker image tarballs into containerd is the slowest part of the install (it can take several minutes). If you made a typo during hostname configuration (e.g., a blank Reverb URL) you can re-run the entire prompt wizard **without** re-importing images:
+Importing the Docker image tarballs into containerd is the slowest part of the install (it can take several minutes). If you need to regenerate secrets or certificates without re-importing images, pass this flag:
 
 ```bash
 sudo ./larakube bundle:install --skip-images
 ```
 
-This skips straight to secrets generation, hostname prompting, and certificate regeneration — so you can fix a configuration mistake in seconds rather than minutes.
+This skips straight to secrets generation and certificate regeneration. If your bundle already has hostnames stored from `larakube env airgap --offline`, the hostname step is skipped automatically — so re-installs are fast.
 
 ---
 

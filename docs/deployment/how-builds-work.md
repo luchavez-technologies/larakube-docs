@@ -42,7 +42,7 @@ flowchart TD
 
     subgraph Docker ["🐳 docker buildx build --target deploy"]
         direction TB
-        AS["AS assets\n─────────────\nCOPY . .\n(picks up wayfinder output)\nnpm ci && npm run build\nwith --build-arg VITE_*"]
+        AS["AS assets (FROM base + Node)\n─────────────\nCOPY . .\n--secret id=dotenv mounts .env\nnpm ci && npm run build"]
         DP["AS deploy\n─────────────\nCOPY . /var/www/html\nCOPY --from=assets\n  public/build → public/build"]
         AS --> DP
     end
@@ -87,7 +87,7 @@ Because the `assets` stage is built `FROM base` (the same PHP image your app use
 For bundle builds with Reverb, `REVERB_APP_KEY` must be known at **build time** (so it can be baked as `VITE_REVERB_APP_KEY`) and at **install time** (so the server's Reverb config matches). LaraKube handles this automatically:
 
 1. `bundle:build` generates a random `REVERB_APP_KEY` and stores it in `bundle.json`.
-2. The key is passed as `--build-arg VITE_REVERB_APP_KEY=<key>` to the Docker build.
+2. The key is written into the BuildKit secret (the augmented `.env.{environment}` file) so Vite bakes `VITE_REVERB_APP_KEY` into the compiled JS without exposing it in any image layer.
 3. `bundle:install` reads the key from `bundle.json` and uses it when writing the Kubernetes secrets — so the baked JS and the runtime server are always in sync.
 
 For `cloud:deploy` and GitHub Actions, `REVERB_APP_KEY` comes from your `.env` / GHA secrets and is injected at deploy time.
@@ -102,4 +102,4 @@ The `assets` stage was introduced in v0.18.41. If your project was scaffolded be
 larakube heal
 ```
 
-This regenerates `Dockerfile.php` with the new stage. Your existing `cloud:deploy` and `bundle:build` will pick it up on the next run. (Older Dockerfiles continue to work — Docker will issue a harmless warning about unused `--build-arg` flags and build normally.)
+This regenerates `Dockerfile.php` with the new stage. Your existing `cloud:deploy` and `bundle:build` will pick it up on the next run.

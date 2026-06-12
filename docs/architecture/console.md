@@ -23,7 +23,7 @@ larakube web
 larakube console
 ```
 
-This will ensure the Console is installed, the domain `https://console.dev.test` is mapped, and then open it in your default browser.
+This will ensure the Console is installed, the domain `https://console.kube` is mapped, and then open it in your default browser.
 
 ## 🛠 Features
 

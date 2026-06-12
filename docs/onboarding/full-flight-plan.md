@@ -23,7 +23,7 @@ cd my-masterpiece
 larakube up
 ```
 
-*Your app is now running at `https://my-masterpiece.dev.test` with perfect production parity.*
+*Your app is now running at `https://my-masterpiece.kube` with perfect production parity.*
 
 ---
 

@@ -20,7 +20,7 @@ React is the world's most popular library for building user interfaces. When com
 Deploying React (especially with SSR) on Kubernetes is notoriously complex. LaraKube CLI solves this by:
 
 -   **Dedicated Node Pods**: Automatically scaffolds separate pods for the Vite dev server and Node.js SSR workers.
--   **Automated Networking**: Pre-configures **Traefik** to route `vite.your-app.dev.test` directly to the HMR server.
+-   **Automated Networking**: Pre-configures **Traefik** to route `vite.your-app.kube` directly to the HMR server.
 -   **Production Parity**: Your React build pipeline inside the cluster matches your production CI/CD exactly.
 
 ```bash

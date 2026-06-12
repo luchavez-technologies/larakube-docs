@@ -9,6 +9,18 @@ LaraKube is evolving rapidly. We maintain a high-level changelog here for major 
 
 ## 🚀 Unified Ecosystem Updates
 
+### June 2026: Local HTTPS Overhaul & .kube TLD (CLI v0.19.0)
+A comprehensive overhaul of the local HTTPS trust chain and local domain naming.
+
+- **`.kube` TLD migration**: All local development domains now use `.kube` instead of `.dev.test`. Every project, service, and companion app gets a `*.kube` address (`your-app.kube`, `traefik.kube`, `console.kube`, `s3.project.kube`, `mailpit.kube`, `phpmyadmin.kube`, `redisinsight.kube`, `vite.your-app.kube`, etc.). The old `.dev.test` addresses are retired.
+- **`larakube trust:check`**: New command that diagnoses the full local HTTPS trust chain end-to-end — CA files present in `~/.larakube/certificates/`, CA trusted in the system keychain, DNS resolving live for `.kube` domains, system cert validity, and per-app cert validity. Returns exit code `1` if any issues are found; safe to use in scripts and CI.
+- **`larakube trust:reset`**: New command that destroys and regenerates the local CA. Asks you to type `reset` to confirm (or `--force` to skip). Per-app certs regenerate automatically on the next `larakube up`.
+- **`larakube trust:remove`**: Replaces the old `larakube untrust` command. Removes the LaraKube Local CA from the system trust store using SHA-1 fingerprints (macOS) or file paths (Linux/Windows).
+- **Certificate path**: The CA and all per-app certs now live under `~/.larakube/certificates/` (previously `~/.larakube/`).
+- **dnsmasq hardening (macOS)**: dnsmasq now runs as a root daemon (`sudo brew services`) so it can bind port 53. Adds `listen-address=127.0.0.1` and `bind-interfaces` to avoid conflicts with OrbStack/Docker network bridges. `trust:check` probes DNS live rather than just checking file existence.
+- **laravel-secrets local fix**: Local secrets handling corrected for edge cases in the split `.env` architecture.
+- **Traefik server-side apply fix**: Resolved a conflict when applying Traefik manifests with `kubectl apply --server-side`.
+
 ### June 2026: Air-Gapped Bundle Hardening (CLI v0.18.x)
 A production-hardening series for the offline enterprise delivery path. All changes are backwards-compatible — existing bundles and `.larakube.json` files are unaffected.
 
@@ -76,7 +88,7 @@ Shaking out the first real multi-app deploy onto a shared Commons. The Plex tier
 - **`plex:join` auto-heals**: after marking the Commons services managed, it regenerates manifests itself, so a deploy never ships duplicate self-hosted pods next to the Commons.
 - **Production-safe by default**: cloud environments deploy with `APP_ENV=production` and `APP_DEBUG=false` instead of inheriting the scaffold's local values — no more debug mode live on a public URL. A locked `.env.<env>` is still honoured.
 - **`cluster:setup` prefers native k3s** (the lightest option) and defaults to it on Linux; k3d (k3s-in-Docker) is the macOS/Windows fallback, and Docker is only required for that path.
-- **Fixes**: the Wayfinder CI step now fires for any app that actually uses Wayfinder (it was gated on an unrelated feature, breaking React/Vue/Svelte builds); `gha:configure` no longer crashes while uploading the kubeconfig; and the web-host prompt can't be skipped or left on a local `.dev.test` host.
+- **Fixes**: the Wayfinder CI step now fires for any app that actually uses Wayfinder (it was gated on an unrelated feature, breaking React/Vue/Svelte builds); `gha:configure` no longer crashes while uploading the kubeconfig; and the web-host prompt can't be skipped or left on a local `.kube` host.
 
 ### June 2026: The "Plex Commons" Release (CLI v0.11.0)
 Multiple apps can now **share** one set of backing services — the **Commons** — on a single node, each tenant fully isolated. This is the shoestring-hobbyist and agency tier of the [Scaling Journey](../deployment/scaling-journey): reclaim the RAM wasted by duplicate data stacks without giving up per-app isolation.
@@ -100,7 +112,7 @@ Single-node and existing-blueprint output is unchanged (snapshot-verified) — t
 ### May 2026: The "Portable Local Environment" Release (CLI v0.7 – v0.8)
 A CLI-free path for collaborators. `larakube portable` generates a self-contained `larakube.sh` wrapper so a teammate can run the project locally with just `docker`, `kubectl`, and `jq` — no LaraKube binary install required.
 
-- **The wrapper covers the full lifecycle** plus host / TLS / trust setup, so Vite HMR and Reverb WebSockets work over real `*.dev.test` URLs on a teammate's machine.
+- **The wrapper covers the full lifecycle** plus host / TLS / trust setup, so Vite HMR and Reverb WebSockets work over real `*.kube` URLs on a teammate's machine.
 - **Leaner committed blueprint**: transient, machine-specific fields (`isScaffolding`, `path`) are now stripped from `.larakube.json` on save.
 
 ### May 2026: The "Environment-Aware Generation" Release (CLI v0.6.0)

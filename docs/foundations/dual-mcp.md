@@ -30,4 +30,4 @@ When you ask an AI agent to "Add Redis to this project," the **Local Mechanic** 
 To register these servers with your AI tools:
 
 -   **Local Agent:** `larakube mcp`
--   **Web/Remote Agent:** `https://console.dev.test/mcp`
+-   **Web/Remote Agent:** `https://console.kube/mcp`

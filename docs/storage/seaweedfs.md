@@ -14,8 +14,8 @@ SeaweedFS is an independent, highly scalable distributed storage system. It is d
 
 ## 🌐 Local Access
 LaraKube configures dedicated local URLs for SeaweedFS:
-- **S3 API URL:** `https://s3.your-project.dev.test`
-- **Admin Dashboard:** `https://s3-admin.your-project.dev.test`
+- **S3 API URL:** `https://s3.your-project.kube`
+- **Admin Dashboard:** `https://s3-admin.your-project.kube`
 - **Credentials:** Use `any` for both Access Key and Secret Key for local development.
 
 ## 🛠 Initialization

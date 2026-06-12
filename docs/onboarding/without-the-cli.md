@@ -50,7 +50,7 @@ artisan <args>               # php artisan ... in the web pod
 composer <args>              # composer ... in the web pod
 npm <args>                   # npm ... in the node pod
 
-# Local URLs (app + Vite HMR + Reverb over https://*.dev.test)
+# Local URLs (app + Vite HMR + Reverb over https://*.kube)
 hosts                        # map ingress hosts → 127.0.0.1 in /etc/hosts (sudo)
 tls                          # cluster Traefik serves the local cert
 trust                        # trust the local CA so HTTPS + Reverb WSS work (sudo)
@@ -71,8 +71,8 @@ It auto-imports the freshly-built image for k3d, kind, and minikube; Docker Desk
 ```bash
 ./larakube.sh tls      # the cluster's Traefik serves the LaraKube local cert
 ./larakube.sh trust    # trust that cert locally (sudo)
-./larakube.sh hosts    # *.dev.test → 127.0.0.1 in /etc/hosts (sudo)
-# then open https://<project>.dev.test
+./larakube.sh hosts    # *.kube → 127.0.0.1 in /etc/hosts (sudo)
+# then open https://<project>.kube
 ```
 
 - `tls` needs an ingress controller already running — **k3s ships Traefik** (works out of the box); on Docker Desktop/OrbStack install one first, or use the full CLI.

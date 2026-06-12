@@ -11,7 +11,7 @@ LaraKube provides a professional, "Zero-Config" live development experience. We 
 When you launch your cluster with `larakube up`, the CLI surgically hardens your `vite.config.ts` (or `.js`) for the Kubernetes environment:
 
 1.  **Ingress Routing**: Vite is configured to use `clientPort: 80`. This allows HMR traffic to flow through the standard Kubernetes Ingress.
-2.  **Domain Mapping**: Assets are fetched from `vite.{{your-app}}.dev.test`.
+2.  **Domain Mapping**: Assets are fetched from `vite.{{your-app}}.kube`.
 3.  **CORS Handling**: Cross-Origin Resource Sharing is automatically enabled so your main application can securely fetch assets from the asset subdomain.
 
 ## 🐘 Backend Live-Watching (Octane)

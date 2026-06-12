@@ -13,12 +13,12 @@ LaraKube offers three distinct "flavors" for your search foundation:
 ### 1. Meilisearch (Self-hosted)
 The fastest typt-tolerant search engine, specifically tuned for the Laravel community.
 - **Image:** `getmeili/meilisearch:v1.12`
-- **Dashboard:** `https://meilisearch.your-project.dev.test`
+- **Dashboard:** `https://meilisearch.your-project.kube`
 
 ### 2. Typesense (Self-hosted)
 A high-performance, open-source search engine that focuses on performance and developer experience.
 - **Image:** `typesense/typesense:27.1`
-- **URL:** `https://typesense.your-project.dev.test`
+- **URL:** `https://typesense.your-project.kube`
 
 ### 3. Database (Built-in)
 A zero-infrastructure search option that uses your existing database (MySQL or PostgreSQL) for full-text indexing. Perfect for small projects or internal tools.

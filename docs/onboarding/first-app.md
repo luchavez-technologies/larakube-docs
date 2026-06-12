@@ -62,6 +62,6 @@ larakube start
 
 ## 6. Behold!
 Your application is now live! 
-- **App:** [https://my-awesome-app.dev.test](https://my-awesome-app.dev.test)
-- **Mailpit:** [https://mailpit.my-awesome-app.dev.test](https://mailpit.my-awesome-app.dev.test)
-- **Meilisearch:** [https://meilisearch.my-awesome-app.dev.test](https://meilisearch.my-awesome-app.dev.test) (If enabled)
+- **App:** [https://my-awesome-app.kube](https://my-awesome-app.kube)
+- **Mailpit:** [https://mailpit.my-awesome-app.kube](https://mailpit.my-awesome-app.kube)
+- **Meilisearch:** [https://meilisearch.my-awesome-app.kube](https://meilisearch.my-awesome-app.kube) (If enabled)

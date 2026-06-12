@@ -15,7 +15,7 @@ Garage is a modern, distributed object storage service tailored for self-hosting
 
 ## 🌐 Local Access
 LaraKube sets up a secure local URL for the S3 API:
-- **S3 URL:** `https://s3.your-project.dev.test`
+- **S3 URL:** `https://s3.your-project.kube`
 
 ## 🛠 Initialization
 Garage requires a one-time manual initialization after you run **`larakube up`** for the first time:

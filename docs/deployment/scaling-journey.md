@@ -142,7 +142,7 @@ sequenceDiagram
 
     Note over You,Local: Develop
     You->>Local: larakube up
-    Local-->>You: App on *.dev.test
+    Local-->>You: App on *.kube
 
     Note over You,VPS: Rung ① — Single-Node Hero
     You->>VPS: larakube cloud:provision

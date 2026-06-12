@@ -63,7 +63,7 @@ To add the Master Architect to your AI tool, use the **SSE Transport** pointing 
 {
   "mcpServers": {
     "larakube-console": {
-      "url": "https://console.dev.test/mcp"
+      "url": "https://console.kube/mcp"
     }
   }
 }

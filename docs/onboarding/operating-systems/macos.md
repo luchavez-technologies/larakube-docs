@@ -36,7 +36,7 @@ larakube cluster:setup
 ```
 
 ### 3. Trust the Root CA
-To enable seamless HTTPS (`https://*.dev.test`), install the LaraKube Local CA:
+To enable seamless HTTPS (`https://*.kube`), install the LaraKube Local CA:
 ```bash
 larakube trust
 ```

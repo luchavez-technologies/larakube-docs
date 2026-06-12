@@ -34,7 +34,7 @@ Manages time-based tasks. LaraKube uses this to orchestrate the [Laravel Task Sc
 An abstract way to expose your Pods as a network service. This is how your PHP app talks to your Database (e.g., `DB_HOST=mysql`).
 
 ### [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
-The "Front Door" of your cluster. It manages external access to your services, typically HTTP. This allows you to visit your app at `my-app.dev.test`.
+The "Front Door" of your cluster. It manages external access to your services, typically HTTP. This allows you to visit your app at `my-app.kube`.
 
 ## 💾 Storage & Persistence
 

@@ -65,7 +65,7 @@ flowchart TD
 
 Vite bakes `VITE_*` environment variables into the compiled JS at build time. They cannot be changed at runtime. If `npm run build` runs on your machine:
 
-- It reads your **local `.env`** — which has dev values like `localhost` or `dev.test` hostnames.
+- It reads your **local `.env`** — which has dev values like `localhost` or `.kube` hostnames.
 - Those wrong values get frozen into the image and shipped to production.
 
 By moving the build into Docker, LaraKube mounts your `.env.{environment}` file as a **BuildKit secret** (`--secret id=dotenv,src=.env.staging`). Vite reads it at build time to get the correct `VITE_*` values. The secret is never baked into any image layer — not in the `assets` stage, not in `deploy`.

@@ -22,7 +22,7 @@ Stop jumping in and out of containers. LaraKube provides transparent proxy comma
 - `larakube npm run dev`
 
 ## 🧠 LaraKube Console (The Brain)
-The **LaraKube Console** is your professional Kubernetes Control Plane and visual command center. Accessible at `https://console.dev.test`, it provides:
+The **LaraKube Console** is your professional Kubernetes Control Plane and visual command center. Accessible at `https://console.kube`, it provides:
 - **Global Fleet Visibility:** Real-time health monitoring of all projects in your cluster.
 - **Master Memory:** A centralized database of project history, audit logs, and architectural state.
 - **High-Fidelity Diagnostics:** Live pod logs and real-time cluster event monitoring via a data-dense UI.

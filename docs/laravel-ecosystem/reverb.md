@@ -14,7 +14,7 @@ When you enable Reverb, LaraKube handles the complex networking for you:
     - Automatically detects your framework (React or Vue).
     - Installs the required `@laravel/echo-*` packages.
     - Configures `app.js` or `app.tsx` with the correct broadcaster settings.
-3.  **Local Ingress:** Sets up a secure local URL at `https://reverb.your-project.dev.test`.
+3.  **Local Ingress:** Sets up a secure local URL at `https://reverb.your-project.kube`.
 
 ## Environment Variables
 LaraKube automatically injects and configures these essential keys in your `.env`:

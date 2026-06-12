@@ -208,7 +208,7 @@ This is the heart of the blueprint. Every project has a `local` environment; you
 "local": {}
 ```
 
-The simplest case. LaraKube runs everything for you (Postgres, Redis, Meilisearch, MinIO), and every service answers on a friendly `*.dev.test` address with HTTPS already trusted — no setup required.
+The simplest case. LaraKube runs everything for you (Postgres, Redis, Meilisearch, MinIO), and every service answers on a friendly `*.kube` address with HTTPS already trusted — no setup required.
 
 ### Staging
 
@@ -248,7 +248,7 @@ The `hosts` map is how you give each part of your app its own domain. LaraKube p
 
 1. **You set it explicitly.** `"reverb": "ws.acme.example"` puts the Reverb websocket server on its own subdomain. This is the recommended pattern for websockets, file storage, and admin UIs.
 2. **It's built from `web`.** If a service has no domain of its own but you've set `web`, LaraKube derives one — e.g. Meilisearch becomes `meilisearch-acme.example`.
-3. **Local fallback.** Locally, everything just answers on `{service}-{name}.dev.test`.
+3. **Local fallback.** Locally, everything just answers on `{service}-{name}.kube`.
 
 When you run `larakube env qa`, the wizard automatically asks about every service that can take its own subdomain (Reverb, file storage, Meilisearch, …), so you don't have to remember them.
 

@@ -78,7 +78,7 @@ The "Total Project Cleanup." Completely remove LaraKube manifests and cluster re
 ## `uninstall`
 The "System Cleanup." Remove the LaraKube CLI application from your system.
 - **Action**: Deletes the `larakube` binary from your system path.
-- **Recommendation**: Run `untrust` first to clean up the SSL root CA from your system trust store.
+- **Recommendation**: Run `trust:remove` first to clean up the SSL root CA from your system trust store.
 
 # GitHub Actions
 

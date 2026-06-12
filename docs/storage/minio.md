@@ -16,7 +16,7 @@ MinIO is a high-performance, S3-compatible object store. It is the most widely u
 
 ## 🌐 Local Access
 LaraKube automatically creates a local Ingress for the MinIO Console:
-- **Dashboard URL:** `https://s3-console.your-project.dev.test`
+- **Dashboard URL:** `https://s3-console.your-project.kube`
 - **Credentials:** Use the default user and secret mentioned above.
 
 ## 🛠 Initialization

@@ -104,6 +104,8 @@ const sidebars: SidebarsConfig = {
         'architecture/single-node-hero',
         'deployment/6dollar-baseline',
         'deployment/multiple-projects',
+        'deployment/two-envs-one-server',
+        'deployment/plex-resources',
         'architecture/strategy-switching',
         'deployment/airgapped-bundles',
         'deployment/manual-deploy',

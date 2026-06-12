@@ -9,6 +9,17 @@ LaraKube CLI is evolving rapidly. We maintain a high-level changelog here for ma
 
 ## 🚀 Unified Ecosystem Updates
 
+### June 2026: Two-Stage CI, Resource Defaults & Multi-Env Plex (CLI v0.20.0)
+A stability and developer-experience release — faster CI retries, Node.js 24 compatibility, and validated multi-environment Plex on a single node.
+
+- **Two-stage GitHub Actions pipeline**: the generated `larakube-deploy-*.yml` workflow is now split into a `build` job and a separate `deploy` job (`needs: build`). A failed deploy (wrong manifest, missing secret) no longer re-runs the full Docker build — just re-run the `deploy` job. The build job adds explicit Composer and Docker layer caching (`actions/cache@v5`, `type=gha`) for faster subsequent builds.
+- **Node.js 24 action upgrades**: all bundled GitHub Actions bumped to Node.js 24-compatible versions — `actions/checkout@v6`, `actions/cache@v5`, `actions/setup-node@v6`, `docker/login-action@v4`, `docker/build-push-action@v7`, `docker/setup-buildx-action@v4`, `azure/k8s-set-context@v4`. Avoids the Node.js 20 deprecation warning enforced by GitHub from June 16, 2026 onwards.
+- **Reduced default CPU request** (`100m` → `50m` per app pod): the scheduling floor for web, horizon, reverb, and queue pods is now 50m. On a 2 GB / 1 CPU node this allows staging **and** production (6 app pods total) plus a Plex Commons to co-exist within the node's CPU budget. The limit stays at `1` full core, so a pod can still burst to maximum CPU when available. Adjust per-env with `larakube resources`.
+- **`plex:resources` command**: interactively tune memory limits and storage sizes for Plex Commons services (MariaDB, Redis, SeaweedFS, Meilisearch, MinIO) without re-running `plex:init`. Shows a summary table, prompts for new values with k8s-quantity validation, re-applies the Commons manifest, and waits for the rollout. See [Commons Resource Tuning](../deployment/plex-resources).
+- **Multi-environment Plex validated**: `staging` and `production` of the same app now deploy as separate tenants on one Plex node. Tenant identifiers are environment-aware (`my_app` for production, `my_app_staging` for staging) — each gets its own database, Redis logical DB (DB 0 / DB 1), and S3 bucket. Validated end-to-end via GitHub Actions on a $12 DigitalOcean VPS. See [Two Environments, One Server](../deployment/two-envs-one-server).
+- **`cloud:configure:gha` host sweep**: the GHA configuration wizard now prompts for Reverb and SeaweedFS hosts (same as `larakube env`) to ensure `VITE_REVERB_HOST` is baked into the Docker image at build time. Previously, this prompt was absent from `cloud:configure:gha`, causing WebSocket connections to break in production builds.
+- **GHCR pull-secret fix**: `cloud:configure:gha` now creates the `ghcr-login` Kubernetes pull secret for projects using the default GHCR path (no explicit registry configured), not just those with an explicit registry entry. Previously, the default-GHCR path skipped pull-secret creation, causing `ImagePullBackOff` on the first deploy.
+
 ### June 2026: Local HTTPS Overhaul & .kube TLD (CLI v0.19.0)
 A comprehensive overhaul of the local HTTPS trust chain and local domain naming.
 

@@ -9,6 +9,10 @@ You don't need a server per project. Two (or more) independent LaraKube CLI apps
 
 This page covers the **simplest** approach: each project keeps its own data services (or points at an external managed database). For the more advanced "share one set of services across projects to save RAM" model, see the [Plex](#going-further-plex) section at the end.
 
+:::tip Same app, two environments?
+If you want **staging and production of the same app** on one server (one repo, two branches), see [Two Environments, One Server](./two-envs-one-server) instead.
+:::
+
 ## 💡 Why this just works
 
 LaraKube CLI was multi-tenant-friendly from the start, because of three properties you already rely on:

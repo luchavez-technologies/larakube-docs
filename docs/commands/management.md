@@ -57,6 +57,19 @@ The "Limits Manager." Interactively configures Kubernetes CPU and memory request
 - **Per-Component Overrides**: Set a baseline for `default` (all app pods), or specify precise overrides for roles like `horizon` and `ssr`.
 - **Drift Protection**: Redundant overrides that match the inherited defaults are automatically pruned to keep your blueprint clean.
 
+**Defaults** (applies to every app pod — web, horizon, reverb, queues):
+
+| | CPU | Memory |
+|---|---|---|
+| Request (scheduling guarantee) | `50m` | `128Mi` |
+| Limit (hard ceiling) | `1` (1 core) | `1Gi` |
+
+Requests are scheduling minimums — a pod can burst well above 50m CPU as long as the node has spare capacity. On a $12 / 2 GB node running two environments, the 50m default lets six app pods co-exist alongside the Commons. Raise the limit when a single pod is genuinely CPU or memory heavy.
+
+:::note Commons services
+`larakube resources` tunes your **app pods** only. To adjust memory limits or storage for Plex Commons services (MariaDB, Redis, SeaweedFS, etc.), use [`larakube plex:resources`](../deployment/plex-resources).
+:::
+
 ## `init`
 The "Adoption" tool. Initializes LaraKube CLI for an existing Laravel project.
 - **Existing Projects**: Scans your current `.env` and `composer.json` to suggest a matching LaraKube CLI architecture.

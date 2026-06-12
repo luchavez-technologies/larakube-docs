@@ -1,11 +1,11 @@
 ---
 sidebar_position: 2
 title: The Scaling Journey
-description: From a $6 droplet to a resilient fleet — the six topologies LaraKube grows through, and which one fits a solopreneur, a startup, an MSME, or an agency. The same blueprint climbs the ladder; you just turn two dials.
+description: From a $6 droplet to a resilient fleet — the six topologies LaraKube CLI grows through, and which one fits a solopreneur, a startup, an MSME, or an agency. The same blueprint climbs the ladder; you just turn two dials.
 ---
 # 🪜 The Scaling Journey
 
-The promise of LaraKube is simple: **start cheap, grow without rewrites.** The blueprint that runs your first $6 droplet is the same blueprint that runs a high-availability cluster later. To climb, you turn two dials:
+The promise of LaraKube CLI is simple: **start cheap, grow without rewrites.** The blueprint that runs your first $6 droplet is the same blueprint that runs a high-availability cluster later. To climb, you turn two dials:
 
 - **Resilience** — how many machines: a single node (cheapest) → multiple nodes (survives a machine dying).
 - **Density** — how you pack apps: one app per box → several apps side by side → several apps *sharing* one database and cache (the **Commons**) — a setup we call a **Plex**.
@@ -23,9 +23,9 @@ That's a 2 × 3 grid. Here's the whole journey, who each rung is for, and how yo
 
 The monthly figures in each rung below are what you'd pay **your cloud provider** — the examples use **DigitalOcean (early 2026, approximate; prices change and vary by region and usage)**. A few things that are explicitly *not* a cost or a catch:
 
-- **LaraKube is free and open source.** No subscription, no per-seat pricing, no usage fees, no paywalled "pro" tier — and no hidden fees. The CLI *is* the whole product.
-- **You own everything.** It deploys to *your* cloud account, *your* servers, *your* data — you pay the provider directly. There's no LaraKube-hosted platform in the middle, and nothing to "migrate off" if you stop using it tomorrow.
-- **It only generates files.** LaraKube writes standard Kubernetes manifests (kustomize) and Dockerfiles into your repo — that's it. **Nothing runs in your cluster on LaraKube's behalf, and nothing phones home.** The output is plain YAML and Docker you can read, audit, commit, and even `kubectl apply` *by hand* without the CLI. At runtime the only thing running is your own app, on infrastructure you control.
+- **LaraKube CLI is free and open source.** No subscription, no per-seat pricing, no usage fees, no paywalled "pro" tier — and no hidden fees. The CLI *is* the whole product.
+- **You own everything.** It deploys to *your* cloud account, *your* servers, *your* data — you pay the provider directly. There's no LaraKube CLI-hosted platform in the middle, and nothing to "migrate off" if you stop using it tomorrow.
+- **It only generates files.** LaraKube CLI writes standard Kubernetes manifests (kustomize) and Dockerfiles into your repo — that's it. **Nothing runs in your cluster on LaraKube CLI's behalf, and nothing phones home.** The output is plain YAML and Docker you can read, audit, commit, and even `kubectl apply` *by hand* without the CLI. At runtime the only thing running is your own app, on infrastructure you control.
 
 ---
 
@@ -33,7 +33,7 @@ The monthly figures in each rung below are what you'd pay **your cloud provider*
 
 **Meet Maya, a solopreneur.** She's built *Tallio*, a small invoicing SaaS, on nights and weekends. She doesn't have a DevOps team — she has a credit card and a deadline.
 
-LaraKube puts Tallio on a **single $6–12/mo droplet**: her app, its Postgres, its Redis, HTTPS via Let's Encrypt, all from one `larakube` deploy. No Kubernetes expertise required.
+LaraKube CLI puts Tallio on a **single $6–12/mo droplet**: her app, its Postgres, its Redis, HTTPS via Let's Encrypt, all from one `larakube` deploy. No Kubernetes expertise required.
 
 ```jsonc
 "strategy": "single-node",
@@ -123,11 +123,11 @@ For agencies and platforms running many small tenants that still need to stay on
 
 The whole point: **moving between rungs is configuration, not a port.** Your application code never knows which rung it's on.
 
-- **More resilience (down → right on the grid):** change `strategy` from `single-node` to `multi-node-ha`. LaraKube replicates your workloads and runs the app pods **stateless** (block storage can't span nodes), so state externalizes to object storage + Redis. **`larakube cloud:externalize <env>`** wires that up in one guided step — see [`cloud:externalize`](../commands/cloud#cloud-externalize) and [Shared Storage](../architecture/shared-storage#-storage-across-the-scaling-journey).
+- **More resilience (down → right on the grid):** change `strategy` from `single-node` to `multi-node-ha`. LaraKube CLI replicates your workloads and runs the app pods **stateless** (block storage can't span nodes), so state externalizes to object storage + Redis. **`larakube cloud:externalize <env>`** wires that up in one guided step — see [`cloud:externalize`](../commands/cloud#cloud-externalize) and [Shared Storage](../architecture/shared-storage#-storage-across-the-scaling-journey).
 - **Offload a heavy service:** mark it `managed` and point at a provider endpoint. Your app just sees a connection string — whether that's an in-Plex Postgres, a DigitalOcean Managed Database, or RDS.
 - **More density:** add a second repo to the same cluster (rung ②), or join a **Plex** to share the Commons (rung ③/⑥) with `larakube plex join`.
 
-Because a service is "just a host" to your app, the scariest-sounding migration — *"move our database off the shared box"* — is a hostname change and a redeploy. That's the endgame LaraKube is built for: **pick the rung that fits your wallet and your risk today, and climb the moment you need to — never by rewriting, only by reconfiguring.**
+Because a service is "just a host" to your app, the scariest-sounding migration — *"move our database off the shared box"* — is a hostname change and a redeploy. That's the endgame LaraKube CLI is built for: **pick the rung that fits your wallet and your risk today, and climb the moment you need to — never by rewriting, only by reconfiguring.**
 
 ## 🛠️ The same commands at every stage
 
@@ -159,6 +159,6 @@ sequenceDiagram
     Cloud-->>You: Running with high availability
 ```
 
-Same app, same blueprint — you turned the resilience dial and pointed at a bigger cluster. No application code changes. (Note: a managed cluster like DOKS is created through your provider and its kubeconfig handed to LaraKube — `cloud:provision` is for standing up k3s on a plain VPS.)
+Same app, same blueprint — you turned the resilience dial and pointed at a bigger cluster. No application code changes. (Note: a managed cluster like DOKS is created through your provider and its kubeconfig handed to LaraKube CLI — `cloud:provision` is for standing up k3s on a plain VPS.)
 
 → Next: pin down every field on the blueprint in the [Blueprint Anatomy](../architecture/blueprint-anatomy).

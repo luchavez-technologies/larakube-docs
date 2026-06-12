@@ -1,11 +1,11 @@
 ---
 sidebar_position: 4
 title: The $6/mo Baseline
-description: How LaraKube establishes a robust production environment on a cost-effective 1GB VPS.
+description: How LaraKube CLI establishes a robust production environment on a cost-effective 1GB VPS.
 ---
 # 📦 The $6/mo Baseline
 
-Running professional-grade Kubernetes requires enough overhead for the control plane. We have established the **$6/mo VPS (1GB RAM)** as the official LaraKube Minimum Viable Server.
+Running professional-grade Kubernetes requires enough overhead for the control plane. We have established the **$6/mo VPS (1GB RAM)** as the official LaraKube CLI Minimum Viable Server.
 
 ## 💡 Why 1GB RAM?
 While running K3s on 512MB is technically possible with heavy swapping, it is not production-stable. The 1GB baseline ensures:
@@ -17,6 +17,6 @@ While running K3s on 512MB is technically possible with heavy swapping, it is no
 When you run `larakube cloud:provision` on your baseline server, we enforce two critical stability measures:
 
 1.  **Automated Swap File**: We automatically provision a **1GB Swap file**. This provides a vital "safety net" during high-load events, ensuring that the kernel doesn't aggressively terminate your application processes.
-2.  **Remote Build Offloading**: Since your 1GB droplet is dedicated to running your app, LaraKube forces all CPU/RAM-heavy build processes (Docker, npm, composer) to the GitHub Actions runner. This is the **"Secret Sauce"** that allows a small VPS to run a full K8s stack flawlessly without crashing during deployments.
+2.  **Remote Build Offloading**: Since your 1GB droplet is dedicated to running your app, LaraKube CLI forces all CPU/RAM-heavy build processes (Docker, npm, composer) to the GitHub Actions runner. This is the **"Secret Sauce"** that allows a small VPS to run a full K8s stack flawlessly without crashing during deployments.
 
 *By adhering to this baseline, you get a production environment that is stable, performant, and ready for real traffic, all for the price of a cup of coffee.*

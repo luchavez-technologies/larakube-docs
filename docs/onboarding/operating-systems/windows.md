@@ -52,4 +52,4 @@ larakube cluster:setup
 Your Windows browser will talk to the cluster inside WSL2 seamlessly.
 
 ## 📐 Why WSL2?
-By running LaraKube inside WSL2, you get true Linux-native performance and file compatibility. Your Laravel code remains on the Linux filesystem, avoiding the slow "9p" mount performance of the standard Windows drive mounts.
+By running LaraKube CLI inside WSL2, you get true Linux-native performance and file compatibility. Your Laravel code remains on the Linux filesystem, avoiding the slow "9p" mount performance of the standard Windows drive mounts.

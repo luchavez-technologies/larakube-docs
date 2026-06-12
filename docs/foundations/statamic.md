@@ -8,7 +8,7 @@ description: Launch professional flat-file CMS projects with Statamic and LaraKu
 Create professional, flat-file content management systems with the power of Kubernetes.
 
 ## 🏗 The Foundation
-[Statamic](https://statamic.dev) is the premier flat-file CMS for Laravel. LaraKube provides a specialized environment that handles the unique storage requirements of a Git-based CMS.
+[Statamic](https://statamic.dev) is the premier flat-file CMS for Laravel. LaraKube CLI provides a specialized environment that handles the unique storage requirements of a Git-based CMS.
 
 ## 🚀 Instant Scaffolding
 You can launch a fresh Statamic project directly from the CLI:
@@ -19,7 +19,7 @@ larakube new my-cms --statamic
 ```
 
 ### 🧱 What's included:
--   **Automated Installation**: LaraKube handles the Statamic CLI installation and project scaffolding.
+-   **Automated Installation**: LaraKube CLI handles the Statamic CLI installation and project scaffolding.
 -   **Image Optimization**: Automatically injects `gd` and `exif` extensions for high-performance asset processing.
 -   **Local Email**: Pre-configures **Mailpit** so you can test your contact forms immediately.
 

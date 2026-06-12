@@ -1,7 +1,7 @@
 ---
 sidebar_position: 6
 title: Cloud Deployment
-description: Provision VPS infrastructure and deploy to remote Kubernetes clusters with LaraKube's cloud:* commands.
+description: Provision VPS infrastructure and deploy to remote Kubernetes clusters with LaraKube CLI's cloud:* commands.
 ---
 # Cloud Deployment
 

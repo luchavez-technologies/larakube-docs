@@ -1,11 +1,11 @@
 ---
 sidebar_position: 3
 title: Dual-MCP Architecture
-description: Understand how LaraKube uses two distinct MCP servers to provide AI agents with both local and global context.
+description: Understand how LaraKube CLI uses two distinct MCP servers to provide AI agents with both local and global context.
 ---
 # 🤖 Dual-MCP Architecture
 
-LaraKube is the first orchestrator to implement a **Dual-MCP (Model Context Protocol)** system. This provides AI agents with the perfect balance of "Local Reach" and "Global Memory."
+LaraKube CLI is the first orchestrator to implement a **Dual-MCP (Model Context Protocol)** system. This provides AI agents with the perfect balance of "Local Reach" and "Global Memory."
 
 ## 🛠 1. The Local Mechanic (CLI MCP)
 The CLI binary acts as the **Local Mechanic**. It has direct access to your host machine's files and terminal.

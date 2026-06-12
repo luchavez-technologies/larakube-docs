@@ -1,13 +1,13 @@
 ---
 sidebar_position: 3
 title: Server Hardening
-description: What LaraKube locks down on a self-managed VPS — UFW firewall, fail2ban, automatic updates, key-only SSH, and a guarded disable of remote root login.
+description: What LaraKube CLI locks down on a self-managed VPS — UFW firewall, fail2ban, automatic updates, key-only SSH, and a guarded disable of remote root login.
 ---
 # 🔒 Server Hardening
 
 When you run `larakube cloud:provision` on a fresh VPS, it doesn't just install k3s — it **hardens the box**. The same logic is available on demand for an already-provisioned server via `larakube cloud:harden`.
 
-> Managed clusters (DOKS/EKS/GKE/AKS) don't need this — their nodes are hardened by the provider, and LaraKube reaches them by kube-context, never SSH.
+> Managed clusters (DOKS/EKS/GKE/AKS) don't need this — their nodes are hardened by the provider, and LaraKube CLI reaches them by kube-context, never SSH.
 
 ## What it applies
 
@@ -29,7 +29,7 @@ Installed and enabled — bans IPs that brute-force SSH.
 ### Guarded: disable remote root login
 This is the one that can lock you out if done carelessly, so it's **guarded**:
 
-1. LaraKube first proves the **`larakube`** user can both SSH in (same key) **and** run `sudo`.
+1. LaraKube CLI first proves the **`larakube`** user can both SSH in (same key) **and** run `sudo`.
 2. Only then does it set `PermitRootLogin no`.
 
 If either check fails, it leaves root login **enabled** and warns you. The root **account** is kept (the system, your provider's recovery console, and `sudo` all need it) — only its *network login over SSH* is closed.

@@ -10,9 +10,9 @@ One of the biggest milestones for a SaaS application is landing an Enterprise co
 
 Historically, this meant shipping them your raw source code or a massive, fragile Bash script that failed unpredictably.
 
-LaraKube solves this elegantly via **Air-Gapped Bundles**. You can compile your entire stack—including your app, Traefik, MySQL, Kubernetes itself, and an installation wizard—into a single folder you can drag onto a USB stick.
+LaraKube CLI solves this elegantly via **Air-Gapped Bundles**. You can compile your entire stack—including your app, Traefik, MySQL, Kubernetes itself, and an installation wizard—into a single folder you can drag onto a USB stick.
 
-Here is the exact technical lifecycle of how LaraKube achieves this.
+Here is the exact technical lifecycle of how LaraKube CLI achieves this.
 
 ---
 
@@ -43,7 +43,7 @@ Add `--tar` to compress the output into a single `.tar.gz` archive and generate 
 larakube bundle:build airgap --arch=amd64 --tar
 ```
 
-Here is exactly what LaraKube does under the hood during this step:
+Here is exactly what LaraKube CLI does under the hood during this step:
 1. **Code Compilation:** It builds your Laravel code into a production-ready Docker image tagged `app:airgap-latest`.
 2. **Dependency Scraping:** It scrapes your `.larakube.json` and downloads the official Docker images for your database, Traefik, and Redis.
 3. **Tarball Generation:** It saves every Docker image as a flat `.tar` file in the `images/` directory.
@@ -217,7 +217,7 @@ This skips straight to secrets generation and certificate regeneration. If your 
 
 Before v0.18.27, both local dev images and production bundle images were tagged `:latest`. Building a bundle locally would overwrite the `:latest` tag on your development Docker daemon, instantly crashing your running local pods.
 
-LaraKube now uses **isolated tags** via Kustomize `images:` rewrite blocks:
+LaraKube CLI now uses **isolated tags** via Kustomize `images:` rewrite blocks:
 
 | Context | Image tag at apply time |
 |---------|------------------------|

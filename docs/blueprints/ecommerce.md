@@ -18,4 +18,4 @@ This recipe is designed for transactional integrity and high-resolution asset ma
 ---
 
 ### 💡 Pro Tip
-Use [Task Scheduling](https://laravel.com/docs/13.x/scheduling) to automate order processing and inventory syncs. LaraKube orchestrates the CronJobs so your store never misses a beat.
+Use [Task Scheduling](https://laravel.com/docs/13.x/scheduling) to automate order processing and inventory syncs. LaraKube CLI orchestrates the CronJobs so your store never misses a beat.

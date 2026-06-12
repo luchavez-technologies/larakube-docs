@@ -1,11 +1,11 @@
 ---
 sidebar_position: 1
 title: Database Tunneling Guide
-description: Securely connect to your cluster's databases with LaraKube tunnel. Learn about auto-resolving port conflicts and generating credentials for your GUI client.
+description: Securely connect to your cluster's databases with LaraKube CLI tunnel. Learn about auto-resolving port conflicts and generating credentials for your GUI client.
 ---
 # Tunneling (larakube tunnel)
 
-LaraKube provides an intelligent tunneling command that makes connecting to cluster-internal databases feel like they are running on your own machine.
+LaraKube CLI provides an intelligent tunneling command that makes connecting to cluster-internal databases feel like they are running on your own machine.
 
 ## How it Works
 When you run `larakube tunnel`, the CLI:

@@ -1,11 +1,11 @@
 ---
 sidebar_position: 3
 title: Project Roadmap
-description: What LaraKube ships today and what's planned next — per-environment blueprints, managed-cluster support, the Plex shared-services tier, multi-registry publishing, and GitLab CI.
+description: What LaraKube CLI ships today and what's planned next — per-environment blueprints, managed-cluster support, the Plex shared-services tier, multi-registry publishing, and GitLab CI.
 ---
 # 🗺️ Project Roadmap
 
-LaraKube is an ecosystem built on three pillars: the **CLI** (the engine), the **Console** (the brain), and the **Docs** (the map). This page is an honest snapshot — what's shipped, what's designed and coming next, and the longer-term vision. Items in "Next up" have written designs; dates are intentionally loose because we'd rather ship right than ship on a calendar.
+LaraKube CLI is an ecosystem built on three pillars: the **CLI** (the engine), the **Console** (the brain), and the **Docs** (the map). This page is an honest snapshot — what's shipped, what's designed and coming next, and the longer-term vision. Items in "Next up" have written designs; dates are intentionally loose because we'd rather ship right than ship on a calendar.
 
 ---
 

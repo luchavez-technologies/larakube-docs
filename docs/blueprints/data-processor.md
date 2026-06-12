@@ -18,4 +18,4 @@ This recipe is built for massive scaling and industrial-strength background proc
 ---
 
 ### 💡 Pro Tip
-Focus on your business logic. LaraKube handles the "plumbing" of auto-scaling your worker pods and managing your cluster's high-performance [Cache](https://laravel.com/docs/13.x/cache).
+Focus on your business logic. LaraKube CLI handles the "plumbing" of auto-scaling your worker pods and managing your cluster's high-performance [Cache](https://laravel.com/docs/13.x/cache).

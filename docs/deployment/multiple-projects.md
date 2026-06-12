@@ -1,29 +1,29 @@
 ---
 sidebar_position: 6
 title: Two Apps, One Server
-description: Run multiple independent LaraKube projects on a single VPS — separate GitHub repos, separate namespaces, one shared node. No extra commands required.
+description: Run multiple independent LaraKube CLI projects on a single VPS — separate GitHub repos, separate namespaces, one shared node. No extra commands required.
 ---
 # 🏘️ Two Apps, One Server
 
-You don't need a server per project. Two (or more) independent LaraKube apps — **separate GitHub repositories** — can live on a single VPS, each isolated in its own Kubernetes namespace, each on its own domain. This is the natural next step after the [Single-Node Hero](../architecture/single-node-hero) strategy: same cheap box, more than one app.
+You don't need a server per project. Two (or more) independent LaraKube CLI apps — **separate GitHub repositories** — can live on a single VPS, each isolated in its own Kubernetes namespace, each on its own domain. This is the natural next step after the [Single-Node Hero](../architecture/single-node-hero) strategy: same cheap box, more than one app.
 
 This page covers the **simplest** approach: each project keeps its own data services (or points at an external managed database). For the more advanced "share one set of services across projects to save RAM" model, see the [Plex](#going-further-plex) section at the end.
 
 ## 💡 Why this just works
 
-LaraKube was multi-tenant-friendly from the start, because of three properties you already rely on:
+LaraKube CLI was multi-tenant-friendly from the start, because of three properties you already rely on:
 
 1. **Namespaces are per-project-per-environment.** Every project deploys into `{name}-{environment}` (e.g. `blog-production`, `shop-production`). Two repos never collide at the Kubernetes level.
 2. **Traefik routes by hostname.** The ingress controller is cluster-wide and dispatches traffic by the `Host` header. Each app keeps its own domain; Traefik sends `blog.com` to one namespace and `shop.com` to the other.
 3. **Provisioning preps the box, not the project.** `larakube cloud:provision` installs K3s, swap, and Traefik on the VPS without baking in any single app. A second project deploying to the same IP simply reuses the cluster.
 
-Deploying a second app **cannot** disturb the first: every operation LaraKube runs during a deploy is scoped to that project's namespace.
+Deploying a second app **cannot** disturb the first: every operation LaraKube CLI runs during a deploy is scoped to that project's namespace.
 
 ## 🛠 The flow
 
 ### 1. Provision the server once
 
-Point a fresh VPS at LaraKube a single time:
+Point a fresh VPS at LaraKube CLI a single time:
 
 ```bash
 larakube cloud:provision
@@ -74,7 +74,7 @@ The deciding factor is **how heavy each app's data services are**:
 
 - **Lightweight apps fit comfortably.** A FrankenPHP + Inertia/React + **SQLite** app has no database pod and no Redis pod — just the web process. Two of those sit happily on a $12/2GB box.
 - **Data-heavy apps need a plan.** If each app wants its own Postgres + Redis + Meilisearch, two full stacks will blow past 2GB. Two good options:
-  1. **Use an external managed database.** Mark the service as `managed` in `environments.production` and point the host at a provider endpoint (e.g. DigitalOcean Managed Database). LaraKube then skips deploying that pod entirely. See [Blueprint Anatomy](../architecture/blueprint-anatomy#-environments).
+  1. **Use an external managed database.** Mark the service as `managed` in `environments.production` and point the host at a provider endpoint (e.g. DigitalOcean Managed Database). LaraKube CLI then skips deploying that pod entirely. See [Blueprint Anatomy](../architecture/blueprint-anatomy#-environments).
   2. **Bump the droplet** to 4GB, or share one set of services across the apps with **[Plex](#going-further-plex)** (below).
 
 When in doubt, keep at least one of the two apps on the lightweight (SQLite/file-cache) profile.

@@ -16,11 +16,11 @@ Vue.js is the "Expressive" choice for UI development. Its clean syntax and power
 2.  **Inertia.js First-Class**: Vue is the primary target for Inertia.js, offering the smoothest "Classic Laravel" feel for an SPA.
 3.  **Tailwind Utility**: Pre-configured utility-first styling that integrates perfectly with Vue components.
 
-## 🚀 Why LaraKube?
+## 🚀 Why LaraKube CLI?
 LaraKube CLI hardens your Vue deployment for high-traffic environments:
 
 -   **Zero-Config HMR**: We bridge the Kubernetes networking gap so that Hot Module Replacement works out-of-the-box.
--   **Resource Isolation**: Vue SSR (Server-Side Rendering) is memory-intensive. LaraKube puts it in its own pod so it doesn't crash your PHP backend.
+-   **Resource Isolation**: Vue SSR (Server-Side Rendering) is memory-intensive. LaraKube CLI puts it in its own pod so it doesn't crash your PHP backend.
 -   **Standardized Headers**: Pre-configured Traefik middleware to handle the specific security headers required for modern SPAs.
 
 ```bash

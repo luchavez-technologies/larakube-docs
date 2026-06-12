@@ -1,18 +1,18 @@
 ---
 sidebar_position: 4
 title: Rotating & Revoking Credentials
-description: See, rotate, and revoke the namespace-scoped deploy credentials LaraKube issues — audit with cluster:users, rotate after a leak, revoke for offboarding.
+description: See, rotate, and revoke the namespace-scoped deploy credentials LaraKube CLI issues — audit with cluster:users, rotate after a leak, revoke for offboarding.
 ---
 # 🔁 Rotating & Revoking Credentials
 
-The [namespace-scoped deploy credentials](./overview#2--namespace-scoped-deploys) LaraKube issues have a lifecycle. This page is the operational side: **see what you've granted, rotate after a leak, and revoke when you're done.**
+The [namespace-scoped deploy credentials](./overview#2--namespace-scoped-deploys) LaraKube CLI issues have a lifecycle. This page is the operational side: **see what you've granted, rotate after a leak, and revoke when you're done.**
 
 ## See what you have
 
 ```bash
 larakube cluster:users
 ```
-Lists every LaraKube identity across the cluster — deploy ServiceAccounts (`Namespace · ServiceAccount · App · Env · CI token`) and teammates. Inside a project, name an environment (or omit it to pick one) to list just who has access there. To audit one credential's *actual* permissions (read live, so drift shows), add `--scope`:
+Lists every LaraKube CLI identity across the cluster — deploy ServiceAccounts (`Namespace · ServiceAccount · App · Env · CI token`) and teammates. Inside a project, name an environment (or omit it to pick one) to list just who has access there. To audit one credential's *actual* permissions (read live, so drift shows), add `--scope`:
 
 ```bash
 larakube cluster:users myapp-production --scope
@@ -56,4 +56,4 @@ To re-grant later, just run `larakube cloud:configure:gha <env>` (or `cloud:depl
 
 ## A note on upgrades
 
-A namespace-scoped ServiceAccount can't modify its **own** Role, so a CLI upgrade that *widens* the Role only takes effect when an admin re-applies it. The manual `cloud:deploy` does this on every run; a pure-CI setup should **re-run `cloud:configure:gha <env>`** after upgrading LaraKube.
+A namespace-scoped ServiceAccount can't modify its **own** Role, so a CLI upgrade that *widens* the Role only takes effect when an admin re-applies it. The manual `cloud:deploy` does this on every run; a pure-CI setup should **re-run `cloud:configure:gha <env>`** after upgrading LaraKube CLI.

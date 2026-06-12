@@ -5,10 +5,10 @@ description: Professional installation guide for LaraKube CLI. Learn how to inst
 ---
 # Installation
 
-LaraKube is designed for speed and stability. You can get up and running with a single command, or choose a manual installation if you prefer more control.
+LaraKube CLI is designed for speed and stability. You can get up and running with a single command, or choose a manual installation if you prefer more control.
 
 ## ⚡️ One-Step Installation (Recommended)
-The fastest way to install LaraKube is using our automated installer. This will download the latest **standalone binary** for your architecture, install it globally, and initialize your configuration.
+The fastest way to install LaraKube CLI is using our automated installer. This will download the latest **standalone binary** for your architecture, install it globally, and initialize your configuration.
 
 ```bash
 curl -s https://larakube.luchtech.dev/install.sh | bash
@@ -19,7 +19,7 @@ curl -s https://larakube.luchtech.dev/install.sh | bash
 ---
 
 ## 🔌 AI & MCP Configuration
-To unlock the full power of LaraKube's **AI-Native Orchestration**, you should register the LaraKube tools with your favorite AI host.
+To unlock the full power of LaraKube CLI's **AI-Native Orchestration**, you should register the LaraKube CLI tools with your favorite AI host.
 
 ```bash
 # Register for Gemini and Claude Desktop

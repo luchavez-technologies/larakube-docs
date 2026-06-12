@@ -14,7 +14,7 @@ Just like the [Deployment Operations](./operations), the `add` command will alwa
 ## `new {name}`
 The "Scaffolding" tool. Creates a brand-new Laravel application with a custom Kubernetes architecture baked in from day one.
 - **Wizard or Flags**: Run interactively or skip prompts with flags like `--react`, `--mysql`, `--horizon`, `--frankenphp`, `--reverb`, `--phpunit`.
-- **Lifecycle Battle Test**: `larakube new lifecycle-test --fast --react --phpunit` is the canonical sequence used in CI for validating LaraKube itself end-to-end.
+- **Lifecycle Battle Test**: `larakube new lifecycle-test --fast --react --phpunit` is the canonical sequence used in CI for validating LaraKube CLI itself end-to-end.
 
 ## `kustomize {environment?}`
 The "Manifest Preview." Renders and prints the final, merged Kubernetes manifests for a given environment — exactly what would be `kubectl apply`'d by `up` / `heal` / `cloud:deploy`.
@@ -29,7 +29,7 @@ The "Terminal Dashboard." Launches the [K9s](https://k9scli.io/) terminal UI pre
 ## `add {items}`
 The "Evolution" tool. Use `add` to plug in new features (like Reverb), database engines (like MariaDB), architectural blueprints (like Statamic), or object storage (like MinIO) to your project anytime.
 
-- **Conflict Detection:** LaraKube automatically detects if you are adding a component that conflicts with your primary setup (e.g., adding Postgres while MySQL is active).
+- **Conflict Detection:** LaraKube CLI automatically detects if you are adding a component that conflicts with your primary setup (e.g., adding Postgres while MySQL is active).
 - **Intelligent Swapping:** If a conflict is found, it will ask if you'd like to **swap** the primary connection or add the new service as an additional instance.
 - **Data Migration Mode:** Offers to comment out new `.env` variables so you can migrate your data before finalizing the switch.
 - **Dependency Resolution:** Automatically adds required services (e.g., adding Horizon will automatically suggest adding Redis).
@@ -47,8 +47,8 @@ The "Health Check" tool. Display a unified architectural and health overview of 
 
 ## `heal`
 The "Self-Healing" tool. Regenerates your entire Kubernetes manifest and patch structure from your project's architectural DNA (`.larakube.json`).
-- **Stability**: Use this to apply the latest LaraKube architectural standards to an existing project.
-- **Cluster Resilience**: LaraKube automatically backs up your blueprint to your cluster. If your local `.larakube.json` is missing or corrupted, `heal` will restore it directly from the cluster.
+- **Stability**: Use this to apply the latest LaraKube CLI architectural standards to an existing project.
+- **Cluster Resilience**: LaraKube CLI automatically backs up your blueprint to your cluster. If your local `.larakube.json` is missing or corrupted, `heal` will restore it directly from the cluster.
 - **Hand-Edit Safety**: Edit the blueprint, not the manifest! If you hand-edit a generated manifest in `.infrastructure/k8s`, `heal` will detect the divergence, warn you, and preserve your changes. To permanently lock a file from regeneration, add it to the `locked_manifests` array in your blueprint.
 
 ## `resources {environment}` {#resources}
@@ -58,8 +58,8 @@ The "Limits Manager." Interactively configures Kubernetes CPU and memory request
 - **Drift Protection**: Redundant overrides that match the inherited defaults are automatically pruned to keep your blueprint clean.
 
 ## `init`
-The "Adoption" tool. Initializes LaraKube for an existing Laravel project.
-- **Existing Projects**: Scans your current `.env` and `composer.json` to suggest a matching LaraKube architecture.
+The "Adoption" tool. Initializes LaraKube CLI for an existing Laravel project.
+- **Existing Projects**: Scans your current `.env` and `composer.json` to suggest a matching LaraKube CLI architecture.
 - **Console Registration:** Automatically registers the project with your LaraKube Console for visual management.
 
 ## `doctor {--environment}`

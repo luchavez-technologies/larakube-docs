@@ -13,8 +13,8 @@ MySQL is the world's most popular open-source database, known for its performanc
 - **Default User:** `laravel`
 
 ## 🔐 Security & Initialization
-LaraKube provides a hardened MySQL setup:
-- **Application User:** Instead of using the `root` account, LaraKube creates a dedicated `laravel` user with scoped permissions.
+LaraKube CLI provides a hardened MySQL setup:
+- **Application User:** Instead of using the `root` account, LaraKube CLI creates a dedicated `laravel` user with scoped permissions.
 - **Secure Passwords:** All credentials are managed via Kubernetes `Secret` resources, ensuring they are never stored in plain text.
 - **Readiness Probes:** Uses `mysqladmin ping` to ensure the database is fully ready to handle connections before your application starts.
 

@@ -1,11 +1,11 @@
 ---
 sidebar_position: 2
 title: Changelog
-description: Track the latest updates across the LaraKube ecosystem (CLI, Console, and Documentation).
+description: Track the latest updates across the LaraKube CLI ecosystem (CLI, Console, and Documentation).
 ---
 # 📜 Changelog
 
-LaraKube is evolving rapidly. We maintain a high-level changelog here for major architectural shifts, while specific technical commits can be tracked on GitHub.
+LaraKube CLI is evolving rapidly. We maintain a high-level changelog here for major architectural shifts, while specific technical commits can be tracked on GitHub.
 
 ## 🚀 Unified Ecosystem Updates
 
@@ -110,7 +110,7 @@ Two themes: the per-environment blueprint matures, and generated overlays now dr
 Single-node and existing-blueprint output is unchanged (snapshot-verified) — this release is additive, with legacy cloud config migrating transparently.
 
 ### May 2026: The "Portable Local Environment" Release (CLI v0.7 – v0.8)
-A CLI-free path for collaborators. `larakube portable` generates a self-contained `larakube.sh` wrapper so a teammate can run the project locally with just `docker`, `kubectl`, and `jq` — no LaraKube binary install required.
+A CLI-free path for collaborators. `larakube portable` generates a self-contained `larakube.sh` wrapper so a teammate can run the project locally with just `docker`, `kubectl`, and `jq` — no LaraKube CLI binary install required.
 
 - **The wrapper covers the full lifecycle** plus host / TLS / trust setup, so Vite HMR and Reverb WebSockets work over real `*.kube` URLs on a teammate's machine.
 - **Leaner committed blueprint**: transient, machine-specific fields (`isScaffolding`, `path`) are now stripped from `.larakube.json` on save.
@@ -144,7 +144,7 @@ This release reshapes `.larakube.json` so every environment owns its own configu
 - **Enum-driven feature scoping**: `LaravelFeature::defaultEnvironments()` declares where each feature naturally applies — `BOOST`, `AI`, `MCP`, `MAILPIT` default to local-only; `SSR` to production-only; everything else runs everywhere. The blueprint's top-level `features` list stays lean and you don't repeat yourself per env.
 - **Cleaner production manifests**: dev-only feature env vars (`BOOST_*`, etc.) no longer leak into production deployments — feature filtering is now env-aware end-to-end.
 - **Folder-name guard**: `larakube up` and `larakube heal` now fail fast with explicit rename instructions when the project folder name doesn't match the `name` field in `.larakube.json` (the common case: cloning a GitHub repo whose default folder name differs in capitalization).
-- **MCP command hygiene**: `make:mcp-app-resource` is now hidden from `larakube list` (it's a LaraKube-internal scaffolding command, not a project-facing one).
+- **MCP command hygiene**: `make:mcp-app-resource` is now hidden from `larakube list` (it's a LaraKube CLI-internal scaffolding command, not a project-facing one).
 - **Breaking blueprint changes** (clean break, no compat layer — migrate manually):
   - `ingressController` (top-level) → `environments.<env>.ingress`
   - `managedServices` (top-level, production-only) → `environments.<env>.managed`
@@ -163,11 +163,11 @@ This milestone made local Laravel testing inside Kubernetes feel **native and sa
 - **Faster Pod Boots**: Conditional install during `larakube up` (vendor, node_modules, SSR bundle) means subsequent pod restarts boot in ~5s instead of ~2 min.
 - **Cleaner Local Dev**: `AUTORUN_LARAVEL_OPTIMIZE` and cache flags disabled in local pods. `.env` edits show up without restarting the pod; test-time env overrides actually take effect.
 - **Vite 8 Fix**: Node pod readiness probe under Vite 8 fixed via explicit `--host 0.0.0.0` (Vite 8's bare `--host` bound to IPv6 wildcard only).
-- **Help Passthrough**: `larakube art migrate --help` (and 9 other proxies) now shows the inner command's help instead of LaraKube's.
+- **Help Passthrough**: `larakube art migrate --help` (and 9 other proxies) now shows the inner command's help instead of LaraKube CLI's.
 - **Breaking**: The old `larakube test` (HTTP smoke check) was renamed to `larakube smoke`. The `--with-db` flag was renamed to `--db` (old name kept as backward-compat alias).
 
 ### May 2026: The "Cloud Pilot" Release
-This milestone transformed LaraKube into a professional deployment suite, establishing the **$6/mo Baseline** and the **Scaling Roadmap**.
+This milestone transformed LaraKube CLI into a professional deployment suite, establishing the **$6/mo Baseline** and the **Scaling Roadmap**.
 
 - **Ecosystem**: Established the **$6/mo (1GB RAM) VPS** as the official baseline for stable production Kubernetes.
 - **GitOps**: Launched **Cloud Pilot**, an automated GHA-to-GHCR pipeline that offloads heavy builds to GitHub to prevent OOM on small servers.
@@ -182,4 +182,4 @@ For a line-by-line breakdown of every fix and feature, please follow our individ
 
 - **[LaraKube CLI Releases](https://github.com/luchavez-technologies/larakube-cli/releases)**: Tracking the core PHP orchestration engine.
 - **[LaraKube Console Releases](https://github.com/luchavez-technologies/larakube-console/releases)**: Updates to the visual Kubernetes Control Plane.
-- **[LaraKube Documentation](https://github.com/luchavez-technologies/larakube-docs/commits/main)**: Ongoing improvements to guides and visual schematics.
+- **[LaraKube CLI Documentation](https://github.com/luchavez-technologies/larakube-docs/commits/main)**: Ongoing improvements to guides and visual schematics.

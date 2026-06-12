@@ -1,15 +1,15 @@
 ---
 sidebar_position: 10
 title: AI-Native Orchestration
-description: LaraKube is the first AI-native Kubernetes orchestrator. Learn about the Local Mechanic (CLI MCP) and Master Architect (Console MCP).
+description: LaraKube CLI is the first AI-native Kubernetes orchestrator. Learn about the Local Mechanic (CLI MCP) and Master Architect (Console MCP).
 ---
 # 🤖 AI-Native Orchestration
 
-LaraKube is the first Kubernetes orchestrator designed for the age of AI. We provide a **Dual-MCP** architecture that gives AI agents both local execution power and global fleet visibility.
+LaraKube CLI is the first Kubernetes orchestrator designed for the age of AI. We provide a **Dual-MCP** architecture that gives AI agents both local execution power and global fleet visibility.
 
 ## 🔌 Model Context Protocol (MCP)
 
-LaraKube implements two distinct MCP servers to provide AI agents (like Gemini CLI, Claude Desktop, or Cursor) with the perfect balance of context.
+LaraKube CLI implements two distinct MCP servers to provide AI agents (like Gemini CLI, Claude Desktop, or Cursor) with the perfect balance of context.
 
 ### 🛠 1. The Local Mechanic (`larakube-cli`)
 The CLI MCP handles **Local Execution**. It has direct access to your source code, `.env` files, and orchestration verbs.
@@ -54,7 +54,7 @@ The Console MCP handles **Global Observability**. It lives inside your cluster a
   - `explain-architecture`: AI analysis of a project's infrastructure.
   - `get-project-config`: Read the architectural DNA from the cluster.
   - `fetch-audit-trail`: Historical activity logs for projects or the entire fleet.
-  - `search-documentation`: Real-time RAG search of the LaraKube docs.
+  - `search-documentation`: Real-time RAG search of the LaraKube CLI docs.
 
 #### Setup Guide
 To add the Master Architect to your AI tool, use the **SSE Transport** pointing to your Console URL:

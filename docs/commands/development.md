@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 title: Development Tools
-description: Access your containers with interactive shells, run Artisan commands remotely, and manage frontend dependencies with LaraKube's development suite.
+description: Access your containers with interactive shells, run Artisan commands remotely, and manage frontend dependencies with LaraKube CLI's development suite.
 ---
 # Development Tools
 
@@ -24,11 +24,11 @@ The "Remote Artisan." Run any Laravel Artisan command directly in your cluster. 
 The "Interactive Lab." Interact with your application via an interactive shell. This is a convenient shortcut to `larakube art tinker`.
 
 :::tip High-Fidelity Forwarding
-Proxy commands (`art`, `php`, `exec`, `composer`, `npm`, `node`, `yarn`, `pnpm`, `bun`) feature **Transparent Flag Capture**. Pass any flag — including `--help`, complex args like `tinker --execute='echo \App\Models\User::count();'`, or unusual shell metacharacters — and it's forwarded exactly as-is to the container. `larakube art migrate --help` now shows artisan's migrate help, not LaraKube's.
+Proxy commands (`art`, `php`, `exec`, `composer`, `npm`, `node`, `yarn`, `pnpm`, `bun`) feature **Transparent Flag Capture**. Pass any flag — including `--help`, complex args like `tinker --execute='echo \App\Models\User::count();'`, or unusual shell metacharacters — and it's forwarded exactly as-is to the container. `larakube art migrate --help` now shows artisan's migrate help, not LaraKube CLI's.
 :::
 
 ## `test`
-The "Test Runner." Run phpunit/pest inside the web pod safely. **This is the recommended way to run tests** under LaraKube.
+The "Test Runner." Run phpunit/pest inside the web pod safely. **This is the recommended way to run tests** under LaraKube CLI.
 
 - **Safe by default**: Tests run against in-memory SQLite regardless of the project's actual DB driver. `RefreshDatabase` can't touch your dev data.
 - **`--db` flag**: Provisions and runs against `<app>_testing` on the project's real DB engine. Idempotent — re-running is a no-op when the test DB already exists. Auto-persists `"provisionTestDb": true` to `.larakube.json` on first use, so future runs are flag-free.
@@ -37,7 +37,7 @@ The "Test Runner." Run phpunit/pest inside the web pod safely. **This is the rec
 - **Auto-delegation**: `larakube art test`, `larakube php artisan test`, `larakube php vendor/bin/pest`, `larakube exec vendor/bin/phpunit` all route through this command's safe flow — users who instinctively reach for those forms get the same protection.
 
 :::warning Why the safety net matters
-LaraKube pods inject DB credentials (`DB_CONNECTION`, `DB_DATABASE`, etc.) via ConfigMap at container start. PHP reads those before consulting `phpunit.xml`, so `phpunit.xml`'s `<env>` blocks are silently ignored — and any test using `RefreshDatabase` would wipe your dev database. `larakube test` strips those env vars before invoking phpunit, restoring `phpunit.xml`'s authority and adding safe SQLite defaults.
+LaraKube CLI pods inject DB credentials (`DB_CONNECTION`, `DB_DATABASE`, etc.) via ConfigMap at container start. PHP reads those before consulting `phpunit.xml`, so `phpunit.xml`'s `<env>` blocks are silently ignored — and any test using `RefreshDatabase` would wipe your dev database. `larakube test` strips those env vars before invoking phpunit, restoring `phpunit.xml`'s authority and adding safe SQLite defaults.
 :::
 
 ## `reload`
@@ -83,7 +83,7 @@ The "Self-Update" tool. Pulls the latest CLI release from GitHub and installs it
 
 ## MCP (Model Context Protocol)
 
-LaraKube supports the Model Context Protocol to provide AI tools with deep knowledge of your project.
+LaraKube CLI supports the Model Context Protocol to provide AI tools with deep knowledge of your project.
 
 ### `mcp:register`
 The "AI Connector." Register the LaraKube CLI MCP server with AI tools like Gemini or Claude.

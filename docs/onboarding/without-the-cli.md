@@ -1,13 +1,13 @@
 ---
 sidebar_position: 7
 title: Running Without the CLI
-description: Hand a teammate a LaraKube project they can run locally with plain kubectl — no binary install required — using the generated larakube.sh wrapper.
+description: Hand a teammate a LaraKube CLI project they can run locally with plain kubectl — no binary install required — using the generated larakube.sh wrapper.
 ---
 # 🧰 Running Without the CLI
 
-Not everyone who contributes to a LaraKube project wants to install the LaraKube binary — and that's fine. A teammate who's wary of running an unfamiliar standalone tool can still spin the project up locally with nothing but `kubectl`, `docker`, and `jq`.
+Not everyone who contributes to a LaraKube CLI project wants to install the LaraKube CLI binary — and that's fine. A teammate who's wary of running an unfamiliar standalone tool can still spin the project up locally with nothing but `kubectl`, `docker`, and `jq`.
 
-LaraKube generates a small, auditable bash wrapper — **`larakube.sh`** — plus a usage guide, so the no-install path is first-class.
+LaraKube CLI generates a small, auditable bash wrapper — **`larakube.sh`** — plus a usage guide, so the no-install path is first-class.
 
 ## Generate the portable tooling
 
@@ -24,7 +24,7 @@ This drops two files into the project root:
 | `larakube.sh` | A ~150-line `kubectl`/`docker` wrapper covering the local dev loop |
 | `LOCAL_DEV.md` | A how-to guide your teammate can follow |
 
-Commit both. Now anyone who clones the repo can run the project locally **without installing LaraKube** — they just need a local Kubernetes cluster, `kubectl`, `docker`, and `jq`.
+Commit both. Now anyone who clones the repo can run the project locally **without installing LaraKube CLI** — they just need a local Kubernetes cluster, `kubectl`, `docker`, and `jq`.
 
 > `larakube portable` won't clobber customizations — if `larakube.sh` or `LOCAL_DEV.md` already exist it asks before overwriting (use `--force` to skip the prompt).
 >
@@ -32,7 +32,7 @@ Commit both. Now anyone who clones the repo can run the project locally **withou
 
 ## What the wrapper does
 
-`larakube.sh` reads `.larakube.json` and operates entirely on the project's **local** namespace (`<project>-local`) using the committed manifests in `.infrastructure/k8s/overlays/local`. It mirrors the everyday LaraKube commands:
+`larakube.sh` reads `.larakube.json` and operates entirely on the project's **local** namespace (`<project>-local`) using the committed manifests in `.infrastructure/k8s/overlays/local`. It mirrors the everyday LaraKube CLI commands:
 
 ```
 ./larakube.sh list           # show all commands
@@ -69,7 +69,7 @@ It auto-imports the freshly-built image for k3d, kind, and minikube; Docker Desk
 `up` gets the pods running, but the app, Vite (HMR), and Reverb (WebSockets) are each served on their own ingress hostname. To use them, after `up`:
 
 ```bash
-./larakube.sh tls      # the cluster's Traefik serves the LaraKube local cert
+./larakube.sh tls      # the cluster's Traefik serves the LaraKube CLI local cert
 ./larakube.sh trust    # trust that cert locally (sudo)
 ./larakube.sh hosts    # *.kube → 127.0.0.1 in /etc/hosts (sudo)
 # then open https://<project>.kube
@@ -90,7 +90,7 @@ The wrapper is for **consuming** a blueprint, not authoring one:
 
 | | Full CLI | `larakube.sh` |
 |---|---|---|
-| Install footprint | LaraKube binary | none (kubectl/docker/jq) |
+| Install footprint | LaraKube CLI binary | none (kubectl/docker/jq) |
 | Local cluster setup | automatic (k3d) | bring your own |
 | TLS + hosts | managed for you | manual / use `forward` |
 | Change the blueprint (`add`, `heal`, `env`) | ✅ | ❌ |

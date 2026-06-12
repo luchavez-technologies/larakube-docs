@@ -13,7 +13,7 @@ PostgreSQL is a powerful, open-source object-relational database system with a s
 - **Default User:** `postgres`
 
 ## 🔐 Security & Initialization
-LaraKube hardens your PostgreSQL instance from the first boot:
+LaraKube CLI hardens your PostgreSQL instance from the first boot:
 - **Secrets Management:** The database password is never stored in plain text; it is securely managed via Kubernetes Secrets.
 - **Zero-Config Migrations:** Local Postgres instances automatically create the `laravel` database for you, ensuring your migrations run successfully on the first try.
 - **Connection Ready:** The CLI ensures the database is fully initialized before signaling that your project is ready.

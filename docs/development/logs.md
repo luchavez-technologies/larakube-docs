@@ -1,11 +1,11 @@
 ---
 sidebar_position: 3
 title: Monitoring Service Logs
-description: Tail logs for web, node, horizon, and reverb services with the LaraKube logs command. Professional observability for your Laravel Kubernetes cluster.
+description: Tail logs for web, node, horizon, and reverb services with the LaraKube CLI logs command. Professional observability for your Laravel Kubernetes cluster.
 ---
 # Monitoring Logs
 
-Observability is the heartbeat of development. LaraKube provides a streamlined tool to monitor the pulse of every service in your cluster.
+Observability is the heartbeat of development. LaraKube CLI provides a streamlined tool to monitor the pulse of every service in your cluster.
 
 ## The `logs` Command
 Instead of remembering complex `kubectl` label selectors, you can tail logs using simple service names:

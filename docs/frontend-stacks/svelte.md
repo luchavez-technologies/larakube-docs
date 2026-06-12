@@ -16,12 +16,12 @@ Svelte is the "Future-Forward" choice. By compiling your UI at build-time rather
 2.  **Native Integration**: Works seamlessly with Laravel's Vite configuration.
 3.  **Clean State Management**: Svelte's stores and simple reactivity simplify complex years and interactive dashboards.
 
-## 🚀 Why LaraKube?
+## 🚀 Why LaraKube CLI?
 Deploying a compiler-based UI like Svelte on Kubernetes requires precision:
 
--   **Optimized Build Steps**: LaraKube's Docker stubs are tuned to handle Svelte's compilation phase efficiently.
+-   **Optimized Build Steps**: LaraKube CLI's Docker stubs are tuned to handle Svelte's compilation phase efficiently.
 -   **Static Asset Offloading**: Pre-configures Traefik and Ingress to serve Svelte's compiled assets with optimal caching.
--   **Stable Foundations**: While Svelte moves fast, LaraKube provides a stable, "Fixed-Version" Kubernetes foundation so your app doesn't break during updates.
+-   **Stable Foundations**: While Svelte moves fast, LaraKube CLI provides a stable, "Fixed-Version" Kubernetes foundation so your app doesn't break during updates.
 
 ```bash
 # Scaffold a Svelte Masterpiece

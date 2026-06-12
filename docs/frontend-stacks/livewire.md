@@ -16,11 +16,11 @@ Livewire is the "TALL" stack standard. For developers who want to stay entirely 
 2.  **State Synchronization**: Automatically syncs your UI with your backend models—no API required.
 3.  **Maximum Productivity**: The fastest way to build and iterate on a professional Laravel application.
 
-## 🚀 Why LaraKube?
+## 🚀 Why LaraKube CLI?
 Livewire relies heavily on real-time server communication, which LaraKube CLI optimizes for Kubernetes:
 
 -   **Websocket Mastery**: Pre-configures **Reverb** in a dedicated pod with the correct Kubernetes networking to handle high-concurrency Livewire updates.
--   **Session Stability**: Livewire requires stable sessions. LaraKube automatically scaffolds **Redis** and configures it as your session driver to ensure seamless pod-to-pod transitions.
+-   **Session Stability**: Livewire requires stable sessions. LaraKube CLI automatically scaffolds **Redis** and configures it as your session driver to ensure seamless pod-to-pod transitions.
 -   **Sticky Sessions**: Configures Traefik to handle the "Sticky Session" requirements often needed for complex Livewire applications.
 
 ```bash

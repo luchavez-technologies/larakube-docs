@@ -25,10 +25,10 @@ For the fastest and most integrated experience on macOS, we recommend using the 
 1.  **OrbStack Users**: Go to **Settings** ➔ **Kubernetes** and toggle it **ON**.
 2.  **Docker Desktop Users**: Go to **Settings** ➔ **Kubernetes** and check **Enable Kubernetes**.
 
-LaraKube will automatically detect these contexts and manage your manifests flawlessly.
+LaraKube CLI will automatically detect these contexts and manage your manifests flawlessly.
 
 #### 💡 The k3d Alternative
-If you prefer a more isolated, cluster-per-project approach, or if you don't want to use the built-in engines, LaraKube has built-in automation for **k3d**:
+If you prefer a more isolated, cluster-per-project approach, or if you don't want to use the built-in engines, LaraKube CLI has built-in automation for **k3d**:
 
 ```bash
 # Automated k3d cluster creation

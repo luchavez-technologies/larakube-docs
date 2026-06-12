@@ -1,11 +1,11 @@
 ---
 sidebar_position: 8
 title: Hybrid Networking Reference
-description: Understand how LaraKube manages internal pod-to-pod communication and external browser-to-cloud traffic.
+description: Understand how LaraKube CLI manages internal pod-to-pod communication and external browser-to-cloud traffic.
 ---
 # 🌍 Hybrid Networking
 
-LaraKube uses a **Hybrid Networking** model to ensure high performance and security. It distinguishes between traffic that stays inside the cluster and traffic that comes from the public internet.
+LaraKube CLI uses a **Hybrid Networking** model to ensure high performance and security. It distinguishes between traffic that stays inside the cluster and traffic that comes from the public internet.
 
 ## 🔄 Internal vs. External
 When configuring services like MinIO, Meilisearch, or Reverb, you will often encounter two different URLs in your `.env` file.
@@ -25,7 +25,7 @@ These are used for **Browser-to-Cloud** communication.
 ---
 
 ## 🛰 Service Subdomains
-LaraKube follows standard subdomain patterns to keep your infrastructure organized. When you add a service via `larakube add`, the CLI automatically suggests these mappings:
+LaraKube CLI follows standard subdomain patterns to keep your infrastructure organized. When you add a service via `larakube add`, the CLI automatically suggests these mappings:
 
 | Service | Standard Subdomain | Purpose |
 | :--- | :--- | :--- |
@@ -33,12 +33,12 @@ LaraKube follows standard subdomain patterns to keep your infrastructure organiz
 | **MinIO** | `minio.{domain}` | Object storage browser/API access |
 | **Meilisearch** | `search.{domain}` | Full-text search API |
 | **Typesense** | `typesense.{domain}` | Alternative search API |
-| **Console** | `console.{domain}` | LaraKube visual command center |
+| **Console** | `console.{domain}` | LaraKube Console visual command center |
 
 ---
 
 ## 🏗 Ingress Architecture
-LaraKube utilizes **Traefik v3** as the primary Ingress Controller.
+LaraKube CLI utilizes **Traefik v3** as the primary Ingress Controller.
 
 -   **Routing**: Based on the `Host` header.
 -   **SSL**: Automatically provisioned via Let'sEncrypt (Production) or LaraKube Local CA (Local).

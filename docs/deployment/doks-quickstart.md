@@ -1,22 +1,22 @@
 ---
 sidebar_position: 5
 title: DigitalOcean Kubernetes (DOKS) Deployment
-description: Deploy a LaraKube app to DigitalOcean Kubernetes with automatic TLS, no hand-edited config, and either self-hosted or shared (Plex) services.
+description: Deploy a LaraKube CLI app to DigitalOcean Kubernetes with automatic TLS, no hand-edited config, and either self-hosted or shared (Plex) services.
 ---
 
 # 🚀 Deploy to DigitalOcean Kubernetes (DOKS)
 
-LaraKube treats **DigitalOcean Kubernetes (DOKS)** as a managed cluster: it installs Traefik (with Let's Encrypt) for you, builds your image and pushes it to a registry, and applies your manifests against the cluster's kube-context — no SSH, no hand-edited JSON, no Helm.
+LaraKube CLI treats **DigitalOcean Kubernetes (DOKS)** as a managed cluster: it installs Traefik (with Let's Encrypt) for you, builds your image and pushes it to a registry, and applies your manifests against the cluster's kube-context — no SSH, no hand-edited JSON, no Helm.
 
 ## Prerequisites
 
-- ✅ A LaraKube project (created with `larakube new`)
+- ✅ A LaraKube CLI project (created with `larakube new`)
 - ✅ A DigitalOcean account with billing enabled
 - ✅ `doctl` CLI installed and authenticated (to create the cluster)
 - ✅ `kubectl` installed locally
 - ✅ A domain name you control (for DNS)
 
-> No `helm` required — LaraKube installs Traefik with plain `kubectl apply`.
+> No `helm` required — LaraKube CLI installs Traefik with plain `kubectl apply`.
 
 ### Install DigitalOcean CLI (doctl)
 
@@ -58,7 +58,7 @@ doctl kubernetes cluster create my-larakube-cluster \
 ```
 
 :::tip Node count drives the strategy
-A **1-node** pool is the simplest first run (`single-node` strategy → a shared `do-block-storage` volume). A **multi-node** pool runs app pods **stateless** (`multi-node-ha` → per-pod `emptyDir`), which needs externalized state — see [Going multi-node](#going-multi-node). Either way, LaraKube derives the strategy from the cluster's node count when you record the target, so you don't set it by hand.
+A **1-node** pool is the simplest first run (`single-node` strategy → a shared `do-block-storage` volume). A **multi-node** pool runs app pods **stateless** (`multi-node-ha` → per-pod `emptyDir`), which needs externalized state — see [Going multi-node](#going-multi-node). Either way, LaraKube CLI derives the strategy from the cluster's node count when you record the target, so you don't set it by hand.
 :::
 
 Import the cluster's kubeconfig so `kubectl`/`larakube` can reach it:
@@ -128,11 +128,11 @@ larakube cloud:configure:registry production
 - **Provider**: `ghcr` (GitHub Container Registry) or `dockerhub`
 - **Image** (optional): `owner/my-app`
 
-GHCR images are **private** in LaraKube — there's no public-package step. The cluster's pull secret (`ghcr-login`) is created automatically during `cloud:deploy` from your `larakube gha:login` token, so pulls just work. (Docker Hub is the only registry where a public image is a LaraKube option.)
+GHCR images are **private** in LaraKube CLI — there's no public-package step. The cluster's pull secret (`ghcr-login`) is created automatically during `cloud:deploy` from your `larakube gha:login` token, so pulls just work. (Docker Hub is the only registry where a public image is a LaraKube CLI option.)
 
 ## Step 6: Choose your data services
 
-**Option A — self-hosted (default).** Don't list the services under `managed`/`plex`, and LaraKube deploys Postgres/Redis/MinIO as pods in your env's namespace (each with its own `do-block-storage` PVC). Simplest for a single app; LaraKube generates the connection env vars for you.
+**Option A — self-hosted (default).** Don't list the services under `managed`/`plex`, and LaraKube CLI deploys Postgres/Redis/MinIO as pods in your env's namespace (each with its own `do-block-storage` PVC). Simplest for a single app; LaraKube CLI generates the connection env vars for you.
 
 **Option B — shared Commons via Plex (recommended when 2+ apps share the cluster).** One set of services that each app gets an isolated database/bucket on:
 
@@ -194,7 +194,7 @@ curl -H "Host: app.example.com" http://<LoadBalancer IP>/up
 
 ## Going multi-node {#going-multi-node}
 
-`do-block-storage` is `ReadWriteOnce`, so a shared `storage/` volume can't span nodes. On **`multi-node-ha`** LaraKube therefore runs the app pods **stateless** — each gets a per-pod `emptyDir` (no shared PVC), so they spread across nodes freely. State must then be externalized: uploads on S3 (MinIO/Commons), sessions/cache on Redis or the database. Run **`larakube cloud:externalize production`** to do this in one guided step — it flips the drivers and wires the backends (Plex Commons, self-hosted, or managed); `cloud:deploy` also offers it when it finds local state. SQLite stays single-node (its DB is a file). See [`cloud:externalize`](../commands/cloud#cloud-externalize) and [The Scaling Journey](./scaling-journey).
+`do-block-storage` is `ReadWriteOnce`, so a shared `storage/` volume can't span nodes. On **`multi-node-ha`** LaraKube CLI therefore runs the app pods **stateless** — each gets a per-pod `emptyDir` (no shared PVC), so they spread across nodes freely. State must then be externalized: uploads on S3 (MinIO/Commons), sessions/cache on Redis or the database. Run **`larakube cloud:externalize production`** to do this in one guided step — it flips the drivers and wires the backends (Plex Commons, self-hosted, or managed); `cloud:deploy` also offers it when it finds local state. SQLite stays single-node (its DB is a file). See [`cloud:externalize`](../commands/cloud#cloud-externalize) and [The Scaling Journey](./scaling-journey).
 
 ### Need a shared cross-node folder?
 
@@ -205,7 +205,7 @@ larakube cloud:provision:nfs          # installs an in-cluster NFS provisioner �
 # then set "sharedStorage": true on the env, and redeploy
 ```
 
-LaraKube stands up a single NFS server (a block volume re-exported over NFS) and points the shared PVC at its RWX class, so the folder works across nodes unchanged. The NFS server is one pod — a **soft SPOF for storage** (your app pods stay HA); a truly-HA shared filesystem (CephFS / managed filer) is a heavier, later option. Prefer externalizing to S3 where you can; reach for this only when an app needs a real shared folder.
+LaraKube CLI stands up a single NFS server (a block volume re-exported over NFS) and points the shared PVC at its RWX class, so the folder works across nodes unchanged. The NFS server is one pod — a **soft SPOF for storage** (your app pods stay HA); a truly-HA shared filesystem (CephFS / managed filer) is a heavier, later option. Prefer externalizing to S3 where you can; reach for this only when an app needs a real shared folder.
 
 ---
 

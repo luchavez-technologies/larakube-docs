@@ -11,7 +11,7 @@ These commands manage the active state of your application within the Kubernetes
 The "Launch" button. Deploys your infrastructure and application to the cluster.
 - **Automated Workflow:** Automatically runs migrations and performs a connectivity smoke test.
 - **Validation:** Use `--dry-run` to perform a full architectural validation of your manifests before deploying.
-- **Deduplicated Manifests:** LaraKube uses a unique single-pass engine to ensure your Kubernetes resources are never registered twice.
+- **Deduplicated Manifests:** LaraKube CLI uses a unique single-pass engine to ensure your Kubernetes resources are never registered twice.
 
 ## `build`
 The "Image Builder." Rebuild the local Docker image for the project and re-import it into the local k3d cluster.
@@ -58,19 +58,19 @@ The "Cleanup" button. Removes your application's resources and internal volumes 
 - **Force Mode**: Use `--force` to skip the manual confirmation.
 
 ## `purge {environment}`
-The "Nuclear Cleanup." Completely removes LaraKube manifests AND all cluster resources for the project, including database PVCs.
+The "Nuclear Cleanup." Completely removes LaraKube CLI manifests AND all cluster resources for the project, including database PVCs.
 - **More destructive than `down`**: `down` removes app/internal volumes but `purge` also wipes persistent data (databases, storage volumes).
 - **Use when**: Starting completely fresh, or when `reset` of the project's blueprint is also planned.
 - **Confirmation**: Requires explicit project-name confirmation.
 
 ## `reset`
-The "Hard Reset." Remove all LaraKube DNA and manifests from the project.
-- **Action**: Deletes `.larakube.json`, `.infrastructure`, and other LaraKube-generated files.
+The "Hard Reset." Remove all LaraKube CLI DNA and manifests from the project.
+- **Action**: Deletes `.larakube.json`, `.infrastructure`, and other LaraKube CLI-generated files.
 - **Destructive**: This is a destructive action that wipes the project's Kubernetes configuration.
 - **Force Mode**: Use `--force` to skip confirmation.
 
 ## `purge`
-The "Total Project Cleanup." Completely remove LaraKube manifests and cluster resources from this project.
+The "Total Project Cleanup." Completely remove LaraKube CLI manifests and cluster resources from this project.
 - **Action**: Deletes cluster resources (Namespaces, PersistentVolumes) and local files (`.infrastructure`, `.larakube.json`, Dockerfiles).
 - **Preservation**: Your actual Laravel source code and database data (in `volume_data`) remain safe.
 - **Best Practice**: Use `purge` followed by `init` if you want to re-architect a project from a clean slate.
@@ -82,7 +82,7 @@ The "System Cleanup." Remove the LaraKube CLI application from your system.
 
 # GitHub Actions
 
-LaraKube provides built-in tools to manage your CI/CD workflows directly from the CLI.
+LaraKube CLI provides built-in tools to manage your CI/CD workflows directly from the CLI.
 
 ## `gha:configure {environment}`
 The "CI Architect." Configure GitHub Actions secrets and workflows for a specific environment using the native GitHub CLI container.

@@ -26,7 +26,7 @@ Because access is granted *per namespace*, a teammate **can't see — or even kn
 Say you run two apps, **blue** and **orange**, and you're bringing on **lloyd** (a developer) and **alex** (an intern).
 
 :::tip Two ways to name the target
-**Inside a project**, name the **environment** — `cluster:grant production --name lloyd` — and LaraKube targets that env's namespace (`<app>-production`) *and* its own cluster context automatically. **Outside a project** (administering several apps at once), pass the literal `<app>-<env>` **namespace** instead. Both forms work everywhere below.
+**Inside a project**, name the **environment** — `cluster:grant production --name lloyd` — and LaraKube CLI targets that env's namespace (`<app>-production`) *and* its own cluster context automatically. **Outside a project** (administering several apps at once), pass the literal `<app>-<env>` **namespace** instead. Both forms work everywhere below.
 :::
 
 ### 1. Grant access
@@ -100,7 +100,7 @@ The first drops one app (his blue access still works). The second deletes his id
 
 ## Why this is safe
 
-A teammate's kubeconfig is **scoped and revocable** by construction — the worst case is access to the apps you granted, and you can cut it instantly. This is the same least-privilege model LaraKube uses everywhere; see the [Security Model](../security/overview) and [Rotating & Revoking Credentials](../security/rotating-credentials).
+A teammate's kubeconfig is **scoped and revocable** by construction — the worst case is access to the apps you granted, and you can cut it instantly. This is the same least-privilege model LaraKube CLI uses everywhere; see the [Security Model](../security/overview) and [Rotating & Revoking Credentials](../security/rotating-credentials).
 
 A couple of practical notes:
 - **Deliver kubeconfig files securely** — they contain a token. Not committed, not pasted in public chat. If one leaks, `cluster:revoke --name <person>` and re-grant.

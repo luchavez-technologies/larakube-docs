@@ -5,10 +5,10 @@ description: Automate full-text search with Laravel Scout. Support for Meilisear
 ---
 # Laravel Scout (Search)
 
-Full-text search is a cornerstone of modern applications. LaraKube automates the deployment of your preferred search engine and its integration with [Laravel Scout](https://laravel.com/docs/scout).
+Full-text search is a cornerstone of modern applications. LaraKube CLI automates the deployment of your preferred search engine and its integration with [Laravel Scout](https://laravel.com/docs/scout).
 
 ## 🏛 Supported Drivers
-LaraKube offers three distinct "flavors" for your search foundation:
+LaraKube CLI offers three distinct "flavors" for your search foundation:
 
 ### 1. Meilisearch (Self-hosted)
 The fastest typt-tolerant search engine, specifically tuned for the Laravel community.
@@ -26,7 +26,7 @@ A zero-infrastructure search option that uses your existing database (MySQL or P
 ---
 
 ## ⚡️ Automations
-When you enable Scout, LaraKube automatically:
+When you enable Scout, LaraKube CLI automatically:
 1.  **Installs PHP Drivers:** Adds `laravel/scout` and the driver-specific SDKs to your container.
 2.  **Hardens the Cluster:** Deploys your chosen engine with a secure Master Key.
 3.  **Auto-Configures Laravel:** Injects the correct `SCOUT_DRIVER` and connection settings into your `.env`.

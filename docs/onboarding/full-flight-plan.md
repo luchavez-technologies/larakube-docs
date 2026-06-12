@@ -5,7 +5,7 @@ description: A complete step-by-step journey from creating your project to a pro
 ---
 # 🏁 Full Flight Plan: From New to Kube
 
-This guide walks you through the complete LaraKube journey: from scaffolding a new masterpiece on your laptop to a professional, automated GitOps deployment in the cloud.
+This guide walks you through the complete LaraKube CLI journey: from scaffolding a new masterpiece on your laptop to a professional, automated GitOps deployment in the cloud.
 
 ---
 
@@ -67,7 +67,7 @@ You're cleared for takeoff. Deploy your masterpiece by simply pushing your code 
 ```bash
 # 1. Add and commit your changes
 git add .
-git commit -m "🚀 Initial LaraKube Cloud Pilot deployment"
+git commit -m "🚀 Initial LaraKube CLI Cloud Pilot deployment"
 
 # 2. Push to your trigger branch (e.g., main)
 git push origin main

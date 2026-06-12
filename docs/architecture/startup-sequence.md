@@ -1,16 +1,16 @@
 ---
 sidebar_position: 4
 title: Pod Startup Sequence
-description: Understand the architectural orchestration of LaraKube pods. Learn how initContainers manage database readiness, migrations, and service dependencies.
+description: Understand the architectural orchestration of LaraKube CLI pods. Learn how initContainers manage database readiness, migrations, and service dependencies.
 keywords: [laravel, kubernetes, startup sequence, initContainers, database migration, dependency management, orchestration]
 ---
 # Pod Startup Sequence
 
-LaraKube uses a deterministic startup sequence to ensure that your application never crashes during the initial `larakube up` or during subsequent updates. This is achieved through Kubernetes **initContainers** and a "Web-First" dependency model.
+LaraKube CLI uses a deterministic startup sequence to ensure that your application never crashes during the initial `larakube up` or during subsequent updates. This is achieved through Kubernetes **initContainers** and a "Web-First" dependency model.
 
 ## 🏗 The "Orchestration" Flow
 
-When you run `larakube up`, Kubernetes attempts to start all pods simultaneously. However, LaraKube enforces a strict functional order:
+When you run `larakube up`, Kubernetes attempts to start all pods simultaneously. However, LaraKube CLI enforces a strict functional order:
 
 1.  **Infrastructure First:** Databases (Postgres/MySQL) and Cache (Redis) start. They have no dependencies.
 2.  **Web Pod (The Leader):** The `php-web` pod starts but stays in an `Init` state until it can reach the database and redis.
@@ -35,7 +35,7 @@ When you run `larakube up`, Kubernetes attempts to start all pods simultaneously
 
 ### 1. `wait-for-services`
 Every PHP-based pod contains a `wait-for-services` initContainer. It uses `nc` (Netcat) to probe the database and redis ports.
-- **Resilience:** If you aren't using Redis, LaraKube intelligently skips this check by detecting the `REDIS_HOST=127.0.0.1` default.
+- **Resilience:** If you aren't using Redis, LaraKube CLI intelligently skips this check by detecting the `REDIS_HOST=127.0.0.1` default.
 
 ### 2. `wait-for-web`
 Worker pods (`horizon`, `reverb`, etc.) contain a second initContainer called `wait-for-web`. It probes the `laravel-web` service on port 80.
@@ -43,7 +43,7 @@ Worker pods (`horizon`, `reverb`, etc.) contain a second initContainer called `w
 - **Optimization:** To speed up boot times, all sidecars (workers, scheduler, reverb) have `AUTORUN_ENABLED=false`. This prevents them from running redundant, time-consuming `artisan optimize` commands, as they share the pre-optimized `bootstrap/cache` from the Web pod.
 
 ### 3. `Recreate` Strategy
-LaraKube uses the `strategy: type: Recreate` for all deployments. 
+LaraKube CLI uses the `strategy: type: Recreate` for all deployments. 
 - **Migration Safety:** This ensures that during an update, the old pod is fully terminated before the new pod starts. This prevents two pods from trying to run `php artisan migrate` at the same time, which would cause database lock errors.
 
 ---

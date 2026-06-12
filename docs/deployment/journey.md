@@ -1,11 +1,11 @@
 ---
 sidebar_position: 2
 title: The Deployment Journey
-description: The full LaraKube command sequence from a bare cluster to a live site — cloud:provision → new/init → plex → deploy — and the single point where the manual and CI/CD paths diverge.
+description: The full LaraKube CLI command sequence from a bare cluster to a live site — cloud:provision → new/init → plex → deploy — and the single point where the manual and CI/CD paths diverge.
 ---
 # 🗺 The Deployment Journey
 
-Every LaraKube deployment follows the **same spine**. Only the *very last* step forks into two paths (manual vs CI/CD). This page is the map — bookmark it when you forget the order.
+Every LaraKube CLI deployment follows the **same spine**. Only the *very last* step forks into two paths (manual vs CI/CD). This page is the map — bookmark it when you forget the order.
 
 ```mermaid
 flowchart TD

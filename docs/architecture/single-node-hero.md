@@ -13,16 +13,16 @@ Traditional Kubernetes deployments often require expensive **Load Balancers** (c
 ## 🛠 Technical Implementation
 
 ### 1. HostPort Ingress (Direct Access)
-Instead of a LoadBalancer service, LaraKube configures the Traefik Ingress Controller to use **HostPorts** on ports 80 and 443. This means Traefik listens directly on the VPS's public IP address, saving you the monthly load balancer fee while maintaining professional traffic management.
+Instead of a LoadBalancer service, LaraKube CLI configures the Traefik Ingress Controller to use **HostPorts** on ports 80 and 443. This means Traefik listens directly on the VPS's public IP address, saving you the monthly load balancer fee while maintaining professional traffic management.
 
 ### 2. Automated Swap (Low-RAM Stability)
-Small VPS instances (like a 1GB or even 512MB droplet) can be unstable under heavy Kubernetes workloads. When you run `larakube cloud:provision`, LaraKube automatically:
+Small VPS instances (like a 1GB or even 512MB droplet) can be unstable under heavy Kubernetes workloads. When you run `larakube cloud:provision`, LaraKube CLI automatically:
 -   Detects the available memory.
 -   Creates and enables a **1GB Swap file** on the server.
 -   Ensures your cluster remains stable even when running multiple Laravel services (Web, Horizon, Reverb) on minimal hardware.
 
 ### 3. Built-in ACME (Let'sEncrypt)
-SSL is non-negotiable for production. LaraKube's Cloud Pilot automatically configures Traefik with the **ACME (Let'sEncrypt)** HTTP challenge. Once your domain is pointed to your VPS IP, LaraKube handles the certificate provisioning and renewals automatically.
+SSL is non-negotiable for production. LaraKube CLI's Cloud Pilot automatically configures Traefik with the **ACME (Let'sEncrypt)** HTTP challenge. Once your domain is pointed to your VPS IP, LaraKube CLI handles the certificate provisioning and renewals automatically.
 
 ## 🏆 Why It Matters
 -   **Cost Efficiency**: Save ~$200-400/year by skipping cloud-provider load balancers.

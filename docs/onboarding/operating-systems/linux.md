@@ -39,4 +39,4 @@ larakube trust
 ```
 
 ## 📐 Why Linux?
-LaraKube on Linux is "Architecture-Complete." Because there is no VM translation layer (like on Mac/Windows), network performance is instantaneous, and volume mounting uses native Linux primitives for maximum reliability.
+LaraKube CLI on Linux is "Architecture-Complete." Because there is no VM translation layer (like on Mac/Windows), network performance is instantaneous, and volume mounting uses native Linux primitives for maximum reliability.

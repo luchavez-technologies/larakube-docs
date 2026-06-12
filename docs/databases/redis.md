@@ -11,8 +11,8 @@ Redis is an open-source, in-memory data structure store, used as a database, cac
 - **Image:** `redis:7.4`
 - **Port:** `6379`
 
-## 🧱 Role in LaraKube
-Redis is a critical component for many LaraKube features:
+## 🧱 Role in LaraKube CLI
+Redis is a critical component for many LaraKube CLI features:
 - **Caching:** Speed up your application by storing expensive queries in memory.
 - **Queues:** The default driver for **Laravel Horizon**.
 - **WebSockets:** Used by **Laravel Reverb** for efficient message broadcasting.

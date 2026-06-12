@@ -1,11 +1,11 @@
 ---
 sidebar_position: 6
 title: Surgical Credentials
-description: How LaraKube hands GitHub Actions a namespace-scoped ServiceAccount token — never your cluster-admin cert — so a leaked secret can touch only one namespace.
+description: How LaraKube CLI hands GitHub Actions a namespace-scoped ServiceAccount token — never your cluster-admin cert — so a leaked secret can touch only one namespace.
 ---
 # 🔐 Surgical Credentials
 
-When you set up CI/CD (`larakube cloud:configure:gha`), GitHub Actions needs credentials to deploy to your cluster. The danger is obvious: a secret sitting in a repo is the single most likely thing to leak. So LaraKube **never** gives the runner your admin cert. It gives it a **namespace-scoped ServiceAccount token** that can touch *one* namespace and nothing else.
+When you set up CI/CD (`larakube cloud:configure:gha`), GitHub Actions needs credentials to deploy to your cluster. The danger is obvious: a secret sitting in a repo is the single most likely thing to leak. So LaraKube CLI **never** gives the runner your admin cert. It gives it a **namespace-scoped ServiceAccount token** that can touch *one* namespace and nothing else.
 
 ## What gets uploaded
 
@@ -44,6 +44,6 @@ Because the `deployer` token is namespace-scoped, it **cannot apply the cluster-
 - The namespace is created once, by admin, at `gha:configure` time.
 - The generated workflow **strips the `Namespace`** from the manifests before applying, so the scoped runner only ever applies namespaced resources.
 
-And because a namespaced ServiceAccount can't modify its **own** Role, a CLI upgrade that *widens* the Role only takes effect when an admin re-applies it — so after upgrading LaraKube, **re-run `larakube cloud:configure:gha {env}`** to refresh the scoped credential.
+And because a namespaced ServiceAccount can't modify its **own** Role, a CLI upgrade that *widens* the Role only takes effect when an admin re-applies it — so after upgrading LaraKube CLI, **re-run `larakube cloud:configure:gha {env}`** to refresh the scoped credential.
 
-*With LaraKube, the credential that leaves your machine is as small as it can possibly be.*
+*With LaraKube CLI, the credential that leaves your machine is as small as it can possibly be.*

@@ -8,7 +8,7 @@ description: High-performance, production-ready database orchestration for Larav
 Choosing the right foundation is critical for your application's success. LaraKube CLI supports a variety of server-based database engines, each with automated persistence and secure credential management.
 
 ## 🏛 Architectural Structure
-LaraKube distinguishes between your **Primary** and **Additional** databases:
+LaraKube CLI distinguishes between your **Primary** and **Additional** databases:
 
 1.  **Primary Database:** The engine linked to your Laravel application's main `DB_CONNECTION`. When you run `larakube new`, your first selection becomes the primary.
 2.  **Additional Databases:** You can have multiple database engines running in the same project. This is useful for data migration, testing different engines, or specialized micro-services.
@@ -20,7 +20,7 @@ If you decide to change your primary database (e.g., from MySQL to Postgres), th
 - It provides a **"Migration Mode"** that comments out the new connection so you can manually migrate data before flipping the switch.
 
 ## 💾 Persistence Strategy (Stability-First)
-LaraKube uses a **"Managed Volume"** approach to eliminate the most common pain points of local Kubernetes development:
+LaraKube CLI uses a **"Managed Volume"** approach to eliminate the most common pain points of local Kubernetes development:
 
 1.  **Durable Data**: Your data is stored in your cluster provider's native storage pool (PVC). It survives `larakube stop`, pod crashes, and server restarts.
 2.  **Zero Permission Conflicts**: By avoiding Mac-to-Container "bind mounts" (`hostPath`) for databases, we eliminate the "Permission Denied" and ownership errors that typically plague local development.
@@ -37,9 +37,9 @@ We prioritize **stability and security**. All our stubs are pinned to the most r
 - **Redis:** `7.4` (Standard)
 
 ## 🔄 Infrastructure Evolution
-LaraKube projects are designed to grow. You can add a new database engine to your cluster at any time using the `add` command:
+LaraKube CLI projects are designed to grow. You can add a new database engine to your cluster at any time using the `add` command:
 
 ```bash
 larakube add mysql
 ```
-LaraKube will scaffold the new engine and offer to automatically update your `.env` to make it your primary connection.
+LaraKube CLI will scaffold the new engine and offer to automatically update your `.env` to make it your primary connection.

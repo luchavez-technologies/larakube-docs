@@ -13,7 +13,7 @@ MariaDB is a community-developed, commercially supported fork of the MySQL relat
 - **Default User:** `laravel`
 
 ## 🔐 Security & Initialization
-LaraKube treats MariaDB with the same level of security as MySQL:
+LaraKube CLI treats MariaDB with the same level of security as MySQL:
 - **Application User:** Scoped `laravel` user is created automatically.
 - **Encrypted Secrets:** Passwords are injected securely into the cluster.
 - **Stability:** Pinned to the current Long-Term Support (LTS) version for maximum reliability.

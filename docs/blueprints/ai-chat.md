@@ -18,4 +18,4 @@ This recipe focuses on high-performance response streaming and lightning-fast hi
 ---
 
 ### 💡 Why this works
-By using **Laravel AI SDK** alongside **Laravel MCP**, you can build an experience that feels alive. LaraKube handles the "plumbing" of the cluster so you can focus on crafting the intelligent future.
+By using **Laravel AI SDK** alongside **Laravel MCP**, you can build an experience that feels alive. LaraKube CLI handles the "plumbing" of the cluster so you can focus on crafting the intelligent future.

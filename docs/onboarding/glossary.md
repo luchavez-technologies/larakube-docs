@@ -1,21 +1,21 @@
 ---
 sidebar_position: 7
 title: Kubernetes Glossary
-description: Master the language of Kubernetes with the LaraKube glossary. Learn about Pods, Deployments, Services, Ingress, and cluster-native persistence.
+description: Master the language of Kubernetes with the LaraKube CLI glossary. Learn about Pods, Deployments, Services, Ingress, and cluster-native persistence.
 ---
 # 📖 Kubernetes Glossary
 
-LaraKube speaks the language of **Kubernetes**, the industry-standard orchestrator for containers. While we handle the "plumbing" for you, understanding these core concepts will help you master your cluster.
+LaraKube CLI speaks the language of **Kubernetes**, the industry-standard orchestrator for containers. While we handle the "plumbing" for you, understanding these core concepts will help you master your cluster.
 
 For deep dives, we recommend the [Official Kubernetes Documentation](https://kubernetes.io/docs/home/).
 
 ## 🏗 Cluster & Organization
 
 ### [Cluster](https://kubernetes.io/docs/concepts/architecture/)
-A set of node machines for running containerized applications. LaraKube orchestrates your app within this cluster.
+A set of node machines for running containerized applications. LaraKube CLI orchestrates your app within this cluster.
 
 ### [Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
-A virtual partition in your cluster. LaraKube creates a dedicated namespace for every project (e.g., `my-app-local`), keeping your environments isolated.
+A virtual partition in your cluster. LaraKube CLI creates a dedicated namespace for every project (e.g., `my-app-local`), keeping your environments isolated.
 
 ## 📦 Workloads & Running Code
 
@@ -26,7 +26,7 @@ The smallest unit in Kubernetes. A Pod runs one or more containers (like your PH
 Describes the "desired state" of your application. It manages the creation and scaling of Pods. If a Pod crashes, the Deployment automatically replaces it.
 
 ### [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)
-Manages time-based tasks. LaraKube uses this to orchestrate the [Laravel Task Scheduler](https://laravel.com/docs/13.x/scheduling).
+Manages time-based tasks. LaraKube CLI uses this to orchestrate the [Laravel Task Scheduler](https://laravel.com/docs/13.x/scheduling).
 
 ## 🌍 Networking & Access
 
@@ -45,18 +45,18 @@ A piece of storage in the cluster that has been provisioned by an administrator 
 A request for storage by a user. Think of it like a "Ticket" to use a piece of a PersistentVolume.
 
 ### [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir)
-A simple volume that is created when a Pod is assigned to a node and exists as long as that Pod is running. LaraKube uses this for ephemeral data like temporary build tasks. **It is not used for databases.**
+A simple volume that is created when a Pod is assigned to a node and exists as long as that Pod is running. LaraKube CLI uses this for ephemeral data like temporary build tasks. **It is not used for databases.**
 
 ### [Cluster-Native Persistence]
-LaraKube's strategy of using **PersistentVolumeClaims (PVCs)** even in local development. This ensures that your local databases (MySQL, Postgres) keep their data even if you stop or restart your cluster.
+LaraKube CLI's strategy of using **PersistentVolumeClaims (PVCs)** even in local development. This ensures that your local databases (MySQL, Postgres) keep their data even if you stop or restart your cluster.
 
 ## 🛠 Configuration & Customization
 
 ### [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) & [Secret](https://kubernetes.io/docs/concepts/configuration/secret/)
-Objects used to store non-confidential and sensitive data (like your `.env` values). LaraKube automatically syncs these into your cluster.
+Objects used to store non-confidential and sensitive data (like your `.env` values). LaraKube CLI automatically syncs these into your cluster.
 
 ### [Kustomize](https://kubernetes.io/docs/concepts/overview/working-with-objects/kustomize/)
-A tool for customizing Kubernetes manifests without templates. LaraKube uses this to manage **Base** configurations and **Overlays** (like Local vs. Production).
+A tool for customizing Kubernetes manifests without templates. LaraKube CLI uses this to manage **Base** configurations and **Overlays** (like Local vs. Production).
 
 ### [Overlay](https://kubectl.docs.kubernetes.io/references/kustomize/glossary/#overlay)
 A set of Kustomize patches that modify a base configuration for a specific environment.

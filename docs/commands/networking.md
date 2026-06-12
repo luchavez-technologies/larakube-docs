@@ -5,7 +5,7 @@ description: Manage your cluster's networking stack with Traefik commands. Learn
 ---
 # Networking & Traefik
 
-Traefik acts as the "Front Desk" for your entire LaraKube ecosystem. Because it is a cluster-wide service, it has its own dedicated suite of commands to manage SSL, routing, and troubleshooting.
+Traefik acts as the "Front Desk" for your entire LaraKube CLI ecosystem. Because it is a cluster-wide service, it has its own dedicated suite of commands to manage SSL, routing, and troubleshooting.
 
 ## `traefik:setup`
 The "Receptionist Installer." Install or upgrade the Traefik Ingress Controller and its cluster-scoped permissions.
@@ -14,7 +14,7 @@ The "Receptionist Installer." Install or upgrade the Traefik Ingress Controller 
 - **Usage**: `larakube traefik:setup`
 
 ## `traefik:dashboard`
-The "Network UI." LaraKube provides a dedicated dashboard for Traefik to monitor all ingress traffic and routing rules.
+The "Network UI." LaraKube CLI provides a dedicated dashboard for Traefik to monitor all ingress traffic and routing rules.
 
 - **Preferred Access**: Visits **`https://traefik.kube`**
 - **Why it's better**: Unlike temporary port-forwarding or tunneling, the `traefik.kube` domain provides a persistent, cluster-wide address that is automatically secured with valid SSL. It gives you a complete view of how Traefik is routing traffic across all your projects, not just the current one.

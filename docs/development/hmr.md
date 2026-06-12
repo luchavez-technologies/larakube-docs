@@ -5,7 +5,7 @@ description: Experience zero-config live coding with LaraKube CLI. Learn how we 
 ---
 # ⚡️ Full-Stack Live Coding
 
-LaraKube provides a professional, "Zero-Config" live development experience. We automatically bridge the gap between the dev servers running inside your cluster and your local IDE.
+LaraKube CLI provides a professional, "Zero-Config" live development experience. We automatically bridge the gap between the dev servers running inside your cluster and your local IDE.
 
 ## 🗺 How it Works (Frontend)
 When you launch your cluster with `larakube up`, the CLI surgically hardens your `vite.config.ts` (or `.js`) for the Kubernetes environment:
@@ -15,7 +15,7 @@ When you launch your cluster with `larakube up`, the CLI surgically hardens your
 3.  **CORS Handling**: Cross-Origin Resource Sharing is automatically enabled so your main application can securely fetch assets from the asset subdomain.
 
 ## 🐘 Backend Live-Watching (Octane)
-If you are using the **FrankenPHP** server variation, LaraKube automatically enables high-performance backend watching:
+If you are using the **FrankenPHP** server variation, LaraKube CLI automatically enables high-performance backend watching:
 
 1.  **Automated Watch**: The CLI appends the `--watch` flag to your `octane:start` command in local environments.
 2.  **Native Performance**: We've integrated `chokidar` directly into the development stage of our PHP images, ensuring that file changes are detected instantly.
@@ -37,7 +37,7 @@ If you are using the **FrankenPHP** server variation, LaraKube automatically ena
 **Constant full-reload messages in browser:**
 If your browser repeatedly shows full-reload notifications every few seconds (especially after running `larakube up`), the issue is likely MinIO temporary files triggering Vite's file watcher. 
 
-LaraKube automatically excludes `.infrastructure/volume_data` from Vite's watch list in v0.11.8+. If you're on an older version:
+LaraKube CLI automatically excludes `.infrastructure/volume_data` from Vite's watch list in v0.11.8+. If you're on an older version:
 
 ```javascript
 // vite.config.ts

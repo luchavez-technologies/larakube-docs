@@ -1,11 +1,11 @@
 ---
 sidebar_position: 1
 title: Security Model
-description: How LaraKube keeps your cluster safe — your admin credentials never leave your machine, deploys run namespace-scoped, and the server is hardened by default.
+description: How LaraKube CLI keeps your cluster safe — your admin credentials never leave your machine, deploys run namespace-scoped, and the server is hardened by default.
 ---
 # 🛡️ Security Model
 
-LaraKube is built so the credential most likely to leak — the one sitting in a CI secret or on a deploy runner — can do the **least possible damage**. Two ideas drive everything:
+LaraKube CLI is built so the credential most likely to leak — the one sitting in a CI secret or on a deploy runner — can do the **least possible damage**. Two ideas drive everything:
 
 1. **Your admin credentials never leave your machine.**
 2. **Everything automated runs with the narrowest privilege that still works.**
@@ -33,9 +33,9 @@ A leaked App A secret can deploy to **`app-a-prod` and nothing else** — not Ap
 
 ## 1 · Admin stays local
 
-The cluster-admin kubeconfig (from `cloud:provision`, or your provider's CLI for managed clusters) lives only in your `~/.kube/config`. LaraKube **never uploads it** to GitHub or any runner. It's the bootstrapping authority — used locally to *mint* the narrower credentials below — and it stays put.
+The cluster-admin kubeconfig (from `cloud:provision`, or your provider's CLI for managed clusters) lives only in your `~/.kube/config`. LaraKube CLI **never uploads it** to GitHub or any runner. It's the bootstrapping authority — used locally to *mint* the narrower credentials below — and it stays put.
 
-*Note: LaraKube also aggressively masks secrets (like server passwords, DigitalOcean tokens, or raw AWS keys) in its diagnostic and runtime logs to prevent accidental exposure.*
+*Note: LaraKube CLI also aggressively masks secrets (like server passwords, DigitalOcean tokens, or raw AWS keys) in its diagnostic and runtime logs to prevent accidental exposure.*
 
 ## 2 · Namespace-scoped deploys
 
@@ -56,7 +56,7 @@ The manual path **dogfoods** the exact same credential locally (admin only boots
 
 For self-managed VPS nodes, `cloud:provision` doesn't just install k3s — it **locks the box down**: a default-deny firewall, fail2ban, automatic security updates, key-only SSH, and (guarded) disabling of remote root login. `cloud:harden` re-applies it to an existing server. See [Server Hardening](./server-hardening).
 
-*(Managed clusters — DOKS/EKS/GKE/AKS — are hardened at the node level by your provider; LaraKube targets them by kube-context and never SSHes in.)*
+*(Managed clusters — DOKS/EKS/GKE/AKS — are hardened at the node level by your provider; LaraKube CLI targets them by kube-context and never SSHes in.)*
 
 ## 4 · Multi-app isolation
 
@@ -73,4 +73,4 @@ Security is layered, and a few hardening knobs are deliberately deferred (tracke
 - The **`larakube` admin user keeps full sudo** (it's the box's admin once root login is off) — OS-level deploy isolation, if ever wanted, would be a separate dedicated user.
 - **Real SSO (OIDC)** for human access is a longer-term path; today, [Team Access](../teams/overview) issues per-person, revocable, scoped kubeconfigs (in-cluster credentials rather than federated identities).
 
-LaraKube's goal isn't to claim perfection — it's to make the **secure path the default one**, and to be honest about the edges.
+LaraKube CLI's goal isn't to claim perfection — it's to make the **secure path the default one**, and to be honest about the edges.

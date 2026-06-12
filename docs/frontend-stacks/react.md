@@ -16,7 +16,7 @@ React is the world's most popular library for building user interfaces. When com
 2.  **Inertia.js**: Build single-page apps without the complexity of a separate API layer. Keep your routing and controllers in PHP while using React for the UI.
 3.  **Authentication**: Use Laravel **Starter Kits** to get professional, secure React-based auth in minutes.
 
-## 🚀 Why LaraKube?
+## 🚀 Why LaraKube CLI?
 Deploying React (especially with SSR) on Kubernetes is notoriously complex. LaraKube CLI solves this by:
 
 -   **Dedicated Node Pods**: Automatically scaffolds separate pods for the Vite dev server and Node.js SSR workers.

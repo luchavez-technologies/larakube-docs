@@ -5,7 +5,7 @@ description: Explore Kubernetes providers for Laravel. From Civo and DigitalOcea
 ---
 # Deployment Overview
 
-LaraKube is designed to be cluster-agnostic. Whether you prefer the simplicity of a specialized VPS or the massive scale of a tech giant, your manifests will work seamlessly across any standard Kubernetes provider.
+LaraKube CLI is designed to be cluster-agnostic. Whether you prefer the simplicity of a specialized VPS or the massive scale of a tech giant, your manifests will work seamlessly across any standard Kubernetes provider.
 
 ## 🚀 Choosing Your Cluster
 
@@ -28,10 +28,10 @@ For applications reaching millions of users, these providers offer the full brea
 ### 3. The "Managed" Future
 If you want to skip Kubernetes management entirely, we highly recommend looking at the official Laravel offering:
 
-- **Laravel Cloud:** The official fully-managed platform for Laravel. While LaraKube is the best choice for those who need the power and flexibility of **Kubernetes**, Laravel Cloud provides a lightning-fast serverless-style experience for teams that want zero infrastructure overhead.
+- **Laravel Cloud:** The official fully-managed platform for Laravel. While LaraKube CLI is the best choice for those who need the power and flexibility of **Kubernetes**, Laravel Cloud provides a lightning-fast serverless-style experience for teams that want zero infrastructure overhead.
 
 ## 🏗 The Staging Strategy
-LaraKube makes it easy to test your code in a production-like environment before going live. Use the `env` command to create a `staging` environment in seconds:
+LaraKube CLI makes it easy to test your code in a production-like environment before going live. Use the `env` command to create a `staging` environment in seconds:
 
 ```bash
 larakube env staging

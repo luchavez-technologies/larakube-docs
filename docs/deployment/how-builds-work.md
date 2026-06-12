@@ -1,12 +1,12 @@
 ---
 sidebar_position: 3
 title: How Builds Work
-description: A side-by-side breakdown of where every step runs across LaraKube's three deploy paths — bundle, cloud:deploy, and GitHub Actions.
+description: A side-by-side breakdown of where every step runs across LaraKube CLI's three deploy paths — bundle, cloud:deploy, and GitHub Actions.
 ---
 
 # How Builds Work
 
-LaraKube offers three production deploy paths. They share the same **pre-build steps** (Composer, Node, Wayfinder) but differ in *where* the Docker image is built, *where* `npm run build` happens, and *where* VITE environment variables come from.
+LaraKube CLI offers three production deploy paths. They share the same **pre-build steps** (Composer, Node, Wayfinder) but differ in *where* the Docker image is built, *where* `npm run build` happens, and *where* VITE environment variables come from.
 
 ---
 
@@ -68,9 +68,9 @@ Vite bakes `VITE_*` environment variables into the compiled JS at build time. Th
 - It reads your **local `.env`** — which has dev values like `localhost` or `.kube` hostnames.
 - Those wrong values get frozen into the image and shipped to production.
 
-By moving the build into Docker, LaraKube mounts your `.env.{environment}` file as a **BuildKit secret** (`--secret id=dotenv,src=.env.staging`). Vite reads it at build time to get the correct `VITE_*` values. The secret is never baked into any image layer — not in the `assets` stage, not in `deploy`.
+By moving the build into Docker, LaraKube CLI mounts your `.env.{environment}` file as a **BuildKit secret** (`--secret id=dotenv,src=.env.staging`). Vite reads it at build time to get the correct `VITE_*` values. The secret is never baked into any image layer — not in the `assets` stage, not in `deploy`.
 
-LaraKube appends the VITE_* values it derives from your `.larakube.json` config (the hostnames you set when running `larakube env production` or `larakube env airgap --offline`) to the secret before the build, so you never have to add them manually to your `.env` files.
+LaraKube CLI appends the VITE_* values it derives from your `.larakube.json` config (the hostnames you set when running `larakube env production` or `larakube env airgap --offline`) to the secret before the build, so you never have to add them manually to your `.env` files.
 
 ---
 
@@ -84,7 +84,7 @@ Because the `assets` stage is built `FROM base` (the same PHP image your app use
 
 ## REVERB_APP_KEY for Air-Gapped Bundles
 
-For bundle builds with Reverb, `REVERB_APP_KEY` must be known at **build time** (so it can be baked as `VITE_REVERB_APP_KEY`) and at **install time** (so the server's Reverb config matches). LaraKube handles this automatically:
+For bundle builds with Reverb, `REVERB_APP_KEY` must be known at **build time** (so it can be baked as `VITE_REVERB_APP_KEY`) and at **install time** (so the server's Reverb config matches). LaraKube CLI handles this automatically:
 
 1. `bundle:build` generates a random `REVERB_APP_KEY` and stores it in `bundle.json`.
 2. The key is written into the BuildKit secret (the augmented `.env.{environment}` file) so Vite bakes `VITE_REVERB_APP_KEY` into the compiled JS without exposing it in any image layer.

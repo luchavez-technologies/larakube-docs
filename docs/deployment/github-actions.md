@@ -1,11 +1,11 @@
 ---
 sidebar_position: 2
 title: CI/CD with GitHub Actions
-description: Automate your Laravel deployment with LaraKube's "Cloud Pilot" GitHub Actions workflow — build offloading for low-memory VPSes, multi-stage PHP builds, GHCR publishing, and zero-downtime rolling updates.
+description: Automate your Laravel deployment with LaraKube CLI's "Cloud Pilot" GitHub Actions workflow — build offloading for low-memory VPSes, multi-stage PHP builds, GHCR publishing, and zero-downtime rolling updates.
 ---
 # 🚀 CI/CD with GitHub Actions (Cloud Pilot)
 
-LaraKube's **Cloud Pilot** is a GitOps workflow that builds, pushes, and deploys your app on every `git push` — designed to run cleanly even on a $6/mo 1GB VPS without out-of-memory crashes. Every project is pre-scaffolded with a production-grade workflow.
+LaraKube CLI's **Cloud Pilot** is a GitOps workflow that builds, pushes, and deploys your app on every `git push` — designed to run cleanly even on a $6/mo 1GB VPS without out-of-memory crashes. Every project is pre-scaffolded with a production-grade workflow.
 
 ```mermaid
 graph LR
@@ -60,7 +60,7 @@ All `gha:*` commands run inside the same isolated GitHub CLI container — no lo
 
 **Surgical context extraction.** The `KUBECONFIG` secret uploaded to GitHub is **minified** — it contains only the certificate and token for that specific environment. Your local development contexts (like `k3d-larakube`) are never uploaded.
 
-### Secrets LaraKube manages for you
+### Secrets LaraKube CLI manages for you
 - `{ENV}_KUBECONFIG` — the minified credentials for that environment's cluster.
 - `{ENV}_ENV_FILE_BASE64` — your production-ready environment variables.
 
@@ -70,7 +70,7 @@ Once configured, deploying is just:
 1. **Commit** your changes.
 2. **Push** to your deploy branch (e.g. `git push origin main`).
 3. **Monitor** progress in your GitHub Actions tab.
-4. **Relax** — LaraKube performs a rolling, zero-downtime update on your cluster.
+4. **Relax** — LaraKube CLI performs a rolling, zero-downtime update on your cluster.
 
 ## Manual deployments
 Need to push a quick update without a Git push? Deploy from your terminal:

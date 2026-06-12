@@ -1,228 +1,396 @@
 ---
-sidebar_position: 6
+sidebar_position: 11
 title: Air-Gapped Bundles (Enterprise On-Prem)
-description: Package your entire application into a single, offline, plug-and-play USB stick for enterprise clients.
+description: Package your entire application — app image, Kubernetes, Traefik, database, Redis, TLS certificates — into a single folder for fully offline, on-premise delivery.
 ---
 
-# Air-Gapped Enterprise Deliveries
+# Air-Gapped Bundles
 
-One of the biggest milestones for a SaaS application is landing an Enterprise contract that mandates **On-Premise, Air-Gapped Hosting**. The hospital, bank, or government agency wants to buy your software, but they demand it runs entirely on their offline, internal servers. 
+One of the biggest milestones for a SaaS application is landing an Enterprise contract that mandates **on-premise, air-gapped hosting**. The hospital, bank, or government agency wants to buy your software, but they demand it runs entirely on their offline, internal servers.
 
-Historically, this meant shipping them your raw source code or a massive, fragile Bash script that failed unpredictably.
-
-LaraKube CLI solves this elegantly via **Air-Gapped Bundles**. You can compile your entire stack—including your app, Traefik, MySQL, Kubernetes itself, and an installation wizard—into a single folder you can drag onto a USB stick.
-
-Here is the exact technical lifecycle of how LaraKube CLI achieves this.
+Historically that meant shipping raw source code or a massive, fragile Bash script. LaraKube CLI solves this with **Air-Gapped Bundles**: compile your entire stack — app image, Kubernetes, Traefik, database, Redis, MinIO, TLS certificates — into a single folder you can drag onto a USB stick. One command installs it on the client's server with zero internet access required.
 
 ---
 
-## Phase 1: Blueprint Preparation (The Developer)
+## Quick reference
 
-You shouldn't bundle your `production` environment because your SaaS might rely on managed databases (like AWS RDS) or a shared [Plex Commons](../architecture/shared-storage.md). An air-gapped delivery must be 100% self-sufficient.
+```bash
+# 1. Developer: add an offline environment to the project
+larakube env airgap --offline
 
-Create an environment specifically for the bundle and mark it offline:
+# 2. Developer: compile the bundle
+larakube bundle:build airgap --arch=amd64 --tar
+
+# 3. Client: install on their server (1 GB RAM → add --swap)
+sudo ./larakube bundle:install --swap
+```
+
+That's the full lifecycle. The sections below cover every flag, edge case, and recovery option.
+
+---
+
+## Prerequisites
+
+On your **build machine** (your laptop or CI runner):
+
+- **LaraKube CLI** installed and authenticated with `gh auth login`
+- **Docker** with `buildx` support (Docker Desktop on macOS/Windows; `docker-ce` + the buildx plugin on Linux)
+- **Disk space**: expect ~2–4 GB per bundle depending on included images
+- The project must have a cloud environment configured (`larakube env airgap --offline` creates one)
+
+On the **client's server** (entirely offline):
+
+- **Ubuntu 22.04 LTS** or later (x86-64 / `amd64`)
+- Minimum **1 GB RAM** (use `--swap` to prevent OOM), **2 GB recommended**
+- Minimum **20 GB disk** (K3s + your app + images)
+- Root or `sudo` access
+
+---
+
+## Step 1 — Create an offline environment
+
+Your production environment likely relies on managed databases (AWS RDS, DigitalOcean Managed MySQL) or a Plex Commons. An air-gapped delivery must be 100% self-sufficient. Create a dedicated environment for the bundle:
+
 ```bash
 larakube env airgap --offline
 ```
 
-When selecting components, choose a **Standalone** architecture. Include your own Database, Redis, and MinIO components. This ensures your Kustomize blueprint (`.larakube.json`) is fully equipped to run autonomously.
+During the wizard:
+- **Strategy**: `single-node` (the client's box is one server)
+- **Database**: choose a self-hosted driver (MariaDB, MySQL, or Postgres) — _not_ a managed/external host
+- **Cache**: Redis
+- **Object storage**: MinIO (SeaweedFS also works)
+- **Hosts**: set the client's intended internal domains now (e.g. `app.hospital.internal`, `s3.hospital.internal`) to bake them into the bundle and skip hostname prompts during install
+
+The `--offline` flag marks the environment so `bundle:install` skips hostname prompts when the hosts are already set.
+
+:::tip One environment, many clients
+You can use the same `airgap` environment for every client — `bundle:build` stamps a timestamp into the folder name so bundles don't overwrite each other. If different clients need different hostnames or features, create separate environments (`airgap-clienta`, `airgap-clientb`).
+:::
 
 ---
 
-## Phase 2: Compiling the Kit (`bundle:build`)
-
-When you are ready to ship the release, run the build command and specify the *client's* hardware architecture (e.g., `amd64` for standard Intel servers):
-
-```bash
-larakube bundle:build airgap --arch=amd64
-```
-
-Add `--tar` to compress the output into a single `.tar.gz` archive and generate a ready-to-send `INSTRUCTIONS.txt` file alongside it:
+## Step 2 — Build the bundle
 
 ```bash
 larakube bundle:build airgap --arch=amd64 --tar
 ```
 
-Here is exactly what LaraKube CLI does under the hood during this step:
-1. **Code Compilation:** It builds your Laravel code into a production-ready Docker image tagged `app:airgap-latest`.
-2. **Dependency Scraping:** It scrapes your `.larakube.json` and downloads the official Docker images for your database, Traefik, and Redis.
-3. **Tarball Generation:** It saves every Docker image as a flat `.tar` file in the `images/` directory.
-4. **Manifest Extraction:** It extracts your Kustomize YAML templates to `manifests/`.
-5. **Kustomize Binary:** It downloads the standalone `kustomize` binary for the target architecture and bundles it alongside the kit. This bypasses the older parser built into K3s and ensures consistent manifest rendering on the client's server.
-6. **K3s Offline Artifacts:** It securely downloads the official `k3s` binary, `k3s-install.sh`, and `k3s-airgap-images.tar` directly from GitHub.
-7. **The Wizard:** Finally, it copies the actual `larakube` CLI binary into the folder.
+| Flag | Description |
+|---|---|
+| `airgap` | The environment name to bundle |
+| `--arch=amd64` | Target CPU architecture. Use `amd64` for standard Intel/AMD servers, `arm64` for ARM (AWS Graviton, Raspberry Pi). |
+| `--tar` | Compress the output to a `.tar.gz` and write an `INSTRUCTIONS.txt` alongside it |
 
-The output is a single folder `dist/<app>-airgap-amd64-bundle-<timestamp>/`. With `--tar`, this folder is compressed to `<name>.tar.gz` and a plain-text `INSTRUCTIONS.txt` is written next to it with transfer and extraction commands ready to copy-paste. **Your raw source code is protected inside the Docker image.**
+**What happens under the hood:**
+
+1. **App build** — compiles your Laravel app into a production Docker image tagged `app:airgap-latest` (isolated from your local `:latest` — see [Image Tag Isolation](#image-tag-isolation))
+2. **Dependency scrape** — reads your `.larakube.json` and pulls the official images for your database, Redis, and Traefik
+3. **Image export** — saves every image as a flat `.tar` file into `images/`
+4. **Manifest extraction** — copies your Kustomize YAML templates to `manifests/`
+5. **kustomize binary** — downloads the standalone `kustomize` binary for the target architecture (bypasses the older parser built into K3s)
+6. **K3s offline artifacts** — downloads `k3s`, `k3s-install.sh`, and `k3s-airgap-images.tar` from GitHub
+7. **CLI copy** — bundles the `larakube` binary itself as the installer
+8. **Compression** (with `--tar`) — packs everything into a timestamped `.tar.gz` with a copy-paste ready `INSTRUCTIONS.txt`
+
+**Output:**
+
+```
+dist/
+  myapp-airgap-amd64-bundle-20260613-140000.tar.gz
+  myapp-airgap-amd64-bundle-20260613-140000-INSTRUCTIONS.txt
+```
+
+**Your source code is never in the bundle** — it's compiled into the Docker image layer. The client receives a binary only.
 
 ---
 
-## Phase 3: The End-Client Installation (`bundle:install`)
+## Step 3 — Transfer and install
 
-The client plugs the USB stick into their offline Ubuntu server. They can optionally place a custom `.env` file in the folder if they need to provide proprietary API keys (like `STRIPE_SECRET`).
+### Transfer to the client's server
 
-They run a single command:
+Use the `INSTRUCTIONS.txt` for exact commands. The typical flow:
+
 ```bash
+# From your machine — copy via SCP (or put on a USB stick)
+scp dist/myapp-airgap-amd64-bundle-*.tar.gz root@192.168.1.100:/opt/
+
+# On the client's server — extract
+cd /opt && tar -xzf myapp-airgap-amd64-bundle-*.tar.gz
+cd myapp-airgap-amd64-bundle-*
+```
+
+### Install
+
+```bash
+sudo ./larakube bundle:install
+```
+
+The installer runs these steps in order:
+
+1. **Pre-flight checks** — verifies `openssl`, `curl`, `tar` are present
+2. **Swap allocation** (if `--swap`) — allocates and persists a swap file before the heavy work begins
+3. **K3s bootstrap** — copies the bundled K3s binary to system paths and installs using `INSTALL_K3S_SKIP_DOWNLOAD=true`
+4. **Image hydration** — imports every `.tar` from `images/` into containerd via `k3s ctr images import` (the slowest step — ~1–5 minutes depending on image count and disk speed)
+5. **Credentials generation** — generates cryptographically strong unique passwords for this installation (`DB_PASSWORD`, `MINIO_SECRET_KEY`, etc.)
+6. **Environment merge** — merges generated credentials with any keys you supply via `--env` (client-supplied keys take priority)
+7. **Hostname resolution** — uses pre-configured hosts from the blueprint, or prompts interactively if not set
+8. **TLS generation** — mints a local Certificate Authority and issues a server certificate with SANs for every domain
+9. **Deploy** — injects secrets/configmaps and runs `kubectl apply -k manifests/overlays/airgap`
+10. **Rollout wait** — waits for all pods to reach Ready status
+11. **Summary** — prints the CA path and first-login instructions
+
+### Supplying client-specific environment variables
+
+If the client needs to bring their own credentials (e.g. `STRIPE_SECRET`, `MAIL_PASSWORD`), they place a `.env` file in the bundle folder before running install:
+
+```bash
+# Client creates this file:
+cat > .env <<'EOF'
+STRIPE_SECRET=sk_live_...
+MAIL_HOST=smtp.hospital.internal
+MAIL_USERNAME=app@hospital.internal
+MAIL_PASSWORD=...
+EOF
+
 sudo ./larakube bundle:install --env=.env
 ```
 
-Here is the exact sequence of events that the generic `larakube` binary executes on the client's machine:
-
-### 1. Pre-Flight Checks
-The installer verifies that foundational Linux utilities (`openssl`, `curl`, `tar`) are present to ensure it won't fail halfway through the installation.
-
-### 2. Offline Kubernetes Bootstrap
-It detects if Kubernetes is running. If not, it copies the bundled K3s binaries to system paths and executes the official installer using the `INSTALL_K3S_SKIP_DOWNLOAD=true` flag, securely bootstrapping a single-node cluster without touching the internet.
-
-### 3. Containerd Hydration
-It loops through your `images/` directory and executes `k3s ctr images import` on every `.tar` file. This pre-loads your app, database, and Traefik directly into K3s, entirely bypassing Docker Hub.
-
-### 4. Dynamic Credentials & Environment Merging
-It securely generates cryptographically strong, unique passwords for this specific installation (e.g., `DB_PASSWORD`, `MINIO_SECRET_KEY`). It intelligently merges these with any keys the client provided in their `.env` file, prioritizing the client's keys.
-
-### 5. Hostname Resolution
-If the bundle was built after running `larakube env airgap --offline` (which stores hostnames in `.larakube.json`), the installer uses those values automatically — no prompts. If hostnames are not pre-configured, it asks what domains or IP addresses the app will run on internally (e.g., `hospital.internal`, `s3.hospital.internal`).
-
-### 6. On-Site TLS Generation
-Because Let's Encrypt cannot function without the internet, the CLI dynamically mints a custom **Certificate Authority (CA)** on the server. It then generates an SSL Server Certificate containing **Subject Alternative Names (SANs)** for all the domains the client requested. 
-
-### 7. Traefik Deployment & Rollout
-It injects the newly minted certificates and merged environment variables into Kubernetes as Secrets and ConfigMaps. Finally, it deploys Traefik and executes `kubectl apply -k manifests/overlays/airgap`, spinning up your application.
+LaraKube CLI merges this with the auto-generated credentials — the client's keys always win on conflict.
 
 ---
 
-### The Result
-The wizard finishes by providing the client with the path to the generated `ca.crt`. They install that CA to their local IT trust store, and your application is now running securely over HTTPS on an entirely air-gapped machine.
+## Flags reference
 
----
+### `--swap` — Prevent OOM on small servers
 
-### Testing the Bundle from Your Dev Machine
-
-After a successful install, `bundle:install` prints the exact CA path on the server. To verify the deployment works end-to-end from your local browser, pull the cert back and trust it:
+1 GB VPS instances frequently OOM-kill K3s during startup when image import and Kubernetes initialisation run concurrently. `--swap` allocates a swap file _before_ the heavy work begins, using `fallocate` + `mkswap` + `swapon` and permanently registering it in `/etc/fstab`.
 
 ```bash
-# Pull the CA from the server (the installer prints the exact path)
-rsync -P root@YOUR_SERVER_IP:/path/to/bundle/hospital-airgap-2026-06-11-ca.crt ~/Downloads/
-
-# Trust it locally
-larakube trust ~/Downloads/hospital-airgap-2026-06-11-ca.crt
+sudo ./larakube bundle:install --swap       # 1 GB (safe default)
+sudo ./larakube bundle:install --swap=2G    # explicit size
+sudo ./larakube bundle:install --swap=2     # bare number = gigabytes
 ```
 
-Once trusted, open the domain(s) you set when running `larakube env airgap --offline` — they will load over HTTPS without a browser warning.
+Idempotent: if `/swapfile` already exists, the step is skipped. Re-running is safe.
 
-:::tip
-The CA file name includes the app name, environment, and date (e.g. `hospital-airgap-2026-06-11-ca.crt`), so multiple client installs don't clobber each other in `~/Downloads/`.
+:::tip Always use `--swap` on 1 GB servers
+On 2 GB+ servers it is optional but reduces the risk of transient OOM spikes during initial rollout.
 :::
 
----
+### `--skip-images` — Fast re-configuration
 
-## Bundle Management Utilities
-
-These commands let you manage bundle archives independently of the build/install cycle.
-
-### `bundle:zip` — Compress a Built Bundle
-
-If you already have an assembled bundle folder and want to compress it separately (e.g. you ran `bundle:build` without `--tar` and want to zip it now):
-
-```bash
-larakube bundle:zip
-```
-
-With no arguments it auto-discovers bundles under `dist/` and prompts if there are multiple. You can also point it at a specific folder:
-
-```bash
-larakube bundle:zip dist/myapp-airgap-amd64-bundle-20260611-120000
-```
-
-Options:
-- `--output=<name>` — custom archive filename (e.g. `--output=client-a` produces `client-a.tar.gz`). Defaults to the folder name with `.tar.gz` appended.
-- `--delete` — remove the uncompressed folder after zipping.
-
----
-
-### `bundle:unzip` — Extract a Bundle Archive
-
-On the developer's side (or the client's server), extract a `.tar.gz` archive before running `bundle:install`:
-
-```bash
-larakube bundle:unzip
-```
-
-With no arguments it auto-discovers `.tar.gz` archives under `dist/` and prompts if there are multiple. You can also specify the path directly:
-
-```bash
-larakube bundle:unzip dist/myapp-airgap-amd64-bundle-20260611-120000.tar.gz
-```
-
-Options:
-- `--delete` — remove the archive file after extracting.
-
----
-
-### `bundle:update` — Ship an App-Only Update
-
-Once the client's server is already running, you don't need to re-ship K3s, kustomize, and all dependency images on every release. `bundle:build --update` produces a lightweight update bundle (app image only), and `bundle:update` applies it on the server:
-
-```bash
-# On your machine
-larakube bundle:build airgap --arch=amd64 --update --tar
-
-# On the client's server
-sudo ./larakube bundle:update
-```
-
----
-
-## Flags & Recovery Options
-
-### `--swap` — Prevent OOM Crashes on 1 GB Servers
-
-1 GB VPS instances will frequently OOM-kill k3s during startup when image import and Kubernetes initialisation run concurrently. The `--swap` flag allocates a swap file **before** the heavy work begins.
-
-Pass it alone to use the safe 1 GB default:
-
-```bash
-sudo ./larakube bundle:install --swap
-```
-
-Or specify a size explicitly — either with a unit or as a bare number (gigabytes assumed):
-
-```bash
-sudo ./larakube bundle:install --swap=2G
-sudo ./larakube bundle:install --swap=2    # same as 2G
-```
-
-This runs `fallocate`, `mkswap`, and `swapon` and permanently registers the file in `/etc/fstab`. If `/swapfile` already exists the step is skipped safely, so re-running the command is harmless.
-
-There is no hard kernel limit on swap size — the ceiling is your server's available disk space. A 1 GB VPS typically ships with 20–25 GB of disk, so `--swap` (1 GB) is a safe, conservative default.
-
-:::tip
-Always pass `--swap` on any server with 1 GB of RAM. On 2 GB+ servers it is optional but still reduces the risk of transient OOM spikes during the initial rollout.
-:::
-
----
-
-### `--skip-images` — Fast Re-configuration
-
-Importing the Docker image tarballs into containerd is the slowest part of the install (it can take several minutes). If you need to regenerate secrets or certificates without re-importing images, pass this flag:
+Image import is the slowest part of install. If you need to regenerate secrets or fix a hostname without waiting for images again:
 
 ```bash
 sudo ./larakube bundle:install --skip-images
 ```
 
-This skips straight to secrets generation and certificate regeneration. If your bundle already has hostnames stored from `larakube env airgap --offline`, the hostname step is skipped automatically — so re-installs are fast.
+Skips directly to credentials generation and certificate regeneration. Combined with pre-configured hosts in the blueprint, a re-install runs in under 30 seconds.
+
+Common use cases:
+- Wrong hostname was entered during the first install
+- The client changed their internal DNS
+- Regenerating TLS certificates after a CA expiry
+- Correcting a `--env` value without re-importing images
+
+### `--env` — Supply client credentials
+
+```bash
+sudo ./larakube bundle:install --env=/path/to/client-secrets.env
+```
+
+Merges the file into the generated environment. Client-supplied keys take priority over auto-generated ones. Useful for SMTP, payment gateways, LDAP, and other credentials the client manages.
 
 ---
 
-## How Image Tags Work (No More Collisions)
+## Shipping updates
 
-Before v0.18.27, both local dev images and production bundle images were tagged `:latest`. Building a bundle locally would overwrite the `:latest` tag on your development Docker daemon, instantly crashing your running local pods.
+Once the client's server is running, you don't need to re-ship K3s and all dependency images on every release — only what changed.
+
+### App-only update (most releases)
+
+```bash
+# On your machine — build a lightweight update bundle (app image only)
+larakube bundle:build airgap --arch=amd64 --update --tar
+
+# Transfer and apply on the client's server
+sudo ./larakube bundle:update
+```
+
+`bundle:build --update` skips K3s, kustomize, and dependency images. The resulting archive is typically 80–95% smaller than a full bundle.
+
+### Full re-install (dependency upgrades)
+
+When you upgrade MariaDB, Redis, or add a new service, build a full bundle:
+
+```bash
+larakube bundle:build airgap --arch=amd64 --tar
+sudo ./larakube bundle:install --skip-images=false
+```
+
+Use `--skip-images=false` to force a full image re-import (the default is to re-import; `--skip-images` is the flag that skips it).
+
+---
+
+## TLS and the local CA
+
+Because Let's Encrypt requires internet access, `bundle:install` mints its own **Certificate Authority** on the client's server and issues a server certificate covering all configured domains.
+
+**The CA file path** is printed at the end of install — it looks like:
+```
+/opt/myapp-airgap-amd64-bundle-20260613-140000/myapp-airgap-20260613-ca.crt
+```
+
+**Distributing trust:**
+
+The client's IT team installs the CA into their internal trust store (Active Directory GPO, macOS Profiles, Linux `/usr/local/share/ca-certificates/`). Users on the network will then see valid HTTPS without a browser warning.
+
+**Verifying from your dev machine:**
+
+Pull the CA back and trust it locally:
+
+```bash
+rsync -P root@CLIENT_SERVER_IP:/opt/bundle-folder/myapp-airgap-20260613-ca.crt ~/Downloads/
+larakube trust ~/Downloads/myapp-airgap-20260613-ca.crt
+```
+
+Open the configured hostname in your browser — it loads over HTTPS without a warning.
+
+:::tip CA naming
+The CA filename includes the app name, environment, and date (`myapp-airgap-20260613-ca.crt`), so multiple client installs don't overwrite each other in `~/Downloads/`.
+:::
+
+---
+
+## Managing multiple clients
+
+For agencies or ISVs with several enterprise clients, keep bundles organised by client:
+
+```
+dist/
+  acme-bank/
+    myapp-airgap-amd64-bundle-20260601-*.tar.gz      # initial install
+    myapp-airgap-amd64-bundle-20260613-update.tar.gz # v2 update
+  riverside-hospital/
+    myapp-airgap-amd64-bundle-20260510-*.tar.gz
+    myapp-airgap-amd64-bundle-20260613-update.tar.gz
+```
+
+Use one environment per client when their configuration differs:
+
+```bash
+larakube env airgap-bank    # hosts: app.acme-bank.internal
+larakube env airgap-hosp    # hosts: ehr.riverside.internal, s3.riverside.internal
+
+larakube bundle:build airgap-bank --arch=amd64 --tar
+larakube bundle:build airgap-hosp --arch=amd64 --tar
+```
+
+Use a single `airgap` environment when all clients get the same configuration (hostname differences handled interactively at install time).
+
+---
+
+## Bundle management utilities
+
+### `bundle:zip` — Compress a built bundle folder
+
+If you ran `bundle:build` without `--tar` and want to compress later:
+
+```bash
+larakube bundle:zip                                      # auto-discovers under dist/
+larakube bundle:zip dist/myapp-airgap-amd64-bundle-...  # specific folder
+larakube bundle:zip --output=client-a                   # custom name → client-a.tar.gz
+larakube bundle:zip --delete                            # remove folder after zipping
+```
+
+### `bundle:unzip` — Extract a bundle archive
+
+```bash
+larakube bundle:unzip                                     # auto-discovers .tar.gz under dist/
+larakube bundle:unzip dist/myapp-airgap-amd64-bundle-*.tar.gz
+larakube bundle:unzip --delete                           # remove archive after extracting
+```
+
+---
+
+## Image tag isolation {#image-tag-isolation}
+
+Before v0.18.27, both local dev images and bundle images were tagged `:latest`. Building a bundle overwrote the tag on your dev daemon, instantly crashing running local pods.
 
 LaraKube CLI now uses **isolated tags** via Kustomize `images:` rewrite blocks:
 
-| Context | Image tag at apply time |
-|---------|------------------------|
-| Local k3d / k3s | `app:local` |
+| Context | Tag at apply time |
+|---|---|
+| Local k3d / k3s (`larakube up`) | `app:local` |
 | Air-gapped bundle | `app:airgap-latest` (or `app:{env}-latest`) |
-| Production (registry push) | pulled by digest |
+| Production via registry | pulled by digest |
 
-`larakube up` builds and sideloads `app:local`. `bundle:build` builds `app:airgap-latest`. The two tags can coexist on the same machine without interference.
+`larakube up` builds and sideloads `app:local`. `bundle:build` builds `app:airgap-latest`. The two co-exist on the same Docker daemon without interfering.
+
+---
+
+## Troubleshooting
+
+### K3s fails to start / OOM during install
+
+**Symptom:** `k3s` crashes or the node never becomes Ready.
+
+**Fix:** Use `--swap` — it allocates a swap file before the heavy phase begins:
+
+```bash
+sudo ./larakube bundle:install --swap
+```
+
+Even on 2 GB servers, the initial image import can cause transient spikes. `--swap` is always safe to pass.
+
+### Image import takes a very long time
+
+**Normal range:** 1–5 minutes for a typical stack (app + MariaDB + Redis + MinIO). Large images (heavy ML dependencies, many npm packages) can push past 10 minutes on slow disks.
+
+**What to watch:**
+
+```bash
+# On the server — in a second terminal
+watch -n5 'sudo k3s ctr images list | grep -c "import"'
+```
+
+If it seems stuck for >15 minutes, check disk I/O and available space (`df -h`).
+
+### Wrong hostname after install
+
+Re-run with `--skip-images` to regenerate certificates and config without re-importing images:
+
+```bash
+sudo ./larakube bundle:install --skip-images
+```
+
+The installer will prompt for the hostname again (or use the pre-configured one from the blueprint).
+
+### Browser shows "Not Secure" / certificate error
+
+The client hasn't installed the CA yet. Give them the `.crt` file and installation instructions for their OS/browser:
+
+- **Windows (Active Directory):** distribute via GPO → Trusted Root Certification Authorities
+- **macOS:** `sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ca.crt`
+- **Ubuntu/Debian:** `cp ca.crt /usr/local/share/ca-certificates/ && sudo update-ca-certificates`
+- **Chrome (standalone):** Settings → Privacy → Manage certificates → Authorities → Import
+
+### Pods stuck in `ImagePullBackOff` after `bundle:update`
+
+The update bundle only contains the app image. If you recently added a new service (e.g. Meilisearch), its image isn't in containerd yet — build a full bundle and run a full install:
+
+```bash
+larakube bundle:build airgap --arch=amd64 --tar   # full bundle
+sudo ./larakube bundle:install                     # re-imports all images
+```
+
+### Re-running bundle:install on an already-running cluster
+
+`bundle:install` is designed to be **idempotent**:
+- K3s installation is skipped if a cluster is already running
+- Image import re-imports all tarballs (use `--skip-images` to skip)
+- Credentials generation regenerates secrets and ConfigMaps (live pods pick up changes on their next restart)
+- `kubectl apply -k` is incremental — unchanged resources are untouched
+
+Safe to re-run; it won't destroy running data volumes.

@@ -88,7 +88,7 @@ function HomepageHeader() {
 }
 
 function TypingTerminal() {
-  const fullText = 'curl -s https://larakube.luchtech.dev/install.sh | bash';
+  const fullText = 'curl -fsSL https://cli.larakube.app/install.sh | bash';
   const [displayText, setDisplayText] = useState('');
   const [copied, setCopied] = useState(false);
 

@@ -16,7 +16,7 @@ LaraKube CLI is a first-class citizen on macOS. For the most stable and high-per
 ### 1. Install LaraKube CLI
 Download and install the standalone binary:
 ```bash
-curl -sSL https://larakube.luchtech.dev/install.sh | bash
+curl -fsSL https://cli.larakube.app/install.sh | bash
 ```
 
 ### 2. Prepare your Cluster

@@ -25,7 +25,7 @@ Open your Ubuntu (or other Linux) terminal. All subsequent commands must be run 
 ### 2. Install LaraKube CLI
 Download and install the standalone binary inside WSL2:
 ```bash
-curl -sSL https://larakube.luchtech.dev/install.sh | bash
+curl -fsSL https://cli.larakube.app/install.sh | bash
 ```
 
 ### 3. Prepare your Cluster

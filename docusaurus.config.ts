@@ -8,7 +8,7 @@ const config: Config = {
   tagline: 'Kubernetes for Laravel from Development to Deployment',
   favicon: 'img/larakube-logo.svg',
 
-  url: 'https://larakube.luchtech.dev',
+  url: 'https://cli.larakube.app',
   baseUrl: '/',
 
   organizationName: 'Luchavez Techonologies',

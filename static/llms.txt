@@ -31,6 +31,6 @@ LaraKube provides a professional graduation path for startups:
 - **Services**: Integrated support for Horizon, Octane, Reverb, and Meilisearch.
 
 ## 📚 Full Context
-For a complete synthesis of all documentation, see the [Master Context File](https://larakube.luchtech.dev/llms-full.txt).
+For a complete synthesis of all documentation, see the [Master Context File](https://cli.larakube.app/llms-full.txt).
 
-Full documentation available at: https://larakube.luchtech.dev
+Full documentation available at: https://cli.larakube.app

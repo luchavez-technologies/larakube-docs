@@ -11,7 +11,7 @@ LaraKube CLI is designed for speed and stability. You can get up and running wit
 The fastest way to install LaraKube CLI is using our automated installer. This will download the latest **standalone binary** for your architecture, install it globally, and initialize your configuration.
 
 ```bash
-curl -s https://larakube.luchtech.dev/install.sh | bash
+curl -fsSL https://cli.larakube.app/install.sh | bash
 ```
 
 > 🔐 **Note:** The installer will ask for your `sudo` password to move the binary into your global `/usr/local/bin` directory.

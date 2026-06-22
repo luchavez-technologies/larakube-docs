@@ -15,7 +15,7 @@ On Linux, LaraKube CLI provides a raw, high-performance Kubernetes experience. Y
 
 ### 1. Install LaraKube CLI
 ```bash
-curl -sSL https://larakube.luchtech.dev/install.sh | bash
+curl -fsSL https://cli.larakube.app/install.sh | bash
 ```
 
 ### 2. Prepare your Cluster

@@ -52,6 +52,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Architecture Concepts',
       items: [
+        'architecture/at-a-glance',
         'architecture/blueprint-anatomy',
         'architecture/multi-blueprint',
         'architecture/infrastructure',

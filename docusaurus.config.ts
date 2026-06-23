@@ -148,6 +148,14 @@ const config: Config = {
     },
     mermaid: {
       theme: {light: 'neutral', dark: 'forest'},
+      options: {
+        flowchart: {
+          padding: 22,
+          nodeSpacing: 60,
+          rankSpacing: 70,
+          subGraphTitleMargin: {top: 6, bottom: 14},
+        },
+      },
     },
     algolia: {
       appId: process.env.ALGOLIA_APP_ID || 'NO_APP_ID',

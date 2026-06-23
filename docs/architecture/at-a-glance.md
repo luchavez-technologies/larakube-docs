@@ -26,7 +26,7 @@ Kubernetes has a small vocabulary. Here's the whole cast, in plain terms:
 | **PVC / Volume** | Persistent disk storage | The stockroom |
 
 :::tip Where is my Laravel app?
-Your Laravel app is the **FrankenPHP container inside each `web` Pod**. When you scale to 2 replicas, you have two identical Pods each running your app — Traefik load-balances requests across them.
+Your Laravel app is the **FrankenPHP container inside each `web` Pod** (the <img src="/icons/laravel.svg" alt="Laravel" width="16" height="16" /> Laravel icon in the diagrams below). When you scale to 2 replicas, you have two identical Pods each running your app — Traefik load-balances requests across them.
 :::
 
 ---
@@ -48,13 +48,13 @@ flowchart TB
           LPP["local-path-provisioner<br/>carves PVCs from disk"]
         end
         subgraph APP["shop-production namespace · your app"]
-          WEBSVC["Service: web<br/>stable internal address"]
+          WEBSVC["Service: web"]
           subgraph DEP["Deployment: web · replicas 2"]
-            P1["Pod — FrankenPHP + Laravel"]
-            P2["Pod — FrankenPHP + Laravel"]
+            P1@{ img: "/icons/laravel.svg", label: "Pod · Laravel", pos: "b", w: 40, h: 150 }
+            P2@{ img: "/icons/laravel.svg", label: "Pod · Laravel", pos: "b", w: 40, h: 150 }
           end
-          MYSQL[("mysql pod")]
-          REDIS[("redis pod")]
+          MYSQL@{ img: "/icons/mysql.svg", label: "mysql pod", pos: "b", w: 40, h: 150 }
+          REDIS@{ img: "/icons/redis.svg", label: "redis pod", pos: "b", w: 40, h: 150 }
         end
       end
     end
@@ -68,6 +68,9 @@ flowchart TB
     P1 -.-> REDIS
     COREDNS -.->|resolves service names| WEBSVC
     LPP -.->|persistent volume| MYSQL
+
+    classDef iconNode fill:none,stroke:none;
+    class P1,P2,MYSQL,REDIS iconNode;
 ```
 
 **Reading the diagram:**
@@ -103,14 +106,14 @@ flowchart TB
     subgraph VPS["🖥️ One VPS"]
       T{{"Traefik · routes by Host header"}}
       subgraph NS1["shop-production namespace"]
-        SW["web Pods ×2"]
-        SM[("mysql")]
-        SR[("redis")]
+        SW@{ img: "/icons/laravel.svg", label: "web Pods ×2", pos: "b", w: 40, h: 150 }
+        SM@{ img: "/icons/mysql.svg", label: "mysql", pos: "b", w: 40, h: 150 }
+        SR@{ img: "/icons/redis.svg", label: "redis", pos: "b", w: 40, h: 150 }
       end
       subgraph NS2["blog-production namespace"]
-        BW["web Pods ×2"]
-        BM[("mysql")]
-        BR[("redis")]
+        BW@{ img: "/icons/laravel.svg", label: "web Pods ×2", pos: "b", w: 40, h: 150 }
+        BM@{ img: "/icons/mysql.svg", label: "mysql", pos: "b", w: 40, h: 150 }
+        BR@{ img: "/icons/redis.svg", label: "redis", pos: "b", w: 40, h: 150 }
       end
     end
 
@@ -122,6 +125,9 @@ flowchart TB
     SW --> SR
     BW --> BM
     BW --> BR
+
+    classDef iconNode fill:none,stroke:none;
+    class SW,SM,SR,BW,BM,BR iconNode;
 ```
 
 Notice each app runs its **own** `mysql` and `redis` Pods — simple, but it duplicates RAM. That's exactly the problem **Plex** solves (diagram 4).
@@ -144,10 +150,10 @@ flowchart TB
     subgraph VPS["🖥️ One VPS"]
       T{{"Traefik"}}
       subgraph P["shop-production namespace"]
-        PW["web Pods ×2"]
+        PW@{ img: "/icons/laravel.svg", label: "web Pods ×2", pos: "b", w: 36, h: 150 }
       end
       subgraph S["shop-staging namespace"]
-        SW["web Pod ×1"]
+        SW@{ img: "/icons/laravel.svg", label: "web Pod ×1", pos: "b", w: 36, h: 150 }
       end
     end
 
@@ -157,6 +163,9 @@ flowchart TB
     U2 --> T
     T -->|Host: shop.com| PW
     T -->|Host: staging.shop.com| SW
+        
+    classDef iconNode fill:none,stroke:none;
+    class PW,SW iconNode;
 ```
 
 Both environments typically share **one Plex Commons** for their data, but each gets its **own isolated database, Redis logical DB, and S3 bucket** — staging can never touch production's data. That sharing is the next diagram.
@@ -173,16 +182,16 @@ Instead of every app/env running duplicate `mysql` + `redis` + storage Pods, **P
 flowchart TB
     subgraph VPS["🖥️ One VPS"]
       subgraph A1["shop-production"]
-        SW["web Pods"]
+        SW@{ img: "/icons/laravel.svg", label: "web Pods", pos: "b", w: 40, h: 150 }
       end
       subgraph A2["blog-production"]
-        BW["web Pods"]
+        BW@{ img: "/icons/laravel.svg", label: "web Pods", pos: "b", w: 40, h: 150 }
       end
       subgraph COMMONS["larakube-shared · Plex Commons — one set of services"]
-        CM[("MariaDB<br/>db: shop · db: blog")]
-        CR[("Redis<br/>logical DB 0 · DB 1")]
-        CO[("MinIO<br/>bucket: shop · bucket: blog")]
-        CME["Meilisearch<br/>index per tenant"]
+        CM@{ img: "/icons/mariadb.svg", label: "MariaDB · db shop · db blog", pos: "b", w: 40, h: 150 }
+        CR@{ img: "/icons/redis.svg", label: "Redis · DB 0 · DB 1", pos: "b", w: 40, h: 150 }
+        CO@{ img: "/icons/minio.svg", label: "MinIO · bucket shop · blog", pos: "b", w: 40, h: 150 }
+        CME@{ img: "/icons/meilisearch.svg", label: "Meilisearch · index per tenant", pos: "b", w: 40, h: 150 }
       end
     end
 
@@ -194,6 +203,9 @@ flowchart TB
     BW --> CR
     BW --> CO
     BW --> CME
+
+    classDef iconNode fill:none,stroke:none;
+    class SW,BW,CM,CR,CO,CME iconNode;
 ```
 
 **One MariaDB Pod, many isolated databases.** Exactly like several apps sharing one managed database: shared engine, separate logins and data. Plex is **demand-driven** — joining provisions only the services an app's blueprint actually declares, and never removes a service another tenant still uses.
@@ -202,7 +214,52 @@ flowchart TB
 
 ---
 
-## 5️⃣ Going multi-node
+## 5️⃣ Putting it all together
+
+You can combine **all** of the above on one box: **two apps**, each with **production *and* staging**, all sharing a **single Plex Commons**. That's **four isolated tenants** on one VPS — and it's a completely normal setup.
+
+```mermaid
+flowchart TB
+    T{{"Traefik · routes by Host"}}
+
+    subgraph VPS["🖥️ One VPS · K3s cluster"]
+      subgraph SHOP["🛒 shop (one repo)"]
+        SP@{ img: "/icons/laravel.svg", label: "shop-production", pos: "b", w: 40, h: 150 }
+        SS@{ img: "/icons/laravel.svg", label: "shop-staging", pos: "b", w: 40, h: 150 }
+      end
+      subgraph BLOG["📝 blog (one repo)"]
+        BP@{ img: "/icons/laravel.svg", label: "blog-production", pos: "b", w: 40, h: 150 }
+        BS@{ img: "/icons/laravel.svg", label: "blog-staging", pos: "b", w: 40, h: 150 }
+      end
+      subgraph COMMONS["larakube-shared · Plex Commons"]
+        CM@{ img: "/icons/mariadb.svg", label: "MariaDB", pos: "b", w: 40, h: 150 }
+        CR@{ img: "/icons/redis.svg", label: "Redis", pos: "b", w: 40, h: 150 }
+        CO@{ img: "/icons/minio.svg", label: "MinIO", pos: "b", w: 40, h: 150 }
+        CME@{ img: "/icons/meilisearch.svg", label: "Meilisearch", pos: "b", w: 40, h: 150 }
+      end
+    end
+
+    T -->|shop.com| SP
+    T -->|staging.shop.com| SS
+    T -->|blog.com| BP
+    T -->|staging.blog.com| BS
+
+    SP -->|tenant| COMMONS
+    SS -->|tenant| COMMONS
+    BP -->|tenant| COMMONS
+    BS -->|tenant| COMMONS
+
+    classDef iconNode fill:none,stroke:none;
+    class SP,SS,BP,BS,CM,CR,CO,CME iconNode;
+```
+
+Each of the four namespaces is its **own Plex tenant** — its own database, Redis logical DB, and S3 bucket on the shared services — so `shop`'s staging can't see `blog`'s production, and nothing collides. One caveat: it all shares the node's **RAM**, so size the box for the total (see the [capacity reality](../deployment/multiple-projects#-will-it-fit-capacity-reality) table).
+
+➡️ The exact per-tenant naming scheme: [Two Environments, One Server](../deployment/two-envs-one-server#-how-isolation-works)
+
+---
+
+## 6️⃣ Going multi-node
 
 When one box isn't enough, you graduate to a managed cluster (e.g. DigitalOcean Kubernetes). The concepts are identical — the **plumbing changes**:
 
@@ -217,12 +274,12 @@ flowchart TB
 
     subgraph N1["Worker Node 1"]
       T{{"Traefik"}}
-      W1["shop web Pod"]
-      W2["blog web Pod"]
+      W1@{ img: "/icons/laravel.svg", label: "shop web Pod", pos: "b", w: 40, h: 150 }
+      W2@{ img: "/icons/laravel.svg", label: "blog web Pod", pos: "b", w: 40, h: 150 }
     end
     subgraph N2["Worker Node 2"]
-      W3["shop web Pod"]
-      DBN[("managed DB<br/>or networked volume")]
+      W3@{ img: "/icons/laravel.svg", label: "shop web Pod", pos: "b", w: 40, h: 150 }
+      DBN@{ img: "/icons/mysql.svg", label: "managed DB / networked volume", pos: "b", w: 40, h: 150 }
     end
 
     User -->|HTTPS| LB
@@ -233,6 +290,9 @@ flowchart TB
     API -.->|schedules Pods| N2
     W1 -.-> DBN
     W3 -.-> DBN
+
+    classDef iconNode fill:none,stroke:none;
+    class W1,W2,W3,DBN iconNode;
 ```
 
 **What changes from single-node:**

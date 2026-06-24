@@ -14,7 +14,37 @@ LaraKube CLI is a first-class citizen on macOS. For the most stable and high-per
 ## 🚀 Setup Instructions
 
 ### 1. Install LaraKube CLI
-Download and install the standalone binary:
+
+#### Option A — Homebrew (recommended on macOS)
+The cleanest path on Mac. You get versioned upgrades via `brew upgrade`:
+```bash
+brew tap luchavez-technologies/larakube
+brew trust luchavez-technologies/larakube
+brew install larakube
+```
+
+:::note Why `brew trust`?
+Recent Homebrew versions refuse to load formulae from third-party taps until you explicitly trust them. It's a one-time acknowledgement per tap — if you skip it, `brew install` fails with *"Refusing to load formula … from untrusted tap."*
+:::
+
+:::warning Migrating from the standalone installer?
+If you previously ran `install.sh`, a `larakube` binary lives in `/usr/local/bin` and can **shadow** the Homebrew version on your `PATH` — so `larakube --version` keeps reporting the old build instead of the one you just installed. Remove the standalone binary and let Homebrew take over:
+
+```bash
+sudo rm -f /usr/local/bin/larakube
+hash -r                 # clear your shell's cached path (or open a new terminal)
+which larakube          # should now resolve to your Homebrew prefix
+larakube --version      # confirm the Homebrew version
+```
+:::
+
+Upgrade later with:
+```bash
+brew upgrade larakube
+```
+
+#### Option B — Standalone binary
+Prefer a single self-contained binary (no Homebrew)? Use the installer:
 ```bash
 curl -fsSL https://cli.larakube.app/install.sh | bash
 ```

@@ -33,7 +33,7 @@ Your Laravel app is the **FrankenPHP container inside each `web` Pod** (the <img
 
 ## 1️⃣ What lives on a single VPS
 
-One `larakube cloud:provision` turns a fresh Linux box into a K3s cluster. Here's everything running on it for a single app called **shop**, in production:
+One `larakube cloud:init` turns a fresh Linux box into a K3s cluster. Here's everything running on it for a single app called **shop**, in production:
 
 ```mermaid
 flowchart TB

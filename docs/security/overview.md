@@ -33,7 +33,7 @@ A leaked App A secret can deploy to **`app-a-prod` and nothing else** — not Ap
 
 ## 1 · Admin stays local
 
-The cluster-admin kubeconfig (from `cloud:provision`, or your provider's CLI for managed clusters) lives only in your `~/.kube/config`. LaraKube CLI **never uploads it** to GitHub or any runner. It's the bootstrapping authority — used locally to *mint* the narrower credentials below — and it stays put.
+The cluster-admin kubeconfig (from `cloud:init`, or your provider's CLI for managed clusters) lives only in your `~/.kube/config`. LaraKube CLI **never uploads it** to GitHub or any runner. It's the bootstrapping authority — used locally to *mint* the narrower credentials below — and it stays put.
 
 *Note: LaraKube CLI also aggressively masks secrets (like server passwords, DigitalOcean tokens, or raw AWS keys) in its diagnostic and runtime logs to prevent accidental exposure.*
 
@@ -54,7 +54,7 @@ The manual path **dogfoods** the exact same credential locally (admin only boots
 
 ## 3 · A hardened server
 
-For self-managed VPS nodes, `cloud:provision` doesn't just install k3s — it **locks the box down**: a default-deny firewall, fail2ban, automatic security updates, key-only SSH, and (guarded) disabling of remote root login. `cloud:harden` re-applies it to an existing server. See [Server Hardening](./server-hardening).
+For self-managed VPS nodes, `cloud:init` doesn't just install k3s — it **locks the box down**: a default-deny firewall, fail2ban, automatic security updates, key-only SSH, and (guarded) disabling of remote root login. `cloud:harden` re-applies it to an existing server. See [Server Hardening](./server-hardening).
 
 *(Managed clusters — DOKS/EKS/GKE/AKS — are hardened at the node level by your provider; LaraKube CLI targets them by kube-context and never SSHes in.)*
 

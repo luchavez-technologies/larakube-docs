@@ -74,7 +74,7 @@ kubectl cluster-info   # verify connection
 ## Step 2: Provision Traefik + Let's Encrypt
 
 ```bash
-larakube cloud:provision:doks --context do-sgp1-my-larakube-cluster
+larakube cloud:init:doks --context do-sgp1-my-larakube-cluster
 ```
 
 This:
@@ -95,7 +95,7 @@ app.example.com            CNAME  ingress.example.com
 cdn.example.com            CNAME  ingress.example.com   ← e.g. a Plex S3 host
 ```
 
-`cloud:provision:doks`, `plex:init`, and `cloud:deploy` all print this with your real IP filled in.
+`cloud:init:doks`, `plex:init`, and `cloud:deploy` all print this with your real IP filled in.
 
 ## Step 4: Record the cluster as your env's target
 
@@ -201,7 +201,7 @@ curl -H "Host: app.example.com" http://<LoadBalancer IP>/up
 Some apps genuinely rely on a shared filesystem — e.g. a worker writes `public/storage/sitemap.xml` and the web pod serves it. For those, opt in to **shared (ReadWriteMany) storage**:
 
 ```bash
-larakube cloud:provision:nfs          # installs an in-cluster NFS provisioner → larakube-nfs StorageClass
+larakube cloud:init:nfs          # installs an in-cluster NFS provisioner → larakube-nfs StorageClass
 # then set "sharedStorage": true on the env, and redeploy
 ```
 
@@ -231,7 +231,7 @@ DigitalOcean is still provisioning the LB:
 
 ```bash
 kubectl get svc -n traefik traefik
-# wait 1–2 minutes, then re-run: larakube cloud:provision:doks --context <ctx>
+# wait 1–2 minutes, then re-run: larakube cloud:init:doks --context <ctx>
 ```
 
 ### ❌ DNS not resolving

@@ -34,7 +34,7 @@ Now, let's prepare your Linux VPS (Single-Node Hero) for its first deployment.
 # 1. Point your domain (e.g., app.larakube.com) to your VPS IP address.
 
 # 2. Hardening and K3s installation
-larakube cloud:provision
+larakube cloud:init
 ```
 
 *Follow the prompts to enter your Server IP, SSH credentials, and email for Let'sEncrypt. This command will also set up a 1GB Swap file for stability.*

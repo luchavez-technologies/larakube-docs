@@ -19,7 +19,7 @@ LaraKube CLI was multi-tenant-friendly from the start, because of three properti
 
 1. **Namespaces are per-project-per-environment.** Every project deploys into `{name}-{environment}` (e.g. `blog-production`, `shop-production`). Two repos never collide at the Kubernetes level.
 2. **Traefik routes by hostname.** The ingress controller is cluster-wide and dispatches traffic by the `Host` header. Each app keeps its own domain; Traefik sends `blog.com` to one namespace and `shop.com` to the other.
-3. **Provisioning preps the box, not the project.** `larakube cloud:provision` installs K3s, swap, and Traefik on the VPS without baking in any single app. A second project deploying to the same IP simply reuses the cluster.
+3. **Provisioning preps the box, not the project.** `larakube cloud:init` installs K3s, swap, and Traefik on the VPS without baking in any single app. A second project deploying to the same IP simply reuses the cluster.
 
 Deploying a second app **cannot** disturb the first: every operation LaraKube CLI runs during a deploy is scoped to that project's namespace.
 
@@ -30,7 +30,7 @@ Deploying a second app **cannot** disturb the first: every operation LaraKube CL
 Point a fresh VPS at LaraKube CLI a single time:
 
 ```bash
-larakube cloud:provision
+larakube cloud:init
 ```
 
 This is **idempotent** — re-running it on an already-provisioned box is safe and won't touch your running apps. You only truly need it once per server, but running it again (e.g. while setting up the second project) does no harm.

@@ -412,7 +412,7 @@ A managed `production` therefore looks like this in your main blueprint:
 If any of the terms above are unfamiliar, that's a sign you don't need this section yet.
 
 :::tip One ingress IP, many hosts
-On a managed cluster every host — your app, plus any shared S3/Commons host — resolves to the **same** ingress LoadBalancer IP. Point one DNS **A record** ("anchor") at that IP, then **CNAME** every host to the anchor. Each new app you add is just another CNAME, and if the IP ever changes you update a single record. `larakube cloud:provision:doks`, `plex:init`, and `cloud:deploy` all print this guidance with your real IP.
+On a managed cluster every host — your app, plus any shared S3/Commons host — resolves to the **same** ingress LoadBalancer IP. Point one DNS **A record** ("anchor") at that IP, then **CNAME** every host to the anchor. Each new app you add is just another CNAME, and if the IP ever changes you update a single record. `larakube cloud:init:doks`, `plex:init`, and `cloud:deploy` all print this guidance with your real IP.
 :::
 
 ## 🧠 Console Memory & Sync

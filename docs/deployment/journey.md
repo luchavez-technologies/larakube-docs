@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 title: The Deployment Journey
-description: The full LaraKube CLI command sequence from a bare cluster to a live site — cloud:provision → new/init → plex → deploy — and the single point where the manual and CI/CD paths diverge.
+description: The full LaraKube CLI command sequence from a bare cluster to a live site — cloud:init → new/init → plex → deploy — and the single point where the manual and CI/CD paths diverge.
 ---
 # 🗺 The Deployment Journey
 
@@ -9,7 +9,7 @@ Every LaraKube CLI deployment follows the **same spine**. Only the *very last* s
 
 ```mermaid
 flowchart TD
-    P["☁️ larakube cloud:provision<br/>(VPS)<br/><br/>— or for DOKS —<br/>create cluster in DO UI →<br/>doctl kubeconfig save →<br/>larakube cloud:provision doks"]
+    P["☁️ larakube cloud:init<br/>(VPS)<br/><br/>— or for DOKS —<br/>create cluster in DO UI →<br/>doctl kubeconfig save →<br/>larakube cloud:init doks"]
     N["📦 larakube new myapp<br/>(or larakube init in an existing app)"]
     PI["🤝 larakube plex:init<br/>(cluster owner, once)"]
     PJ["🔌 larakube plex:join<br/>(each app that shares the Commons)"]
@@ -38,8 +38,8 @@ flowchart TD
 ### 1 · Cluster — *once per cluster*
 Stand up the place your apps will run, and get its admin context onto your machine.
 
-- **VPS / Droplet:** `larakube cloud:provision` — installs K3s, **hardens the box** (UFW, fail2ban, key-only SSH), syncs the admin kubeconfig as `larakube-<ip>`, and deploys Traefik.
-- **DOKS (managed):** create the cluster in the DigitalOcean UI → `doctl kubernetes cluster kubeconfig save <name>` → `larakube cloud:provision doks` (installs Traefik, returns the LoadBalancer IP). See the [DOKS quickstart](./doks-quickstart).
+- **VPS / Droplet:** `larakube cloud:init` — installs K3s, **hardens the box** (UFW, fail2ban, key-only SSH), syncs the admin kubeconfig as `larakube-<ip>`, and deploys Traefik.
+- **DOKS (managed):** create the cluster in the DigitalOcean UI → `doctl kubernetes cluster kubeconfig save <name>` → `larakube cloud:init doks` (installs Traefik, returns the LoadBalancer IP). See the [DOKS quickstart](./doks-quickstart).
 
 > Already provisioned and just want to re-apply firewall/SSH hardening? `larakube cloud:harden <env>`.
 

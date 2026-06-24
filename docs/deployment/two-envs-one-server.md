@@ -29,7 +29,7 @@ Every resource Plex provisions for a tenant is scoped to that identifier — so 
 ### 1. Provision the server and init the Commons
 
 ```bash
-larakube cloud:provision           # once per server
+larakube cloud:init           # once per server
 larakube plex:init                 # pick services: MariaDB, Redis, SeaweedFS, etc.
 ```
 
@@ -155,7 +155,7 @@ This drops the tenant's database, Redis DB, and bucket (with a confirmation prom
 
 Once your single-node two-env setup is proven, the natural graduation path is:
 
-- **Separate servers per environment** — `larakube cloud:provision` on a second VPS and `plex:init` there for production, keeping staging on the original.
+- **Separate servers per environment** — `larakube cloud:init` on a second VPS and `plex:init` there for production, keeping staging on the original.
 - **Managed Kubernetes (DOKS)** — move production to a multi-node cluster; staging stays single-node.
 - **Managed databases** — mark `mysql` / `mariadb` as `managed` in the production environment to point at DigitalOcean Managed MySQL, freeing up RAM for app pods.
 

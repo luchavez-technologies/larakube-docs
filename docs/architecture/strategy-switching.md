@@ -61,6 +61,6 @@ When you switch from `single-node` to `multi-node-ha`:
 - **Ingress**: Traefik shifts from a HostPort-based ingress to a Cloud LoadBalancer configuration suitable for managed Kubernetes clusters (e.g., DOKS).
 - **Redundancy**: LaraKube CLI increases pod replica counts and configures pod anti-affinity to ensure services are strictly distributed across your new nodes for true high availability.
 
-*(Note: If you have a legacy application that strictly requires a shared filesystem across multiple nodes, you can still opt into it by setting `"sharedStorage": true` in your environment blueprint and running `larakube cloud:provision:nfs` on the cluster. However, externalizing to S3 is strongly recommended.)*
+*(Note: If you have a legacy application that strictly requires a shared filesystem across multiple nodes, you can still opt into it by setting `"sharedStorage": true` in your environment blueprint and running `larakube cloud:init:nfs` on the cluster. However, externalizing to S3 is strongly recommended.)*
 
 *Your application remains completely untouched. You just graduated to enterprise scale.*

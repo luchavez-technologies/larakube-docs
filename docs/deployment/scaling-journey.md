@@ -145,7 +145,7 @@ sequenceDiagram
     Local-->>You: App on *.kube
 
     Note over You,VPS: Rung ① — Single-Node Hero
-    You->>VPS: larakube cloud:provision
+    You->>VPS: larakube cloud:init
     VPS-->>You: k3s installed, kubeconfig returned
     You->>VPS: larakube cloud:configure:gha
     You->>VPS: git push  (GitHub Actions builds & deploys)
@@ -159,6 +159,6 @@ sequenceDiagram
     Cloud-->>You: Running with high availability
 ```
 
-Same app, same blueprint — you turned the resilience dial and pointed at a bigger cluster. No application code changes. (Note: a managed cluster like DOKS is created through your provider and its kubeconfig handed to LaraKube CLI — `cloud:provision` is for standing up k3s on a plain VPS.)
+Same app, same blueprint — you turned the resilience dial and pointed at a bigger cluster. No application code changes. (Note: a managed cluster like DOKS is created through your provider and its kubeconfig handed to LaraKube CLI — `cloud:init` is for standing up k3s on a plain VPS.)
 
 → Next: pin down every field on the blueprint in the [Blueprint Anatomy](../architecture/blueprint-anatomy).

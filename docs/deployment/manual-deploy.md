@@ -85,5 +85,5 @@ Then open your web host in a browser.
 
 ## Troubleshooting
 - **`kubectl apply failed under the scoped credential: ... forbidden`** — the deploy hit a permission the scoped Role doesn't grant. Re-run after `./build` if you've upgraded the CLI; if it persists, it's a Role gap worth reporting.
-- **`Context 'larakube-<ip>' is missing or unreachable`** — re-run `larakube cloud:provision` (or check the box is up / firewall allows `6443`).
+- **`Context 'larakube-<ip>' is missing or unreachable`** — re-run `larakube cloud:init` (or check the box is up / firewall allows `6443`).
 - **Image won't pull on a multi-node cluster** — you side-loaded instead of pushing; configure a registry (Step 1) so every node can pull.

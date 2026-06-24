@@ -11,7 +11,7 @@ The `cloud:*` namespace covers the journey from local development to a productio
 For the full graduation story, see [The Scaling Journey](../deployment/scaling-journey), the [$6/mo Baseline](../deployment/6dollar-baseline), and [GitHub Actions](../deployment/github-actions) for CI/CD wiring.
 :::
 
-## `cloud:provision`
+## `cloud:init`
 The "VPS Bootstrap." Secures and prepares a fresh VPS for LaraKube. Installs K3s (Single-Node), hardens the firewall, configures the deploy user, and sets up the LaraKube Local CA.
 - **Target**: A bare Ubuntu/Debian VPS (DigitalOcean droplet, Hetzner CX11, Vultr, etc.).
 - **Result**: A cluster-ready box that `cloud:configure` and `cloud:deploy` can target.
@@ -44,7 +44,7 @@ The "Go Multi-Node" helper. On `multi-node-ha`, app pods run **stateless** (per-
 
 See [Storage across the scaling journey](../architecture/shared-storage#-storage-across-the-scaling-journey).
 
-## `cloud:provision:nfs`
+## `cloud:init:nfs`
 The "Shared Folder" escape hatch for multi-node clusters. Installs an in-cluster NFS provisioner so an environment can opt in to **`ReadWriteMany` (RWX)** shared storage instead of the stateless default — see [Storage across the scaling journey](../architecture/shared-storage#-storage-across-the-scaling-journey).
 - **What it installs**: a single NFS server (a block volume re-exported over NFS) plus a dynamic provisioner, exposed as the `larakube-nfs` StorageClass. After it's installed, set `"sharedStorage": true` on the environment and redeploy.
 - **Flags**: `--context`, `--size=10Gi` (backing block volume), `--storage-class=` (block class for the backing volume; defaults to the cluster default, e.g. `do-block-storage`), `--retain` (keep the PV on PVC delete).

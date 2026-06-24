@@ -5,7 +5,7 @@ description: What LaraKube CLI locks down on a self-managed VPS — UFW firewall
 ---
 # 🔒 Server Hardening
 
-When you run `larakube cloud:provision` on a fresh VPS, it doesn't just install k3s — it **hardens the box**. The same logic is available on demand for an already-provisioned server via `larakube cloud:harden`.
+When you run `larakube cloud:init` on a fresh VPS, it doesn't just install k3s — it **hardens the box**. The same logic is available on demand for an already-provisioned server via `larakube cloud:harden`.
 
 > Managed clusters (DOKS/EKS/GKE/AKS) don't need this — their nodes are hardened by the provider, and LaraKube CLI reaches them by kube-context, never SSH.
 

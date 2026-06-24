@@ -16,7 +16,7 @@ Traditional Kubernetes deployments often require expensive **Load Balancers** (c
 Instead of a LoadBalancer service, LaraKube CLI configures the Traefik Ingress Controller to use **HostPorts** on ports 80 and 443. This means Traefik listens directly on the VPS's public IP address, saving you the monthly load balancer fee while maintaining professional traffic management.
 
 ### 2. Automated Swap (Low-RAM Stability)
-Small VPS instances (like a 1GB or even 512MB droplet) can be unstable under heavy Kubernetes workloads. When you run `larakube cloud:provision`, LaraKube CLI automatically:
+Small VPS instances (like a 1GB or even 512MB droplet) can be unstable under heavy Kubernetes workloads. When you run `larakube cloud:init`, LaraKube CLI automatically:
 -   Detects the available memory.
 -   Creates and enables a **1GB Swap file** on the server.
 -   Ensures your cluster remains stable even when running multiple Laravel services (Web, Horizon, Reverb) on minimal hardware.
@@ -27,13 +27,13 @@ SSL is non-negotiable for production. LaraKube CLI's Cloud Pilot automatically c
 ## 🏆 Why It Matters
 -   **Cost Efficiency**: Save ~$200-400/year by skipping cloud-provider load balancers.
 -   **Production Parity**: Your application still runs on Kubernetes, ensuring that when you're ready to "graduate" to multi-node HA, your manifests are already proven and ready.
--   **Simplicity**: One command (`larakube cloud:provision`) transforms a fresh Linux box into a hardened, production-ready Kubernetes node.
+-   **Simplicity**: One command (`larakube cloud:init`) transforms a fresh Linux box into a hardened, production-ready Kubernetes node.
 
 ## 🏁 Getting Started
 Ready to deploy? Ensure your domain is pointed to your VPS IP, then run:
 
 ```bash
-larakube cloud:provision
+larakube cloud:init
 ```
 
 *Follow the prompts to secure your server, install K3s, and deploy the Single-Node Traefik stack.*

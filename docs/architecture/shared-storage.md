@@ -74,7 +74,7 @@ nature (its DB is a file), so it prompts you to switch to a networked engine fir
 Some apps genuinely need a shared cross-node filesystem — e.g. a worker writes `public/storage/sitemap.xml` and the web pod serves it, and rewriting that to S3 isn't worth it. For those, opt in per environment:
 
 ```bash
-larakube cloud:provision:nfs          # installs an in-cluster NFS provisioner → larakube-nfs StorageClass
+larakube cloud:init:nfs          # installs an in-cluster NFS provisioner → larakube-nfs StorageClass
 # then set "sharedStorage": true on the env, and redeploy
 ```
 

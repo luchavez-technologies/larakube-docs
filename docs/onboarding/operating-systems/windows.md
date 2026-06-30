@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 title: Windows
-description: Professional guide for running Laravel Kubernetes clusters on Windows using WSL2 and Docker Desktop.
+description: How to run LaraKube on Windows using WSL2 and k3s.
 ---
 # 🪟 Windows (WSL2)
 
@@ -12,10 +12,15 @@ We do not support running LaraKube CLI directly in PowerShell or CMD. You will e
 :::
 
 ## 🛠 Prerequisites
-1.  **WSL2 (Ubuntu Recommended)**: Install via `wsl --install`.
-2.  **Docker Desktop**:
-    - Go to **Settings** ➔ **General** ➔ Enable **Use the WSL 2 based engine**.
-    - Go to **Settings** ➔ **Resources** ➔ **WSL Integration** ➔ Enable for your distribution (e.g. `Ubuntu`).
+
+1. **WSL2 (Ubuntu Recommended)**: Install via `wsl --install`.
+2. That's it — `larakube setup` handles Docker Engine and the cluster for you.
+
+:::tip Already using Docker Desktop?
+You don't need to uninstall it. LaraKube detects Docker Desktop automatically and works around its WSL integration.
+
+Docker Engine installed directly inside WSL2 is preferred for new setups because it has no quirks with k3s. But if Docker Desktop is already running for other projects, `larakube setup` handles it transparently.
+:::
 
 ## 🚀 Setup Instructions
 
@@ -23,33 +28,35 @@ We do not support running LaraKube CLI directly in PowerShell or CMD. You will e
 Open your Ubuntu (or other Linux) terminal. All subsequent commands must be run here.
 
 ### 2. Install LaraKube CLI
-Download and install the standalone binary inside WSL2:
 ```bash
 curl -fsSL https://cli.larakube.app/install.sh | bash
 ```
 
-### 3. Prepare your Cluster
-Windows users have two elite options for local Kubernetes:
-
-**Option A: Docker Desktop (Integrated)**
-For the most integrated experience, use the engine provided by Docker Desktop:
-1.  Open **Docker Desktop Settings** ➔ **Kubernetes**.
-2.  Check **Enable Kubernetes**.
-
-LaraKube CLI inside WSL2 will automatically detect and orchestrate this cluster.
-
-**Option B: k3d (Automated & Isolated)**
-If you prefer a more isolated cluster approach inside your WSL2 environment:
+### 3. Run setup
 ```bash
-# Automated k3d cluster creation
-larakube cluster:setup
+larakube setup
 ```
 
-### 4. Port Forwarding & Trust
-1.  **Trust SSL**: Run `larakube trust` inside your WSL2 terminal to install the Local CA.
-2.  **Firewall**: Ensure your Windows firewall allows Docker Desktop to listen on ports 80 and 443.
+This installs Docker Engine (if needed), sets up a k3s cluster inside WSL2, and optionally installs k9s for browsing the cluster. Because k3s lives in the same environment as your terminal, it can see your project files at their real paths — which is exactly what `larakube up` needs.
 
-Your Windows browser will talk to the cluster inside WSL2 seamlessly.
+### 4. Trust SSL
+```bash
+larakube trust
+```
 
-## 📐 Why WSL2?
-By running LaraKube CLI inside WSL2, you get true Linux-native performance and file compatibility. Your Laravel code remains on the Linux filesystem, avoiding the slow "9p" mount performance of the standard Windows drive mounts.
+This installs the LaraKube Local CA into the Windows certificate store so your Windows browser trusts HTTPS on your local apps.
+
+### 5. Create and start your first app
+```bash
+larakube new my-app
+cd my-app
+larakube up
+```
+
+## 📐 Why WSL2 + k3s?
+
+LaraKube's local development model mounts your project directory directly into the running pods so code changes are reflected instantly without rebuilding images. For this to work, the Kubernetes node must share the same filesystem as your terminal session.
+
+k3s running inside WSL2 satisfies this — it IS your WSL2 environment. Docker Engine installed directly in WSL2 runs in the same environment too, so both k3s and `docker build` share your project files at their real paths.
+
+Your Laravel code stays on the Linux filesystem, which also means you avoid the slow "9p" cross-filesystem performance that comes with storing projects on the Windows drive (`/mnt/c/...`).

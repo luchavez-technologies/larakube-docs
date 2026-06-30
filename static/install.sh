@@ -7,20 +7,7 @@ set -e
 
 echo "🚀 LaraKube Installer starting..."
 
-# 1. System Check — Docker is the only prerequisite. The local Kubernetes
-#    cluster (k3s/k3d) and kubectl are set up for you on your first `larakube up`.
-echo "🔍 Checking prerequisites..."
-if ! command -v docker &> /dev/null; then
-    echo "❌ Error: Docker is not installed. Please install Docker first: https://docs.docker.com/get-docker/"
-    exit 1
-fi
-
-# 3. Check for Existing Installation
-if command -v larakube &> /dev/null; then
-    echo "📦 LaraKube is already installed at $(which larakube). Updating to the latest version..."
-fi
-
-# 4. Detect OS and Architecture
+# 1. Detect OS and Architecture
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m)
 
@@ -48,8 +35,12 @@ else
     exit 1
 fi
 
+# 2. Check for Existing Installation
+if command -v larakube &> /dev/null; then
+    echo "📦 LaraKube is already installed at $(which larakube). Updating to the latest version..."
+fi
+
 BINARY_NAME="larakube-$OS-$ARCH"
-# Point to the official latest release
 LATEST_RELEASE_URL="https://github.com/luchavez-technologies/larakube-cli/releases/latest/download/$BINARY_NAME"
 
 # 3. Download LaraKube Standalone CLI
@@ -86,5 +77,10 @@ echo "  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═�
 echo "--------------------------------------------------------"
 echo "Next steps:"
 echo " 1. Verify installation: larakube --version"
-echo " 2. Run 'larakube new' to build your first masterpiece!"
+if [ "$OS" == "linux" ]; then
+    echo " 2. Set up your environment: larakube setup"
+    echo " 3. Create your first app:   larakube new my-app"
+else
+    echo " 2. Create your first app: larakube new my-app"
+fi
 echo ""

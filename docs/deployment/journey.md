@@ -9,7 +9,7 @@ Every LaraKube CLI deployment follows the **same spine**. Only the *very last* s
 
 ```mermaid
 flowchart TD
-    P["☁️ larakube cloud:init<br/>(VPS)<br/><br/>— or for DOKS —<br/>create cluster in DO UI →<br/>doctl kubeconfig save →<br/>larakube cloud:init doks"]
+    P["☁️ larakube cloud:create --vps<br/>(or --managed for DOKS)<br/><br/>— or bring your own —<br/>cloud:init (VPS) /<br/>doctl + cloud:init doks"]
     N["📦 larakube new myapp<br/>(or larakube init in an existing app)"]
     PI["🤝 larakube plex:init<br/>(cluster owner, once)"]
     PJ["🔌 larakube plex:join<br/>(each app that shares the Commons)"]
@@ -38,8 +38,9 @@ flowchart TD
 ### 1 · Cluster — *once per cluster*
 Stand up the place your apps will run, and get its admin context onto your machine.
 
-- **VPS / Droplet:** `larakube cloud:init` — installs K3s, **hardens the box** (UFW, fail2ban, key-only SSH), syncs the admin kubeconfig as `larakube-<ip>`, and deploys Traefik.
-- **DOKS (managed):** create the cluster in the DigitalOcean UI → `doctl kubernetes cluster kubeconfig save <name>` → `larakube cloud:init doks` (installs Traefik, returns the LoadBalancer IP). See the [DOKS quickstart](./doks-quickstart).
+- **Recommended — `larakube cloud:create --vps` (or `--managed`):** provisions the droplet or DOKS cluster itself via OpenTofu, then runs the same steps below automatically. See [Provisioning Infrastructure](./cloud-create).
+- **Bring your own VPS / Droplet:** `larakube cloud:init` — installs K3s, **hardens the box** (UFW, fail2ban, key-only SSH), syncs the admin kubeconfig as `larakube-<ip>`, and deploys Traefik.
+- **Bring your own DOKS (managed):** create the cluster in the DigitalOcean UI → `doctl kubernetes cluster kubeconfig save <name>` → `larakube cloud:init doks` (installs Traefik, returns the LoadBalancer IP). See the [DOKS quickstart](./doks-quickstart).
 
 > Already provisioned and just want to re-apply firewall/SSH hardening? `larakube cloud:harden <env>`.
 
@@ -47,7 +48,7 @@ Stand up the place your apps will run, and get its admin context onto your machi
 - `larakube new myapp` — scaffold a fresh project, **or**
 - `larakube init` — adopt an existing Laravel app.
 
-Both write a `.larakube.json` blueprint and generate your Kubernetes manifests.
+Both write a `.larakube.json` blueprint with a **`local`** environment only — cloud environments (`production`, `staging`, …) are opt-in, created in step 4 via `larakube env` (or automatically the first time you run `cloud:configure`).
 
 ### 3 · Shared services — *optional, multi-tenant only*
 If several apps should share one set of backing services (a Plex **Commons**):
@@ -58,6 +59,7 @@ If several apps should share one set of backing services (a Plex **Commons**):
 Skip this entirely and each app just deploys its **own** Postgres/Redis pods. See [Multiple projects](./multiple-projects).
 
 ### 4 · Target + registry
+- `larakube env production` — create the cloud environment (ingress, managed services, hosts). `cloud:configure` does this automatically the first time you target an environment that doesn't exist yet.
 - Set the env's **web host** (e.g. `app.example.com`) — `cloud:deploy` will also prompt for it if missing.
 - `larakube cloud:configure:registry` — pick **GHCR** or **Docker Hub**. Required for the CI/CD path; optional for manual VPS deploys (those can side-load the image over SSH instead).
 

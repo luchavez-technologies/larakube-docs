@@ -49,6 +49,16 @@ doctl auth init
 
 ## Step 1: Create the DOKS cluster
 
+**Recommended — let LaraKube CLI provision it:**
+
+```bash
+larakube cloud:create --provider=do --managed
+```
+
+This runs `tofu apply` to create the cluster, merges its kubeconfig locally, **and runs Step 2 (Traefik + Let's Encrypt) for you automatically** — see [Provisioning Infrastructure](./cloud-create) for the full walkthrough and [Provisioning with OpenTofu & Terraform](../architecture/provisioning) for how it works under the hood. If you use this path, skip ahead to [Step 3](#step-3-point-dns-at-the-loadbalancer-cname-pattern).
+
+**Bring your own cluster instead:** if you'd rather create the cluster yourself (DigitalOcean UI, `doctl`, or an already-existing cluster), that still works:
+
 ```bash
 doctl kubernetes cluster create my-larakube-cluster \
   --region sgp1 \
@@ -72,6 +82,8 @@ kubectl cluster-info   # verify connection
 ```
 
 ## Step 2: Provision Traefik + Let's Encrypt
+
+*(Already done if you used `cloud:create --managed` in Step 1 — skip to [Step 3](#step-3-point-dns-at-the-loadbalancer-cname-pattern).)*
 
 ```bash
 larakube cloud:init:doks --context do-sgp1-my-larakube-cluster

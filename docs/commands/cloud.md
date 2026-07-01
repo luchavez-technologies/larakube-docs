@@ -8,12 +8,26 @@ description: Provision VPS infrastructure and deploy to remote Kubernetes cluste
 The `cloud:*` namespace covers the journey from local development to a production-grade VPS. These commands graduate your project from `.kube` to a real domain on a real cluster.
 
 :::tip Pairs with the deployment guides
-For the full graduation story, see [The Scaling Journey](../deployment/scaling-journey), the [$6/mo Baseline](../deployment/6dollar-baseline), and [GitHub Actions](../deployment/github-actions) for CI/CD wiring.
+For the full graduation story, see [The Scaling Journey](../deployment/scaling-journey), the [Single-Node Hero](../architecture/single-node-hero) $6/mo baseline, and [GitHub Actions](../deployment/github-actions) for CI/CD wiring. Don't have infrastructure yet? [`cloud:create`](#cloud-create) provisions it for you.
 :::
+
+## `cloud:create {environment?}` {#cloud-create}
+The "Infrastructure Provisioner." Creates the droplet or managed cluster itself via OpenTofu (or Terraform), then hands off to `cloud:init` / `cloud:init:doks` — no more bringing your own pre-existing box. See [Provisioning with OpenTofu & Terraform](../architecture/provisioning) for how it works and [Provisioning Infrastructure](../deployment/cloud-create) for the walkthrough.
+- **Flags**: `--provider=do`, `--vps` (droplet + k3s) or `--managed` (DOKS).
+- **New or attach**: offers to provision a new stack, or attach the given environment to an existing registered one.
+- **Aliased as**: `cloud:new`.
+
+## `cloud:destroy {stack?}`
+Tears down a stack provisioned by `cloud:create` — `tofu destroy` plus removal from the global registry.
+- **Warns** if any environments are still bound to the stack.
+- **Distinct from `cloud:nuke`**: this deletes the infrastructure itself; `cloud:nuke` only wipes an app's resources and leaves the box/cluster running.
+
+## `cloud:stacks`
+Lists every OpenTofu-provisioned stack registered on this machine — kind, region, IP/context, and bound environments.
 
 ## `cloud:init`
 The "VPS Bootstrap." Secures and prepares a fresh VPS for LaraKube. Installs K3s (Single-Node), hardens the firewall, configures the deploy user, and sets up the LaraKube Local CA.
-- **Target**: A bare Ubuntu/Debian VPS (DigitalOcean droplet, Hetzner CX11, Vultr, etc.).
+- **Target**: A bare Ubuntu/Debian VPS (DigitalOcean droplet, Hetzner CX11, Vultr, etc.) — or one just created by `cloud:create --vps`, which runs this automatically.
 - **Result**: A cluster-ready box that `cloud:configure` and `cloud:deploy` can target.
 - **One-time per VPS**: Run once when you stand up a new server.
 

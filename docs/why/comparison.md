@@ -21,10 +21,7 @@ How does LaraKube CLI stack up against other Laravel development and deployment 
 -   **Stability**: LaraKube CLI's cluster-native volume strategy and automated manifest engine solve the common permission and configuration errors found in simpler tools.
 
 ## 🌀 LaraKube CLI vs. Spin Pro
-We are huge fans of [Server Side Up's Spin](https://getspin.pro/). It is a fantastic tool for managing Docker Compose environments.
--   **Philosophy**: Spin focuses on making Docker Compose easy and standardized.
--   **Orchestrator**: LaraKube CLI focuses on bringing that same level of "Pro" developer experience to **Kubernetes**.
--   **The Synergy**: If you love the stability and performance of [Server Side Up's Docker Images](https://serversideup.net/open-source/docker-php/), you will feel right at home with LaraKube CLI. We use their images as our absolute foundation for cluster reliability.
+We are huge fans of [Server Side Up's Spin](https://getspin.pro/) — a fantastic tool for managing Docker Compose environments, and the source of the PHP Docker images LaraKube CLI itself builds on. The short version: Spin standardizes Docker Compose, while LaraKube CLI brings that same "Pro" experience to **Kubernetes**. For the full comparison — including the on-premise/air-gapped case and the VPS-to-managed-cluster migration story — see [LaraKube CLI vs Docker Swarm & Spin](./larakube-vs-swarm).
 
 ## 🚢 LaraKube CLI vs. Laravel Forge
 [Laravel Forge](https://forge.laravel.com) is the gold standard for traditional server management. LaraKube CLI serves a different architectural philosophy:

@@ -42,7 +42,7 @@ LaraKube CLI puts Tallio on a **single $6–12/mo droplet**: her app, its Postgr
 
 **Rough cost:** ~$6–12/mo — a single droplet (1–2 GB), nothing else.
 
-This is where ~90% of projects should start. → [The $6/mo Baseline](./6dollar-baseline) · [The Single-Node Hero](../architecture/single-node-hero)
+This is where ~90% of projects should start. → [The Single-Node Hero](../architecture/single-node-hero)
 
 ## ② Single node, two apps — *a startup finds its shape*
 
@@ -95,7 +95,7 @@ The move is a **dial, not a rewrite**: flip the strategy, point the database at 
 
 **Rough cost:** ~$50–90/mo — a 2-node managed cluster (DOKS) + a load balancer + a managed database. The jump from $12 is what "survives a node dying at 3am" costs.
 
-This is the natural "we're a real business now" step. → [Strategy Switching](../architecture/strategy-switching) · [Deployment providers](./overview)
+This is the natural "we're a real business now" step. → [How you climb, step by step](#graduating-single-node-to-multi-node-ha-step-by-step) · [Deployment providers](./overview)
 
 ## ⑤ Multiple nodes, two apps — *a company that wants clean lines*
 
@@ -128,6 +128,22 @@ The whole point: **moving between rungs is configuration, not a port.** Your app
 - **More density:** add a second repo to the same cluster (rung ②), or join a **Plex** to share the Commons (rung ③/⑥) with `larakube plex join`.
 
 Because a service is "just a host" to your app, the scariest-sounding migration — *"move our database off the shared box"* — is a hostname change and a redeploy. That's the endgame LaraKube CLI is built for: **pick the rung that fits your wallet and your risk today, and climb the moment you need to — never by rewriting, only by reconfiguring.**
+
+### Graduating single-node to multi-node HA, step by step
+
+The most common climb (rung ① or ② → ④) looks like this:
+
+1. **Update the blueprint.** Usually you don't even need to edit it by hand — recording a multi-node managed cluster (via `cloud:create --managed` or `cloud:configure` against a cluster like DOKS/EKS) auto-detects the node count and switches `strategy` to `multi-node-ha` for you. To set it manually, change `strategy` in `.larakube.json` from `"single-node"` to `"multi-node-ha"`.
+2. **Externalize state:** `larakube cloud:externalize production` — flips `FILESYSTEM_DISK`, `SESSION_DRIVER`, `CACHE_STORE`, and `QUEUE_CONNECTION` to S3/Spaces and Redis, since stateless pods can land on any node.
+3. **Regenerate manifests:** `larakube heal`.
+4. **Deploy:** commit, push, and let CI/CD (or `cloud:deploy`) roll it out.
+
+Under the hood, that strategy switch changes three things:
+- **Stateless pods** — `web`/`horizon`/`ssr` drop persistent storage for ephemeral `emptyDir` volumes, so Kubernetes can replicate them across nodes instantly.
+- **Ingress** — Traefik shifts from HostPort-based ingress (single-node) to a Cloud LoadBalancer (managed clusters like DOKS).
+- **Redundancy** — replica counts increase and pod anti-affinity spreads services strictly across nodes for real high availability.
+
+Legacy app that truly needs a shared filesystem across nodes? Set `"sharedStorage": true` and run `larakube cloud:init:nfs` — but externalizing to S3 is strongly recommended first. Your application code stays completely untouched either way.
 
 ## 🛠️ The same commands at every stage
 

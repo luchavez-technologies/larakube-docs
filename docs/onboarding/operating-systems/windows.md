@@ -13,13 +13,23 @@ We do not support running LaraKube CLI directly in PowerShell or CMD. You will e
 
 ## 🛠 Prerequisites
 
-1. **WSL2 (Ubuntu Recommended)**: Install via `wsl --install`.
+1. **WSL2 (Ubuntu Recommended)**: Install via `wsl --install`, or install **Ubuntu from the Microsoft Store** — this tends to cause fewer headaches than the distro `wsl --install` provisions by default.
 2. That's it — `larakube setup` handles Docker Engine and the cluster for you.
 
 :::tip Already using Docker Desktop?
-You don't need to uninstall it. LaraKube detects Docker Desktop automatically and works around its WSL integration.
+You don't need to uninstall it — but we recommend **quitting Docker Desktop** (right-click its tray icon → Quit) before running `larakube setup`, so a native Docker Engine can be installed inside WSL2 instead of relying on Docker Desktop's integration.
+
+This is safe: it won't touch or break any existing Docker Desktop images, containers, or volumes. When you relaunch Docker Desktop afterwards, its own Docker CLI takes priority again in any distro it's integrated with — the native install inside WSL2 keeps working independently.
 
 Docker Engine installed directly inside WSL2 is preferred for new setups because it has no quirks with k3s. But if Docker Desktop is already running for other projects, `larakube setup` handles it transparently.
+:::
+
+:::caution Docker Desktop's CLI can "leak" into a fresh WSL2 distro
+If Docker Desktop is installed on Windows — even if it isn't currently running — its `docker` CLI can still show up inside a brand-new Ubuntu WSL2 install via Docker Desktop's WSL integration. This is expected and harmless, but it can cause `wsl` to behave oddly if you have multiple distros (e.g. commands landing in the wrong one). If that happens, run this from PowerShell to make sure your intended distro is the default:
+
+```powershell
+wsl --set-default Ubuntu
+```
 :::
 
 ## 🚀 Setup Instructions

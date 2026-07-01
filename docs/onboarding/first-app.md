@@ -29,9 +29,16 @@ LaraKube CLI will guide you through several thoughtful decisions:
 ## 3. Configuration (The .env Source of Truth)
 LaraKube CLI uses your local environment files to configure the entire cluster.
 - **Local:** Edit the standard `.env` file.
-- **Production:** A `.env.production` was created for you.
 
-LaraKube CLI automatically configures these files with the correct Kubernetes hostnames (e.g., `DB_HOST=mysql`), so you usually don't need to change much for local development.
+LaraKube CLI automatically configures this file with the correct Kubernetes hostnames (e.g., `DB_HOST=mysql`), so you usually don't need to change much for local development.
+
+Cloud environments (production, staging, …) aren't scaffolded up front — a fresh project starts with `local` only. When you're ready to deploy, create one explicitly:
+
+```bash
+larakube env production
+```
+
+This creates `.env.production`, asks about ingress/managed services/hosts for that environment, and generates its manifests. See [Deploy to Production](/docs/deployment/journey) for the full flow.
 
 ## 4. Launching the Cluster
 Enter your new project directory and bring the environment to life:

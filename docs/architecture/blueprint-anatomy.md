@@ -11,7 +11,7 @@ Don't let a big example scare you: **you only fill in what you use.** Most of th
 
 ## 🌱 The smallest blueprint
 
-This is a complete, valid blueprint:
+This is what `larakube new`/`init` actually produce — a complete, valid blueprint:
 
 ```json title=".larakube.json"
 {
@@ -20,13 +20,12 @@ This is a complete, valid blueprint:
     "phpVersion": "8.5",
     "database": "sqlite",
     "environments": {
-        "local": {},
-        "production": {}
+        "local": {}
     }
 }
 ```
 
-That's enough to run locally and deploy. Everything else on this page is something you *add* as your needs grow.
+That's enough to run locally. Cloud environments are opt-in — running `larakube env production` (or `cloud:configure`) adds a `"production": {}` entry the same way. Everything else on this page is something you *add* as your needs grow.
 
 ## 📄 A fuller example
 

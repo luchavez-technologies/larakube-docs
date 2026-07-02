@@ -45,19 +45,17 @@ larakube cloud:init
 Connect your local code to your remote server and configure your GitOps pipeline.
 
 ```bash
-# 1. Link your project to the remote server (IP/SSH + web host)
-larakube cloud:configure:base
-
-# 2. Set up GitHub Actions CI/CD
-larakube cloud:configure:gha
+# Guided flow: server + web host, then CI/CD (GitHub Actions or GitLab CI,
+# auto-detected from your git remote)
+larakube cloud:configure
 ```
 
-> Or run `larakube cloud:configure` (no suffix) for the **guided** flow that walks
-> through the server, an optional shared Commons, and CI in one go.
+> Prefer a targeted re-run instead of the full guided flow? `larakube cloud:configure --only=ci` regenerates just the
+> CI workflow + secrets, and `--only=hosts`/`--only=registry` re-run just the host or registry step.
 
 ### What's happening here:
--   The **base** configuration records your server connection (IP/SSH or managed context) and the real web domain into `.larakube.json`.
--   The **GHA** configuration encodes your secrets, extracts your minified Kubeconfig, and generates a hardened `.github/workflows/larakube-deploy-production.yml` file.
+-   **Server + hosts** — records your server connection (IP/SSH or managed context) and the real web domain into `.larakube.json`.
+-   **CI/CD** — encodes your secrets, extracts your minified Kubeconfig, and generates a hardened `.github/workflows/larakube-deploy-production.yml` file (or `.gitlab-ci.yml`, if your remote is GitLab).
 
 ---
 

@@ -13,10 +13,10 @@ flowchart TD
     N["📦 larakube new myapp<br/>(or larakube init in an existing app)"]
     PI["🤝 larakube plex:init<br/>(cluster owner, once)"]
     PJ["🔌 larakube plex:join<br/>(each app that shares the Commons)"]
-    R["🏷 larakube cloud:configure:registry<br/>(GHCR / Docker Hub)"]
+    R["🏷 larakube cloud:configure --only=registry<br/>(GHCR / Docker Hub)"]
     F{"🚀 Deploy how?"}
     M["🖐 larakube cloud:deploy production"]
-    G["🤖 larakube cloud:configure:gha"]
+    G["🤖 larakube cloud:configure --only=ci"]
     Push["⬆️ git push"]
     Live(("🌍 Production site"))
 
@@ -61,7 +61,7 @@ Skip this entirely and each app just deploys its **own** Postgres/Redis pods. Se
 ### 4 · Target + registry
 - `larakube env production` — create the cloud environment (ingress, managed services, hosts). `cloud:configure` does this automatically the first time you target an environment that doesn't exist yet.
 - Set the env's **web host** (e.g. `app.example.com`) — `cloud:deploy` will also prompt for it if missing.
-- `larakube cloud:configure:registry` — pick **GHCR** or **Docker Hub**. Required for the CI/CD path; optional for manual VPS deploys (those can side-load the image over SSH instead).
+- `larakube cloud:configure --only=registry` — pick **GHCR** or **Docker Hub**. Required for the CI/CD path; optional for manual VPS deploys (those can side-load the image over SSH instead).
 
 ### 5 · Deploy — **the fork** 👇
 This is the only step that differs:
@@ -72,7 +72,7 @@ This is the only step that differs:
 | **Trigger** | run the command from your machine | `git push` to your deploy branch |
 | **Where it builds** | on your machine | on GitHub's runners (spares a 1GB VPS) |
 | **Registry** | optional (VPS side-load) · required for multi-node | required (GHCR / Docker Hub) |
-| **One-time setup** | none beyond provisioning | `cloud:configure:gha` + secrets |
+| **One-time setup** | none beyond provisioning | `cloud:configure --only=ci` + secrets |
 | **Re-deploy** | re-run `cloud:deploy` | `git push` |
 
 Pick the path that fits and follow its page — they share everything above, so you only ever learn step 5 twice.

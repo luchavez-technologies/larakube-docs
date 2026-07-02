@@ -31,7 +31,7 @@ Walks through:
 3. **Admin CIDR (optional)** — restrict SSH and the k3s API (6443) to your IP instead of leaving them open.
 4. **Apply** — a final confirmation before anything is created (real resources, real cost).
 
-Once the droplet exists, LaraKube CLI waits for SSH to come up, then runs the same install-and-harden pipeline as `cloud:init`: K3s, UFW/fail2ban, key-only SSH, Traefik. If you ran this from inside a project (and passed/answered an environment), that environment is bound to the new stack automatically — no separate `cloud:configure:base` step needed.
+Once the droplet exists, LaraKube CLI waits for SSH to come up, then runs the same install-and-harden pipeline as `cloud:init`: K3s, UFW/fail2ban, key-only SSH, Traefik. If you ran this from inside a project (and passed/answered an environment), that environment is bound to the new stack automatically — no separate `cloud:configure` step needed.
 
 ## Provision a managed cluster (DOKS)
 
@@ -77,7 +77,7 @@ Runs `tofu destroy` against the chosen stack and removes it from the registry. I
 Once a stack exists and an environment is bound to it, the rest of the journey is unchanged:
 
 ```bash
-larakube cloud:configure:registry <environment>   # container registry
-larakube cloud:configure:gha <environment>         # CI secrets
+larakube cloud:configure <environment> --only=registry   # container registry
+larakube cloud:configure <environment> --only=ci          # CI secrets
 larakube cloud:deploy <environment>
 ```

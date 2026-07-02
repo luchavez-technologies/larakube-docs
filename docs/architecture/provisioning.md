@@ -46,7 +46,7 @@ Provisioning targets DigitalOcean today (the module contract is written so other
 
 ## What Tofu deliberately doesn't touch
 
-App secrets — `.env` files, scoped kubeconfigs — never enter Tofu or its state. Those continue to flow through the existing `cloud:configure:gha` → GitHub Secrets path. Tofu's scope is infrastructure only: the DigitalOcean API token is injected as `TF_VAR_do_token` from the global config and never written into HCL.
+App secrets — `.env` files, scoped kubeconfigs — never enter Tofu or its state. Those continue to flow through the existing `cloud:configure --only=ci` → GitHub Secrets path. Tofu's scope is infrastructure only: the DigitalOcean API token is injected as `TF_VAR_do_token` from the global config and never written into HCL.
 
 ## See also
 

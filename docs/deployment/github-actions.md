@@ -34,13 +34,13 @@ Running `composer install` or `npm run build` directly on a 1GB droplet will cra
 The one-time setup generates the workflow and wires up your secrets:
 
 ```bash
-larakube cloud:configure:gha
+larakube cloud:configure --only=ci
 ```
 
-This generates a hardened workflow at `.github/workflows/larakube-deploy-{env}.yml`, securely extracts minified cluster credentials, and configures the `ghcr-login` pull secret on your remote cluster. Under the hood it calls `gha:configure` for the secret upload — you can run that step on its own for a specific environment:
+This generates a hardened workflow at `.github/workflows/larakube-deploy-{env}.yml`, securely extracts minified cluster credentials, and configures the `ghcr-login` pull secret on your remote cluster. Target a specific environment directly:
 
 ```bash
-larakube gha:configure production
+larakube cloud:configure production --only=ci
 ```
 
 - Uses an isolated GitHub CLI container (no local `gh` install needed).
@@ -49,7 +49,7 @@ larakube gha:configure production
 
 ### Related `gha:*` commands
 - `larakube gha:login` — authenticate with GitHub via the official CLI (once per machine).
-- `larakube gha:user` — print the currently authenticated GitHub user (verify which account `gha:configure` will target).
+- `larakube gha:user` — print the currently authenticated GitHub user (verify which account `cloud:configure --only=ci` will target).
 - `larakube gha:switch` — switch between authenticated GitHub accounts (personal/work).
 
 All `gha:*` commands run inside the same isolated GitHub CLI container — no local `gh` install required.

@@ -84,8 +84,8 @@ The "System Cleanup." Remove the LaraKube CLI application from your system.
 
 LaraKube CLI provides built-in tools to manage your CI/CD workflows directly from the CLI.
 
-## `gha:configure {environment}`
-The "CI Architect." Configure GitHub Actions secrets and workflows for a specific environment using the native GitHub CLI container.
+## `cloud:configure {environment} --only=ci`
+The "CI Architect." Configure GitHub Actions (or GitLab CI, auto-detected from your git remote) secrets and workflows for a specific environment using the native GitHub CLI container.
 
 ## `gha:login`
 The "CI Authenticator." Authenticate with GitHub using the official CLI.

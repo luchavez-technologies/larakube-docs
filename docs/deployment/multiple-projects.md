@@ -51,13 +51,11 @@ Traefik will sort out which app each request belongs to based on the hostname in
 From **each** project's repository, run the normal cloud setup pointing at the **same** server:
 
 ```bash
-# In the blog repo
-larakube cloud:configure       # set the server IP, SSH, and web host
-larakube gha:configure         # wire up GitHub Actions secrets
+# In the blog repo — server IP, SSH, web host, then CI/CD secrets, all in one guided flow
+larakube cloud:configure
 
 # In the shop repo — same server IP, different domain
 larakube cloud:configure
-larakube gha:configure
 ```
 
 Each repo gets its own GitHub Actions workflow (`.github/workflows/larakube-deploy-production.yml`). Pushing to the deploy branch of either repo deploys **only that app**, into **only its namespace**, on the shared cluster. The two pipelines are completely independent and never step on each other.

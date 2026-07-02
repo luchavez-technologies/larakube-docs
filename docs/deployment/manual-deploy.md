@@ -42,7 +42,7 @@ On a **single-node VPS**, you can skip this — `cloud:deploy` will side-load th
 On a **multi-node** cluster (e.g. DOKS), every node must be able to pull the image, so configure a registry:
 
 ```bash
-larakube cloud:configure:registry      # pick GHCR or Docker Hub
+larakube cloud:configure --only=registry      # pick GHCR or Docker Hub
 ```
 
 ## Step 2 — deploy

@@ -114,7 +114,7 @@ cdn.example.com            CNAME  ingress.example.com   ← e.g. a Plex S3 host
 No hand-editing — point an environment at the cluster with:
 
 ```bash
-larakube cloud:configure:base production
+larakube cloud:configure production
 ```
 
 Pick the DOKS context (e.g. `do-sgp1-my-larakube-cluster`) and provider `doks`. This writes the managed target and a sensible default `storageClass`:
@@ -134,7 +134,7 @@ Pick the DOKS context (e.g. `do-sgp1-my-larakube-cluster`) and provider `doks`. 
 A managed cluster can't be SSH-sideloaded, so the image is pushed to a registry the cluster pulls from:
 
 ```bash
-larakube cloud:configure:registry production
+larakube cloud:configure production --only=registry
 ```
 
 - **Provider**: `ghcr` (GitHub Container Registry) or `dockerhub`
@@ -169,7 +169,7 @@ This builds the image (for the cluster's CPU architecture, auto-detected), pushe
 ### Option B: GitHub Actions (recommended for production)
 
 ```bash
-larakube cloud:configure:gha production
+larakube cloud:configure production --only=ci
 ```
 
 Generates `.github/workflows/larakube-deploy-production.yml`, which builds, pushes, and deploys on `git push`.
@@ -304,7 +304,7 @@ Block Storage PVCs (do-block-storage)
 ## Next steps
 
 - **HTTPS**: add the Traefik annotations (Step 8)
-- **CI/CD**: `larakube cloud:configure:gha production`
+- **CI/CD**: `larakube cloud:configure production --only=ci`
 - **Multi-tenancy**: share a Commons across apps with [Plex](./multiple-projects#going-further-plex)
 - **Scale**: see [Going multi-node](#going-multi-node)
 

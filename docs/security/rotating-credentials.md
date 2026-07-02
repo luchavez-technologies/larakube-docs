@@ -24,7 +24,7 @@ This prints the live `deployer` Role's rules, confirms the RoleBinding actually 
 If a `{ENV}_KUBECONFIG` secret leaks, you want the leaked token **dead** but CI **still working**. That's a rotate, not a revoke:
 
 ```bash
-larakube cloud:configure:gha staging --rotate
+larakube cloud:configure staging --only=ci --rotate
 ```
 This deletes the current bound-token Secret (the leaked token dies instantly), mints a **fresh** one, and re-uploads the new scoped kubeconfig to GitHub. Your next deploy uses the new token; the leaked copy is worthless.
 
@@ -43,17 +43,17 @@ This deletes the `deployer` ServiceAccount, Role, RoleBinding, and token in that
 - `--with-secret` also deletes the GitHub `{ENV}_KUBECONFIG` secret (best-effort; run inside the repo).
 - `--force` skips the confirmation.
 
-To re-grant later, just run `larakube cloud:configure:gha <env>` (or `cloud:deploy` for the manual path) again.
+To re-grant later, just run `larakube cloud:configure <env> --only=ci` (or `cloud:deploy` for the manual path) again.
 
 ## Which do I use?
 
 | Situation | Command |
 |---|---|
 | "Who has access?" / "What can a credential do?" | `cluster:users [env]` lists access · add `--scope` to audit a deploy SA's live rules |
-| "A CI secret leaked — kill it, keep deploying" | `cloud:configure:gha <env> --rotate` |
+| "A CI secret leaked — kill it, keep deploying" | `cloud:configure <env> --only=ci --rotate` |
 | "Decommissioning this app/env" | `cluster:revoke <namespace> --with-secret` |
-| "I upgraded the CLI and the Role changed" | `cloud:configure:gha <env>` (re-applies the Role) |
+| "I upgraded the CLI and the Role changed" | `cloud:configure <env> --only=ci` (re-applies the Role) |
 
 ## A note on upgrades
 
-A namespace-scoped ServiceAccount can't modify its **own** Role, so a CLI upgrade that *widens* the Role only takes effect when an admin re-applies it. The manual `cloud:deploy` does this on every run; a pure-CI setup should **re-run `cloud:configure:gha <env>`** after upgrading LaraKube CLI.
+A namespace-scoped ServiceAccount can't modify its **own** Role, so a CLI upgrade that *widens* the Role only takes effect when an admin re-applies it. The manual `cloud:deploy` does this on every run; a pure-CI setup should **re-run `cloud:configure <env> --only=ci`** after upgrading LaraKube CLI.

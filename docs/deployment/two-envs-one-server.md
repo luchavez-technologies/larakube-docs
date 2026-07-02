@@ -40,7 +40,7 @@ In your app's project directory, configure and join production first:
 ```bash
 larakube cloud:configure           # set server IP, web host
 larakube plex:join production      # provisions: DB plex_react / Redis DB 0 / bucket plex_react
-larakube cloud:configure:gha production
+larakube cloud:configure production --only=ci
 ```
 
 Push to `main`. Your production environment deploys.
@@ -52,7 +52,7 @@ With production running, add a staging environment to the same project:
 ```bash
 larakube env staging               # add staging env, set staging.example.com host
 larakube plex:join staging         # provisions: DB plex_react_staging / Redis DB 1 / bucket plex_react-staging
-larakube cloud:configure:gha staging
+larakube cloud:configure staging --only=ci
 ```
 
 Push to `develop`. Staging deploys alongside production on the same node.
@@ -88,7 +88,7 @@ Configure each GHA workflow to trigger on its own branch:
 | `main` | `production` | `branches: ["main"]` |
 | `develop` | `staging` | `branches: ["develop"]` |
 
-`larakube cloud:configure:gha staging` automatically wires the staging workflow to `develop` (or whatever branch you specify during setup).
+`larakube cloud:configure staging --only=ci` automatically wires the staging workflow to `develop` (or whatever branch you specify during setup).
 
 ---
 

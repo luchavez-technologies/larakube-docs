@@ -9,6 +9,15 @@ LaraKube CLI is evolving rapidly. We maintain a high-level changelog here for ma
 
 ## 🚀 Unified Ecosystem Updates
 
+### July 2026: Opt-In Environments & Unified `cloud:configure` (Unreleased)
+A command-surface cleanup: `production` is no longer assumed, and cloud setup collapses into one command.
+
+- **Environments are opt-in**: `larakube new`/`init` now scaffold a `local`-only blueprint — no more automatic `production` environment or `.env.production`. Create a cloud environment explicitly with `larakube env production` (or let `larakube cloud:configure production` create it on demand, running the same ingress/managed-services wizard either way).
+- **`cloud:configure` absorbs `:base` / `:gha` / `:gitlab` / `:registry`**: those four sub-commands are removed (clean break, no aliases). Everything lives in `larakube cloud:configure {environment?} {--only=registry|ci|hosts} {--rotate}` — no `--only` runs the full guided flow; `--only=registry`/`--only=ci`/`--only=hosts` re-run a single step. `--only=ci` auto-detects GitHub vs. GitLab from your git remote. `cloud:configure:tunnel` is unaffected.
+- **`cloud:configure` no longer silently resets your deploy target**: re-running it on an environment that already has a saved server/context now asks before overwriting it.
+- **`cloud:deploy`'s host guard** now also catches a leftover local (`*.kube`/`*.dev.test`) web host, closing a gap where only a missing/placeholder host was caught.
+- **Multiple domains per app** (`additionalWebHosts`): route extra hostnames to the same web pod as your primary `hosts.web` — built for Laravel apps using [subdomain route groups](https://laravel.com/docs/routing#route-group-subdomain-routing), or just a second brand domain. Each host gets its own Ingress rule and its own independently-obtained TLS cert. Prompted for in `larakube env`, `cloud:configure`, and `cloud:configure <env> --only=hosts`. See [Multiple domains, one app](../architecture/blueprint-anatomy#multiple-domains-one-app).
+
 ### June 2026: Two-Stage CI, Resource Defaults & Multi-Env Plex (CLI v0.20.0)
 A stability and developer-experience release — faster CI retries, Node.js 24 compatibility, and validated multi-environment Plex on a single node.
 

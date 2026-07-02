@@ -104,4 +104,4 @@ A teammate's kubeconfig is **scoped and revocable** by construction — the wors
 
 A couple of practical notes:
 - **Deliver kubeconfig files securely** — they contain a token. Not committed, not pasted in public chat. If one leaks, `cluster:revoke --name <person>` and re-grant.
-- **A teammate who deploys needs a registry** — without SSH there's no image side-load, so registry-based deploys (`cloud:configure:registry`) are the path for deploy-capable teammates.
+- **A teammate who deploys needs a registry** — without SSH there's no image side-load, so registry-based deploys (`cloud:configure --only=registry`) are the path for deploy-capable teammates.

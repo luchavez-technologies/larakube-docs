@@ -195,6 +195,7 @@ This is the heart of the blueprint. Every project has a `local` environment; you
 - **`managed`** — Services you run *outside* the cluster in this environment. For example, `["postgres", "redis"]` in production means "I'm using a managed database and Redis from my hosting provider." LaraKube CLI won't deploy its own Postgres/Redis there — it just points your app at the addresses in your `.env.production`.
 - **`plex`** — Services this environment gets from a shared **Plex Commons** (one cluster-wide Postgres/Redis/MinIO that several apps share, each with its own isolated database/bucket). A specialisation of `managed`: `larakube plex:join` writes the connection details into `.env.<env>`, and LaraKube CLI skips deploying its own copies. See [Two Apps, One Server → Plex](../deployment/multiple-projects#going-further-plex).
 - **`hosts`** — The real domain names for this environment. See [Per-service domains](#per-service-domains) below.
+- **`additionalWebHosts`** — Extra domains that route to the SAME web pod as `hosts.web` — for a Laravel app using [subdomain route groups](https://laravel.com/docs/routing#route-group-subdomain-routing) (`admin.acme.example`, `api.acme.example`), or just a second brand domain. See [Multiple domains, one app](#multiple-domains-one-app) below.
 - **`cloud`** — How LaraKube CLI reaches the cluster for this environment — a VPS (SSH) or a managed kube-context. See [Cloud connection](#cloud-connection) below.
 - **`registry`** — The container registry CI/CD builds and pushes to (GHCR / Docker Hub). Required for managed clusters (which can't be SSH-sideloaded). See [Container registry](#container-registry) below.
 - **`storageClass`**, **`certManagerIssuer`**, and the managed-cluster knobs (`namespace`, `serviceAccount`, …) — only needed on managed Kubernetes. See [Advanced: managed Kubernetes](#advanced-managed-kubernetes).
@@ -256,6 +257,21 @@ A couple of things worth knowing:
 - **Horizon and queues don't get their own domain.** Horizon shows up at `/horizon` on your main site; queues have no UI.
 - **Database/cache dashboards are local-only.** LaraKube CLI won't expose a database console to the internet — those only show up locally. For production database access, use an SSH tunnel.
 
+### Multiple domains, one app {#multiple-domains-one-app}
+
+`hosts.web` is your app's *one* canonical URL — it's what `APP_URL` gets set to, and Laravel needs exactly one of those. But your app's Ingress isn't limited to that single host: `additionalWebHosts` lists any number of extra domains that route to the same web pod, for a Laravel app using [subdomain route groups](https://laravel.com/docs/routing#route-group-subdomain-routing) (an admin panel on `admin.acme.example`, an API on `api.acme.example`) or simply a second marketing domain.
+
+```json title=".larakube.json"
+"production": {
+    "hosts": { "web": "acme.example" },
+    "additionalWebHosts": ["admin.acme.example", "mybrand.example"]
+}
+```
+
+Each additional host gets the same treatment as the primary — its own Ingress rule and, on a real cluster, its own automatically-obtained TLS certificate (each host is renewed independently, so a new domain whose DNS isn't live yet can't affect the ones that already work). `larakube cloud:configure` and `larakube cloud:configure <env> --only=hosts` both prompt for these alongside the primary host; add or remove one any time by re-running either.
+
+A domain doesn't have to be a subdomain of the primary — `mybrand.example` above is entirely unrelated to `acme.example`, and that's fine both in the cloud and locally.
+
 ## ⚙️ Strategy & deployment {#strategy}
 
 ```json
@@ -270,7 +286,7 @@ A couple of things worth knowing:
   - `multi-node-ha` — several servers for high availability. App pods run **stateless** (per-pod storage, no shared volume), so state is externalized: uploads → S3, sessions/cache → Redis or the database. LaraKube CLI can set this from the cluster's node count when you record the target.
 
   This is the project-wide default, and any environment can override it (e.g. a `single-node` staging and a `multi-node-ha` production from the same blueprint). **`local` is always `single-node`** — it's just your one machine.
-- **`githubActions`** — Whether the GitHub Actions deploy workflow is set up. When `true`, `larakube gha:configure` wires up the secrets and creates the deploy workflow for you.
+- **`githubActions`** — Whether the GitHub Actions deploy workflow is set up. When `true`, `larakube cloud:configure --only=ci` wires up the secrets and creates the deploy workflow for you.
 - **`withCompanions`** — Whether to include the handy local-only dev apps (Mailpit, phpMyAdmin, RedisInsight, Grafana). Set to `false` for a leaner local setup.
 - **`provisionTestDb`** — When `true`, `larakube test --db` runs your tests against a real copy of your database engine instead of in-memory SQLite. Useful when your tests rely on database-specific features. LaraKube CLI sets this for you the first time you run `larakube test --db`.
 
@@ -278,7 +294,7 @@ A couple of things worth knowing:
 
 Because `.larakube.json` is committed to version control, it holds **no secrets** and **no infrastructure coordinates**. Server IPs, managed Kubernetes contexts, and SSH keys are machine-specific (and potentially sensitive), so LaraKube CLI stores them in a completely separate, git-ignored file: **`.larakube.local.json`**. 
 
-You never edit this file by hand—you populate it using `larakube cloud:configure:base`.
+You never edit this file by hand—you populate it using `larakube cloud:configure`.
 
 When you do, it will generate an environment block with one of two shapes depending on your cluster:
 
@@ -330,7 +346,7 @@ SSH is for **you** administering the box. To let teammates work with your apps, 
 
 ## 📦 Container registry {#container-registry}
 
-When LaraKube CLI can't stream the image straight onto the node over SSH — i.e. **any managed cluster**, and any multi-node setup — it builds the image locally and **pushes it to a registry**, which the cluster then pulls. Configure that per environment with `larakube cloud:configure:registry`:
+When LaraKube CLI can't stream the image straight onto the node over SSH — i.e. **any managed cluster**, and any multi-node setup — it builds the image locally and **pushes it to a registry**, which the cluster then pulls. Configure that per environment with `larakube cloud:configure {env} --only=registry`:
 
 ```json
 "environments": {
@@ -406,7 +422,7 @@ A managed `production` therefore looks like this in your main blueprint:
 }
 ```
 
-*(Remember: the `"cloud": { "context": "do-sgp1-acme" }` block for this environment is securely generated in `.larakube.local.json` when you run `larakube cloud:configure:base`).*
+*(Remember: the `"cloud": { "context": "do-sgp1-acme" }` block for this environment is securely generated in `.larakube.local.json` when you run `larakube cloud:configure`).*
 
 If any of the terms above are unfamiliar, that's a sign you don't need this section yet.
 
